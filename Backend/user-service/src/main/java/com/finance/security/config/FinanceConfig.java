@@ -3,6 +3,7 @@ package com.finance.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,6 +33,7 @@ public class FinanceConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/register", "/login").permitAll()
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
