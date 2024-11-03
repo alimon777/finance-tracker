@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from 'src/app/service/auth/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
+  selector: 'app-layout',
+  standalone: true,
+  imports: [RouterOutlet],
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.css']
 })
-export class HomeComponent implements OnInit {
+export class LayoutComponent {
+
   token: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
