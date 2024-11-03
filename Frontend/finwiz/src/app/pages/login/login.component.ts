@@ -15,9 +15,8 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.credentials).subscribe(
       response => {
-        // 'response' will be the plain text JWT token
         console.log('Login response:', response);
-        this.authService.storeToken(response); // Store token
+        this.authService.storeToken(response);
         this.router.navigate(['/home']);
       },
       error => {
@@ -27,5 +26,3 @@ export class LoginComponent {
     );
   }
 }
-  
-

@@ -10,6 +10,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { CustomInterceptor } from './service/custom/custom.interceptor';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CustomInterceptor } from './service/custom/custom.interceptor';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     LayoutComponent,

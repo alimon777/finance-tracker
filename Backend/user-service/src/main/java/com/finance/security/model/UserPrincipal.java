@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserPrincipal implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
-	private users user;
-	public UserPrincipal(users user) {
+	private User user;
+	public UserPrincipal(User user) {
 		this.user = user;
 	}
 
@@ -26,8 +26,7 @@ public class UserPrincipal implements UserDetails{
 	}
 
 	@Override
-	public String getUsername() {
-		return user.getUsername();
+	public String getUsername() { return user.getUsername();
 	}
 	
 	@Override

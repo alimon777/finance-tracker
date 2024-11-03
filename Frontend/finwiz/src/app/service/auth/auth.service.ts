@@ -10,19 +10,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // Login method to authenticate the user
   login(credentials: any): Observable<any> {
     console.log(credentials);
-    return this.http.post(`${this.baseUrl}/login`, credentials, { responseType: 'text' });
+    return this.http.post(`${this.baseUrl}/login`, credentials);
   }
-  
 
+  // Register method to create a new user
   register(user: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, user);
   }
 
   // Method to store token in local storage
-  storeToken(token: string) {
-    localStorage.setItem('token', token);
+  storeToken(response: { token: string; userId: string; username: string }) {
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('userId', response.userId);
+    localStorage.setItem('username', response.username);
   }
 
   // Method to retrieve token from local storage
@@ -33,5 +36,7 @@ export class AuthService {
   // Method to clear token from local storage
   clearToken() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
   }
 }
