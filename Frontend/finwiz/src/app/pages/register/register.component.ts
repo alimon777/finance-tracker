@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
-  user = { username: '', password: '' };
+  user = { username: '', password: '', firstName:'',lastName:'',email:'',phone:'' };
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
