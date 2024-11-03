@@ -10,13 +10,14 @@ import { AuthService } from 'src/app/service/auth/auth.service';
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {
-
+  username: string | null = null;
   token: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.token = this.authService.getToken(); // Get the token
+    this.username = localStorage.getItem('username');
     if (!this.token) {
       this.router.navigate(['/login']); // Redirect to login if no token
     }

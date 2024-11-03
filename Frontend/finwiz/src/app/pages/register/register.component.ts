@@ -7,16 +7,22 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
-  user = { username: '', password: '', firstName:'',lastName:'',email:'',phone:'' };
+  user = { username: '', password: '', confirmPassword: '', firstName: '', lastName: '', email: '', phone: '' };
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
+    if (this.user.password !== this.user.confirmPassword) {
+      this.errorMessage = 'Passwords do not match. Please try again.';
+      return;
+    }
+    
     this.authService.register(this.user).subscribe(
       response => {
         this.successMessage = 'Registration successful! Please login.';
+        window.alert('Registration successful! Please login.');
         this.errorMessage = null;
         this.router.navigate(['/login']);
       },

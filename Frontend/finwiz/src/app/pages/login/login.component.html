@@ -1,17 +1,22 @@
-<div class="login-container">
-    <h2>Login</h2>
-    <form (ngSubmit)="onSubmit()">
-      <div>
-        <label>Username:</label>
-        <input type="text" [(ngModel)]="credentials.username" name="username" required>
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" [(ngModel)]="credentials.password" name="password" required>
-      </div>
-      <button type="submit">Login</button>
-      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-    </form>
-    <p>Don't have an account? <a routerLink="/register">Register here</a></p>
-  </div>
-  
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+  <h2 class="text-2xl font-bold mb-6 text-gray-700">Login</h2>
+  <form (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+      <input type="text" [(ngModel)]="credentials.username" name="username" required
+             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+      <input type="password" [(ngModel)]="credentials.password" name="password" required
+             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+      Login
+    </button>
+    <div *ngIf="errorMessage" class="error mt-4 text-red-500 text-sm">{{ errorMessage }}</div>
+  </form>
+  <p class="text-sm text-gray-600 mt-4">
+    Don't have an account? <a routerLink="/register" class="text-blue-500 hover:underline">Register here</a>
+  </p>
+</div>
