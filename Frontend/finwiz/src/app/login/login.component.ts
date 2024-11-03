@@ -15,10 +15,10 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.credentials).subscribe(
       response => {
-        if (response.token) {
-          this.authService.storeToken(response.token); // Store token
-          this.router.navigate(['/home']);
-        }
+        // 'response' will be the plain text JWT token
+        console.log('Login response:', response);
+        this.authService.storeToken(response); // Store token
+        this.router.navigate(['/home']);
       },
       error => {
         this.errorMessage = 'Invalid credentials';
@@ -26,4 +26,7 @@ export class LoginComponent {
       }
     );
   }
-}
+  
+  }
+  
+

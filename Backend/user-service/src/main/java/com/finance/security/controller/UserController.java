@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.finance.security.model.users;
 import com.finance.security.service.UserService;
 
+import java.util.Collections;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 public class UserController {
@@ -28,6 +31,8 @@ public class UserController {
 @PostMapping("/login")
 public String login(@RequestBody users user) {
 	System.out.print(user);
+//	String jwtToken = service.verify(user);
+//	return ResponseEntity.ok(Collections.singletonMap("token", jwtToken));
 	return service.verify(user);
 }
 }
