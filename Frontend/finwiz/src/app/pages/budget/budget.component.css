@@ -1,0 +1,29 @@
+/* budget.component.css */
+.form-field {
+    @apply mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+  
+  .table-header {
+    @apply border-b-2 border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600;
+  }
+  
+  .table-cell {
+    @apply border-b border-gray-200 px-4 py-2 text-sm text-gray-700;
+  }
+  
+  .table-row {
+    @apply hover:bg-gray-50;
+  }
+  
+  .button {
+    @apply bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-500 transition duration-200;
+  }
+  
+  .delete-button {
+    @apply bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-500 transition duration-200;
+  }
+  

@@ -1,1 +1,67 @@
-<p>budget works!</p>
+<div class="budget-container max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Budget Management</h2>
+  
+    <form (ngSubmit)="saveBudget()" class="mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="budgetStartDate" class="label">Budget Start Date:</label>
+          <input type="date" [(ngModel)]="budget.budgetStartDate" name="budgetStartDate" required class="form-field" />
+        </div>
+        <div>
+          <label for="budgetEndDate" class="label">Budget End Date:</label>
+          <input type="date" [(ngModel)]="budget.budgetEndDate" name="budgetEndDate" required class="form-field" />
+        </div>
+        <div>
+          <label for="food" class="label">Food:</label>
+          <input type="number" [(ngModel)]="budget.food" name="food" required class="form-field" />
+        </div>
+        <div>
+          <label for="housing" class="label">Housing:</label>
+          <input type="number" [(ngModel)]="budget.housing" name="housing" required class="form-field" />
+        </div>
+        <div>
+          <label for="transportation" class="label">Transportation:</label>
+          <input type="number" [(ngModel)]="budget.transportation" name="transportation" required class="form-field" />
+        </div>
+        <div>
+          <label for="entertainment" class="label">Entertainment:</label>
+          <input type="number" [(ngModel)]="budget.entertainment" name="entertainment" required class="form-field" />
+        </div>
+      </div>
+      <button type="submit" class="button w-full mt-4">Save Budget</button>
+    </form>
+  
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="table-header">ID</th>
+          <th class="table-header">User ID</th>
+          <th class="table-header">Start Date</th>
+          <th class="table-header">End Date</th>
+          <th class="table-header">Food</th>
+          <th class="table-header">Housing</th>
+          <th class="table-header">Transportation</th>
+          <th class="table-header">Entertainment</th>
+          <th class="table-header">Exceeded</th>
+          <th class="table-header">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let budget of budgets" class="table-row">
+          <td class="table-cell">{{ budget.id }}</td>
+          <td class="table-cell">{{ budget.userId }}</td>
+          <td class="table-cell">{{ budget.budgetStartDate | date }}</td>
+          <td class="table-cell">{{ budget.budgetEndDate | date }}</td>
+          <td class="table-cell">{{ budget.food }}</td>
+          <td class="table-cell">{{ budget.housing }}</td>
+          <td class="table-cell">{{ budget.transportation }}</td>
+          <td class="table-cell">{{ budget.entertainment }}</td>
+          <td class="table-cell">{{ budget.isExceeded }}</td>
+          <td class="table-cell">
+            <button (click)="deleteBudget(budget.id)" class="delete-button">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
