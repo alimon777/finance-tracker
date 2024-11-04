@@ -5,19 +5,26 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { TransactionComponent } from './pages/transaction/transaction.component';
+import { BudgetComponent } from './pages/budget/budget.component';
+import { GoalComponent } from './pages/goal/goal.component';
+import { AiComponent } from './pages/ai/ai.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  // { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', component:LandingComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { 
     path: '',
     component: LayoutComponent,
     children: [
-      {
-        path: 'home',
-        component: HomeComponent
-      },
+      { path: 'home', component: HomeComponent },
+      { path: 'transaction', component: TransactionComponent },
+      { path: 'budget', component: BudgetComponent },
+      { path: 'goal', component: GoalComponent },
+      { path: 'ai', component: AiComponent },
       { path: '**', component:PageNotFoundComponent }
     ]
   },

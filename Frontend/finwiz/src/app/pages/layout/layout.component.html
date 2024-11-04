@@ -1,17 +1,35 @@
-<nav class="bg-gray-800 p-4">
+<nav class="bg-indigo-600 p-4">
   <div class="container mx-auto flex justify-between items-center">
-    <a class="text-white text-xl font-bold" href="#">Login App</a>
-    <button class="text-white lg:hidden" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    <a class="text-white text-xl font-bold" [routerLink]="['/']">finWiz</a>
+
+    <button class="text-white lg:hidden" type="button">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
     </button>
-    <div class="hidden lg:flex space-x-4" id="navbarSupportedContent">
-      <a class="text-gray-300 hover:text-white" href="#">Dashboard</a>
-      <a class="text-gray-300 hover:text-white" href="#">Link</a>
-      <span class="text-gray-400">Welcome, {{ username }}</span>
-      <button class="bg-green-500 text-white px-3 py-2 rounded" (click)="logout()">Log-Off</button>
+
+    <div class="hidden lg:flex space-x-6 items-center">
+      <!-- Navigation Links with Active Class -->
+      <a [routerLink]="['/home']" 
+         routerLinkActive="text-white font-bold text-lg" 
+         class="text-gray-200 hover:text-white">Home</a>
+      <a [routerLink]="['/transaction']" 
+         routerLinkActive="text-white font-bold text-lg" 
+         class="text-gray-200 hover:text-white">Transactions</a>
+      <a [routerLink]="['/budget']" 
+         routerLinkActive="text-white font-bold text-lg" 
+         class="text-gray-200 hover:text-white">Budgets</a>
+      <a [routerLink]="['/goal']" 
+         routerLinkActive="text-white font-bold text-lg" 
+         class="text-gray-200 hover:text-white">Goals</a>
+      <a [routerLink]="['/ai']" 
+         routerLinkActive="text-white font-bold text-lg" 
+         class="text-gray-200 hover:text-white">AI Suggestions</a>
+
+      <!-- Welcome Message and Logout Button -->
+      <span class="text-gray-300">Welcome, {{ username }}</span>
+      <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400" (click)="logout()">Log-Off</button>
     </div>
   </div>
 </nav>
-<div class="container mx-auto py-4">
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>

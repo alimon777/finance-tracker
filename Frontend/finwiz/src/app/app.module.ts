@@ -11,6 +11,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { CustomInterceptor } from './service/custom/custom.interceptor';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { TransactionComponent } from './pages/transaction/transaction.component';
+import { BudgetComponent } from './pages/budget/budget.component';
+import { GoalComponent } from './pages/goal/goal.component';
+import { AiComponent } from './pages/ai/ai.component';
 
 @NgModule({
   declarations: [
@@ -19,13 +24,18 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     RegisterComponent,
     HomeComponent,
     PageNotFoundComponent,
+    LandingComponent,
+    TransactionComponent,
+    BudgetComponent,
+    GoalComponent,
+    AiComponent,
   ],
   imports: [
     LayoutComponent,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     {
