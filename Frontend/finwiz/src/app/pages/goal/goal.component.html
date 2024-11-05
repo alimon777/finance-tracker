@@ -1,1 +1,79 @@
-<p>goal works!</p>
+<div class="goal-container max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Goal Management</h2>
+
+  <form (ngSubmit)="onSubmit()" class="mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="goalName" class="block text-sm font-medium text-gray-700">Goal Name:</label>
+        <input 
+            type="text" 
+            [(ngModel)]="goal.goalName" 
+            name="goalName" 
+            required 
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+      <div>
+        <label for="value" class="block text-sm font-medium text-gray-700">Value:</label>
+        <input 
+            type="number" 
+            [(ngModel)]="goal.value" 
+            name="value" 
+            required 
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
+        <input 
+            type="text" 
+            [(ngModel)]="goal.description" 
+            name="description" 
+            required 
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+      <div>
+        <label for="durationInMonths" class="block text-sm font-medium text-gray-700">Duration (Months):</label>
+        <input 
+            type="number" 
+            [(ngModel)]="goal.durationInMonths" 
+            name="durationInMonths" 
+            required 
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+      </div>
+    </div>
+    <button type="submit" class="bg-indigo-600 text-white py-2 px-4 mt-4 w-full rounded-md font-semibold hover:bg-indigo-500 focus:outline-none">
+      Save Goal
+    </button>
+  </form>
+
+  <!-- Display message if no goals exist -->
+  <div *ngIf="goals.length === 0" class="text-center text-gray-500 py-6">
+    <p>No goals yet</p>
+  </div>
+  
+  <!-- Goals List -->
+  <div *ngIf="goals.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <div *ngFor="let goal of goals; let i = index" class="bg-white shadow-lg rounded-lg p-4 flex flex-col">
+      <!-- Goal Header -->
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-lg font-semibold text-gray-800">{{ goal.goalName }}</h3>
+        <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-sm">{{ i + 1 }}</span>
+      </div>
+      
+      <!-- Goal Body -->
+      <div class="mb-2 text-gray-600">
+        <p><span class="font-medium">Value:</span> {{ goal.value | currency }}</p>
+        <p><span class="font-medium">Description:</span> {{ goal.description }}</p>
+        <p><span class="font-medium">Start Date:</span> {{ goal.startDate | date }}</p>
+        <p><span class="font-medium">Duration:</span> {{ goal.durationInMonths }} Months</p>
+        <p><span class="font-medium">Days Left:</span> {{ calculateDaysLeft(goal) }} days</p>
+      </div>
+      
+      <!-- Goal Footer -->
+      <div class="mt-auto flex justify-end">
+        <button (click)="confirmDelete(goal.id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,7 +23,7 @@ export class BudgetComponent implements OnInit {
       this.loadBudgets();
     } else {
       console.error('User ID not found in local storage');
-      // Handle error or redirect if needed
+
     }
   }
 
