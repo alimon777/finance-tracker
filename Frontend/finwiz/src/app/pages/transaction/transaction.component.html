@@ -1,1 +1,166 @@
-<p>transaction works!</p>
+<h3 class="text-2xl font-semibold mt-4 ml-4 mb-2">Account Details</h3>
+<div class="flex flex-wrap gap-4">
+    <div class="bg-white shadow-md rounded-lg p-2 w-96 flex-shrink-0 ml-4"> <!-- Reduced padding -->
+        <h4 class="font-semibold mb-2">Add New Account</h4>
+        <form (ngSubmit)="onSubmitAccount()" class="flex flex-col">
+            <div class="form-group flex items-center mb-2"> <!-- Reduced margin -->
+                <label for="bankName" class="block text-sm font-medium text-gray-700 w-1/3">Bank Name</label>
+                <input
+                    type="text"
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Enter Bank Name"
+                    [(ngModel)]="newAccount.bankName"  
+                    name="bankName"
+                    required
+                />
+            </div>
+            <div class="form-group flex items-center mb-2"> <!-- Reduced margin -->
+                <label for="accountNumber" class="block text-sm font-medium text-gray-700 w-1/3">Account Number</label>
+                <input
+                    type="text"
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Account Number"
+                    [(ngModel)]="newAccount.accountNumber"
+                    name="accountNumber"
+                    required
+                />
+            </div>
+            <div class="form-group flex items-center mb-2"> <!-- Reduced margin -->
+                <label for="accountBalance" class="block text-sm font-medium text-gray-700 w-1/3">Balance</label>
+                <input
+                    type="number"
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Balance"
+                    [(ngModel)]="newAccount.accountBalance"
+                    name="accountBalance"
+                    required
+                />
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="mt-2 bg-indigo-600 text-white font-semibold py-1 px-2 rounded-md hover:bg-indigo-500 transition duration-200">Create Account</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngFor="let account of accounts" class="bg-white shadow-md rounded-lg p-2 w-60 flex-shrink-0 pl-5">
+        <h4 class="font-semibold mt-10 m-2"> {{ account.bankName }}</h4>
+        <p class="m-2">{{ account.accountNumber}}</p>
+        <p class="m-2">{{ account.accountBalance | currency }}</p> <!-- Display bank name -->
+        <div class="flex justify-end">
+            <button (click)="onDeleteAccount(account.id)" class="mt-4 bg-red-600 text-white font-semibold py-1 px-2 rounded-md hover:bg-red-500 transition duration-200">Delete</button>
+        </div>
+    </div>
+
+    <!-- Move the no account details card into the flex container -->
+    <div *ngIf="accounts.length === 0" class="bg-white shadow-md rounded-lg p-2 w-60 flex-shrink-0 flex items-center justify-center"> <!-- Reduced padding and added flex for centering -->
+        <p class="text-center text-gray-600">No account details available for this user.</p>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+ <!-- ---------------------------------------------------------------------------------------------------- -->
+  <!-- ---------------------------------------------------------------------------------------------------- -->
+<h3 class="text-2xl font-semibold mt-6 ml-4">Transaction Details</h3>
+<div class="flex flex-wrap gap-4">
+    <div class="bg-white shadow-md rounded-lg p-4 w-96 flex-shrink-0 ml-4">
+        <h4 class="font-semibold mb-2">Add New Transaction</h4>
+        <form (ngSubmit)="onSubmitTransaction()" class="flex flex-col">
+            <div class="form-group flex items-center mb-2">
+                <label for="accountNumber" class="block text-sm font-medium text-gray-700 w-1/3">Account Number</label>
+                <select
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    [(ngModel)]="newTransaction.accountNumber"
+                    name="accountNumber"
+                    required
+                >
+                    <option value="" disabled>Select Account Number</option>
+                    <option *ngFor="let account of accounts" [value]="account.accountNumber">{{ account.accountNumber }}</option>
+                </select>
+            </div>
+            
+            <div class="form-group flex items-center mb-2">
+                <label for="amount" class="block text-sm font-medium text-gray-700 w-1/3">Amount</label>
+                <input
+                    type="number"
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Amount"
+                    [(ngModel)]="newTransaction.amount"
+                    name="amount"
+                    required
+                />
+            </div>
+            <div class="form-group flex items-center mb-2">
+                <label for="description" class="block text-sm font-medium text-gray-700 w-1/3">Description</label>
+                <input
+                    type="text"
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Description"
+                    [(ngModel)]="newTransaction.description"
+                    name="description"
+                />
+            </div>
+            <div class="form-group flex items-center mb-2">
+                <label for="transactionType" class="block text-sm font-medium text-gray-700 w-1/3">Transaction Type</label>
+                <select
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    [(ngModel)]="newTransaction.transactionType"
+                    name="transactionType"
+                    (change)="onTransactionTypeChange()"
+                    required
+                >
+                    <option value="" disabled>Select Type</option>
+                    <option value="DEPOSIT">Deposit</option>
+                    <option value="WITHDRAW">Withdraw</option>
+                </select>
+            </div>
+            <div class="form-group flex items-center mb-2">
+                <label for="categoryType" class="block text-sm font-medium text-gray-700 w-1/3">Category Type</label>
+                <select
+                    class="form-control mt-1 block w-2/3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    [(ngModel)]="newTransaction.categoryType"
+                    name="categoryType"
+                    [disabled]="newTransaction.transactionType === 'DEPOSIT'"
+                >
+                    <option value="" disabled>Select Category Type</option>
+                    <option value="INCOME" *ngIf="newTransaction.transactionType !== 'WITHDRAW'">Income</option>
+                    <option value="FOOD" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Food</option>
+                    <option value="TRANSPORTATION" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Transportation</option>
+                    <option value="HOUSING" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Housing</option>
+                    <option value="ENTERTAINMENT" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Entertainment</option>
+                </select>
+            </div>
+            
+            
+            <div class="flex justify-end">
+                <button type="submit" class="mt-2 bg-indigo-600 text-white font-semibold py-1 px-2 rounded-md hover:bg-indigo-500 transition duration-200">Create Transaction</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-4 flex-1 max-w-full h-80 overflow-hidden">
+        <h4 class="font-semibold m-2">Transaction List</h4>
+        <div class="overflow-y-auto h-48"> <!-- Adjusted height for scrolling -->
+            <table class="min-w-full border-collapse border border-gray-200">
+                <thead class="bg-gray-100 sticky top-0 z-10"> <!-- Fixed header -->
+                    <tr>
+                        <th class="table-header">Account Number</th>
+                        <th class="table-header">Amount</th>
+                        <th class="table-header">Description</th>
+                        <th class="table-header">Transaction Type</th>
+                        <th class="table-header">Transaction Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions" class="table-row">
+                        <td class="table-cell">{{ transaction.accountNumber }}</td>
+                        <td class="table-cell">{{ transaction.amount | currency }}</td>
+                        <td class="table-cell">{{ transaction.description }}</td>
+                        <td class="table-cell">{{ transaction.transactionType }}</td>
+                        <td class="table-cell">{{ transaction.transactionDate | date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,11 @@
+.table-header {
+    @apply border-b-2 border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600;
+  }
+  
+  .table-cell {
+    @apply border-b border-gray-200 px-4 py-2 text-sm text-gray-700;
+  }
+  
+  .table-row {
+    @apply hover:bg-gray-50;
+  }

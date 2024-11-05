@@ -34,8 +34,8 @@
     <table class="min-w-full bg-white border border-gray-200">
       <thead>
         <tr class="bg-gray-100">
-          <th class="table-header">ID</th>
-          <th class="table-header">User ID</th>
+          <th class="table-header">#</th> <!-- Sequence Number Header -->
+          <th class="table-header">Budget ID</th>
           <th class="table-header">Start Date</th>
           <th class="table-header">End Date</th>
           <th class="table-header">Food</th>
@@ -47,21 +47,21 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let budget of budgets" class="table-row">
+        <tr *ngFor="let budget of budgets; let i = index" class="table-row">
+          <td class="table-cell">{{ i + 1 }}</td> <!-- Sequence Number -->
           <td class="table-cell">{{ budget.id }}</td>
-          <td class="table-cell">{{ budget.userId }}</td>
           <td class="table-cell">{{ budget.budgetStartDate | date }}</td>
           <td class="table-cell">{{ budget.budgetEndDate | date }}</td>
           <td class="table-cell">{{ budget.food }}</td>
           <td class="table-cell">{{ budget.housing }}</td>
           <td class="table-cell">{{ budget.transportation }}</td>
           <td class="table-cell">{{ budget.entertainment }}</td>
-          <td class="table-cell">{{ budget.isExceeded }}</td>
+          <td class="table-cell">{{ budget.isExceeded ? 'Yes' : 'No' }}</td>
           <td class="table-cell">
             <button (click)="deleteBudget(budget.id)" class="delete-button">Delete</button>
           </td>
         </tr>
       </tbody>
-    </table>
+    </table>    
   </div>
   
