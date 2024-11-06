@@ -26,7 +26,7 @@ public class Budget {
     private Double housing;  // Major budget category for housing
     private Double transportation;  // Major budget category for transportation
     private Double entertainment;  // Major budget category for entertainment
-
+    private Boolean aiGenerated;
     private Boolean isExceeded;  // Indicates if budget is exceeded
 
 }

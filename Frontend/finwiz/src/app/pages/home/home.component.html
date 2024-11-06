@@ -1,15 +1,6 @@
-<div *ngIf="members.length > 0; else noData">
-  <h3>Member List</h3>
-  <ul>
-    <li *ngFor="let member of members">
-      <p>ID: {{ member.id }}</p>
-      <p>Name: {{ member.name }}</p>
-      <p>Age: {{ member.age }}</p>
-      <p>Documents: {{ member.documents.length }} items</p>
-    </li>
-  </ul>
+<!-- <app-transaction-charts></app-transaction-charts> -->
+<div class="charts-container">
+  <app-line-chart [transactions]="transactions"></app-line-chart>
+  <app-pie-chart [transactions]="transactions"></app-pie-chart>
 </div>
 
-<ng-template #noData>
-  <p>No members available.</p>
-</ng-template>

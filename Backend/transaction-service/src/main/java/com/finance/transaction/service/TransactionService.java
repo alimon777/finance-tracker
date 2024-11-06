@@ -1,5 +1,6 @@
 package com.finance.transaction.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +45,8 @@ public class TransactionService {
 		} else {
 			account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
 		}
-
-		transaction.setBalance(account.getAccountBalance());
+//
+//		transaction.setBalance(account.getAccountBalance());
 		transaction.setTransactionDate(new Date());
 		transaction.setAccount(account);
 
@@ -53,5 +54,10 @@ public class TransactionService {
 		Transaction savedTransaction = transactionRepository.save(transaction);
 
 		return ResponseEntity.ok(new CustomResponse<>("Transaction successful", savedTransaction));
+	}
+
+	public void addTransactions(List<Transaction> transactions) {
+		List<Transaction> savedTransactions = transactionRepository.saveAll(transactions);
+		// Create a response with the list of saved transactions
 	}
 }

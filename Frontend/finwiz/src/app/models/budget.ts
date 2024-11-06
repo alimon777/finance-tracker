@@ -7,6 +7,7 @@ export class Budget {
     housing!: number;
     transportation!: number;
     entertainment!: number;
+    aiGenerated!: boolean;
     isExceeded!: boolean;
   }
   

@@ -68,6 +68,7 @@ export class TransactionComponent implements OnInit {
         if (response.data) { // Ensure response.data is not null
           this.accounts.push(response.data); // Add the created account to the list
         }
+        this.loadTransactions();
         this.newAccount = new Account(); // Reset the form
       },
       error: (error: HttpErrorResponse) => {
@@ -81,6 +82,7 @@ export class TransactionComponent implements OnInit {
       next: () => {
         this.accounts = this.accounts.filter(account => account.id !== accountId);
         this.loadAccounts(); // Remove the deleted account from the list
+        this.loadTransactions();
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error deleting account:', error.message);

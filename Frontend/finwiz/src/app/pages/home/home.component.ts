@@ -1,45 +1,46 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Transaction } from 'src/app/models/transaction';
+import { TransactionService } from 'src/app/service/transaction/transaction.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  members: any[] = []; // Array to store the member data
-
-  constructor(private http: HttpClient) { }
+  userId:number = 0;
+  transactions: Transaction[] = [ ];
+  constructor(private http: HttpClient, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
-    this.getMembers();
+    this.loadUserId();
+    this.loadTransactions();
   }
-
-  getMembers(): void {
-    this.http.get<any[]>('http://localhost:8099/member/getAll')
-      .subscribe(
-        data => {
-          this.members = data;
-          console.log('Members fetched successfully:', this.members);
+  loadUserId(): void {
+    const storedUserId = localStorage.getItem('userId');
+    this.userId = storedUserId ? +storedUserId : 0; 
+  }
+  loadTransactions(): void {
+    if (this.userId) {
+      this.transactionService.getTransactions(this.userId).subscribe({
+        next: (response: Transaction[]) => { // Specify the response type here
+          // Sort transactions by transactionDate in ascending order
+          this.transactions = response.sort((a, b) => {
+            const dateA = new Date(a.transactionDate); // Convert string to Date object
+            const dateB = new Date(b.transactionDate); // Convert string to Date object
+            return dateA.getTime() - dateB.getTime(); // Compare timestamps
+          });
+  
+          console.log(this.transactions); // Ensure the transactions are sorted correctly
         },
-        error => {
-          console.error('Error fetching members:', error);
-        }
-      );
+        error: (error: HttpErrorResponse) => {
+          console.error('Error loading transactions:', error.message);
+        },
+      });
+    } else {
+      console.warn('User ID not found in local storage.');
+    }
   }
+  
 }
-  // token: string | null = null;
-
-  // constructor(private authService: AuthService, private router: Router) {}
-
-  // ngOnInit() {
-  //   this.token = this.authService.getToken(); // Get the token
-  //   if (!this.token) {
-  //     this.router.navigate(['/login']); // Redirect to login if no token
-  //   }
-  // }
-
-  // logout() {
-  //   this.authService.clearToken(); // Clear token from storage
-  //   this.router.navigate(['/login']);
-  // }
-// }
+  

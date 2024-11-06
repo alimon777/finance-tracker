@@ -41,6 +41,8 @@ export class BudgetComponent implements OnInit {
     }
 
     this.budget.userId = this.userId; // Set userId from local storage
+    this.budget.aiGenerated = false;
+    this.budget.isExceeded = false;
     this.budgetService.createBudget(this.budget).subscribe(() => {
       this.loadBudgets();
       this.budget = new Budget(); // Reset form

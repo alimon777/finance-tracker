@@ -1,0 +1,10 @@
+.charts-container {
+    display: flex;
+    justify-content: center; /* Center the charts horizontally */
+    max-width: 900px; /* Set a maximum width for the chart container */
+    /* margin: 20px auto; Center the container with auto margins */
+    flex-wrap: wrap; /* Allow charts to wrap to the next line if needed */
+    padding: 0 20px; /* Optional: Add padding to the container */
+  }
+  
+  

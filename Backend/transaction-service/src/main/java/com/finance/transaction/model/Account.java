@@ -24,7 +24,7 @@ public class Account {
     private String accountNumber;
     private Double accountBalance;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     @JsonManagedReference
     private List<Transaction> transactions; 
 }

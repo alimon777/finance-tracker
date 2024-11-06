@@ -16,6 +16,8 @@ import { TransactionComponent } from './pages/transaction/transaction.component'
 import { BudgetComponent } from './pages/budget/budget.component';
 import { GoalComponent } from './pages/goal/goal.component';
 import { AiComponent } from './pages/ai/ai.component';
+import { LineChartComponent } from './charts/line-chart/line-chart.component';
+import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { AiComponent } from './pages/ai/ai.component';
     BudgetComponent,
     GoalComponent,
     AiComponent,
+    LineChartComponent,
+    PieChartComponent,
   ],
   imports: [
     LayoutComponent,

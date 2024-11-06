@@ -1,0 +1,6 @@
+.chart {
+    flex: 1 1 400px; /* Allow charts to grow and shrink with a base size */
+    max-width: 400px; /* Set a maximum width for the charts */
+    height: 300px; /* Set a fixed height for the charts */
+    /* margin: 10px; Add some space between the charts */
+  }
