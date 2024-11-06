@@ -1,1 +1,31 @@
-<p>ai works!</p>
+<div class="flex flex-col items-center justify-center p-6 space-y-4 max-w-4xl mx-auto">
+    <!-- Button to get the budget suggestion -->
+    <button
+      (click)="onGetBudgetSuggestion()"
+      class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none"
+      [disabled]="loading"
+    >
+      <span *ngIf="loading">Loading...</span>
+      <span *ngIf="!loading">Get Budget Suggestion</span>
+    </button>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="text-red-500 mt-2">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- AI's Budget Suggestion -->
+    <div *ngIf="budgetSuggestion" class="mt-6 w-full max-w-2xl p-4 border border-gray-300 rounded-lg shadow-md bg-gray-50">
+      <p class="text-gray-700 font-medium">Budget by finWiz:</p>
+      <div [innerHTML]="budgetSuggestion"></div>
+  
+      <!-- Button to add suggestion to budget -->
+      <button
+        (click)="onAddToBudget()"
+        class="bg-green-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-green-600 focus:outline-none"
+      >
+        Add to Budget
+      </button>
+    </div>
+  </div>
+  
