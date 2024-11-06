@@ -18,6 +18,7 @@ import { GoalComponent } from './pages/goal/goal.component';
 import { AiComponent } from './pages/ai/ai.component';
 import { LineChartComponent } from './charts/line-chart/line-chart.component';
 import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
+import { NewsComponent } from './pages/news/news.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
     AiComponent,
     LineChartComponent,
     PieChartComponent,
+    NewsComponent,
   ],
   imports: [
     LayoutComponent,

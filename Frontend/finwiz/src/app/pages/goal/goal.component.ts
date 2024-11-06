@@ -68,9 +68,12 @@ export class GoalComponent implements OnInit {
 
   deleteGoal(goalId: number): void {
     this.goalService.deleteGoal(goalId).subscribe(() => {
-      this.loadGoals(); // Refresh the list of goals
+      // Filter out the deleted goal from the local list of goals
+      this.goals = this.goals.filter(goal => goal.id !== goalId);
+      this.loadGoals();
     });
   }
+  
 
   // Calculate remaining days for each goal
   calculateDaysLeft(goal: Goal): number {

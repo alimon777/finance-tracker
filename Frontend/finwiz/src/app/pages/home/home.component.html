@@ -1,6 +1,11 @@
 <!-- <app-transaction-charts></app-transaction-charts> -->
-<div class="charts-container">
-  <app-line-chart [transactions]="transactions"></app-line-chart>
-  <app-pie-chart [transactions]="transactions"></app-pie-chart>
+<div class="dashboard-container flex flex-col md:flex-row gap-8">
+  <!-- Charts Container on the Left -->
+  <div class="charts-container flex-1">
+    <app-line-chart [transactions]="transactions"></app-line-chart>
+    <app-pie-chart [transactions]="transactions"></app-pie-chart>
+  </div>
+  <app-news></app-news>
 </div>
+
 

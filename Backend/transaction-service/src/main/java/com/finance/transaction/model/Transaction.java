@@ -30,9 +30,6 @@ public class Transaction {
 
     @Column(name = "Description")
     private String description;
-//
-//    @Column(name = "Balance")
-//    private Double balance;
     
     @Column(name = "AccountNumber")
     private String accountNumber;

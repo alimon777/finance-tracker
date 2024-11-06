@@ -1,0 +1,95 @@
+/* News container styling */
+.news-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    height: calc(100vh - 75px); /* Subtract navbar height */
+    overflow: hidden; /* Prevent overflow outside the container */
+  }
+  
+  /* Styling for the grid of news cards */
+  .news-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+    overflow-y: auto; /* Enables internal scrolling */
+  }
+  
+  /* Individual news card styling */
+  .news-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    max-width: 350px; /* Reduced max-width for the cards */
+    cursor: pointer;
+  }
+  
+  .news-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    background-color: #f8fafc; /* Slight hover effect */
+  }
+  
+  .image-container {
+    position: relative;
+  }
+  
+  .article-image {
+    width: 100%;
+    height: 10rem; /* Reduced image height */
+    object-fit: cover;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .image-container:hover .article-image {
+    opacity: 0.8; /* Hover effect for image */
+  }
+  
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2); /* Overlay on image */
+  }
+  
+  /* News content section styling */
+  .news-content {
+    padding: 1rem;
+  }
+  
+  .news-title {
+    font-size: 1.125rem; /* Reduced font size */
+    font-weight: 600;
+    color: #1f2937; /* Dark gray text */
+    margin-bottom: 1rem;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .news-title:hover {
+    color: #4f46e5; /* Change color on hover */
+  }
+  
+  .news-description {
+    color: #4b5563; /* Lighter gray for the description */
+    margin-bottom: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Truncate description text */
+  }
+  
+  .news-link {
+    color: #4f46e5; /* Indigo color */
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .news-link:hover {
+    color: #4338ca; /* Darker shade of indigo on hover */
+  }
+  
