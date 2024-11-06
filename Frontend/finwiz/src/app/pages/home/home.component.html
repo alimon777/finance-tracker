@@ -1,11 +1,37 @@
-<!-- <app-transaction-charts></app-transaction-charts> -->
 <div class="dashboard-container flex flex-col md:flex-row gap-8">
-  <!-- Charts Container on the Left -->
-  <div class="charts-container flex-1">
-    <app-line-chart [transactions]="transactions"></app-line-chart>
-    <app-pie-chart [transactions]="transactions"></app-pie-chart>
+  <!-- Container for all components -->
+  <div class="flex flex-col md:flex-row gap-8 w-full ">
+
+    <!-- Stats Container: Transaction Totals -->
+    <div class="stats-container flex-1 p-4 bg-white shadow-lg rounded-lg">
+      <h3 class="text-xl font-semibold mb-4">Transaction Totals</h3>
+      <div class="stat-item mb-2">
+        <h4 class="text-lg font-medium">Previous Week</h4>
+        <p class="text-sm">Deposits: {{ previousWeekDeposits }}</p>
+        <p class="text-sm">Withdrawals: {{ previousWeekWithdrawals }}</p>
+      </div>
+      <div class="stat-item mb-2">
+        <h4 class="text-lg font-medium">This Month</h4>
+        <p class="text-sm">Deposits: {{ thisMonthDeposits }}</p>
+        <p class="text-sm">Withdrawals: {{ thisMonthWithdrawals }}</p>
+      </div>
+      <div class="stat-item mb-2">
+        <h4 class="text-lg font-medium">This Year</h4>
+        <p class="text-sm">Deposits: {{ thisYearDeposits }}</p>
+        <p class="text-sm">Withdrawals: {{ thisYearWithdrawals }}</p>
+      </div>
+    </div>
+
+    <!-- Charts Container: Line and Pie Charts -->
+    <div class="charts-container flex-1 p-4 min-w-0">
+      <app-line-chart [transactions]="transactions"></app-line-chart>
+      <app-pie-chart [transactions]="transactions"></app-pie-chart>
+    </div>
+
+    <!-- Financial News Component -->
+    <div class="financial-news flex-1 p-4 ">
+      <app-news></app-news>
+    </div>
+
   </div>
-  <app-news></app-news>
 </div>
-
-

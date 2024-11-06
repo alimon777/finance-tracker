@@ -9,9 +9,10 @@ import com.finance.transaction.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,26 +42,41 @@ public class AccountService {
     private void createDummyTransactions(Account account) {
         List<Transaction> transactions = new ArrayList<>();
 
-        // Create some dummy transactions
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date()); // Start from today's date
-        transactions.add(new Transaction(null, 150.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), calendar.getTime(), TransactionType.DEPOSIT, CategoryType.INCOME, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 30.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.FOOD, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 15.0, account.getUserId(), "Bus fare", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 500.0, account.getUserId(), "Rent payment", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 200.0, account.getUserId(), "Bonus received", account.getAccountNumber(), calendar.getTime(), TransactionType.DEPOSIT, CategoryType.INCOME, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 40.0, account.getUserId(), "Dinner out", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.ENTERTAINMENT, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 20.0, account.getUserId(), "Gas for car", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        transactions.add(new Transaction(null, 10.0, account.getUserId(), "Coffee shop", account.getAccountNumber(), calendar.getTime(), TransactionType.WITHDRAW, CategoryType.ENTERTAINMENT, account));
+        // Adding transactions with specific dates
+        transactions.add(new Transaction(null, 150.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), getDate("2024-11-06"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 30.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), getDate("2024-11-05"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
+        transactions.add(new Transaction(null, 15.0, account.getUserId(), "Bus fare", account.getAccountNumber(), getDate("2024-11-04"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
+        transactions.add(new Transaction(null, 500.0, account.getUserId(), "Rent payment", account.getAccountNumber(), getDate("2024-11-03"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
+        transactions.add(new Transaction(null, 200.0, account.getUserId(), "Bonus received", account.getAccountNumber(), getDate("2024-11-02"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 50.0, account.getUserId(), "Movie night", account.getAccountNumber(), getDate("2024-11-01"), TransactionType.WITHDRAW, CategoryType.ENTERTAINMENT, account));
+        transactions.add(new Transaction(null, 250.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), getDate("2024-10-06"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 50.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), getDate("2024-10-05"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
+        transactions.add(new Transaction(null, 20.0, account.getUserId(), "Bus fare", account.getAccountNumber(), getDate("2024-10-04"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
+        transactions.add(new Transaction(null, 400.0, account.getUserId(), "Rent payment", account.getAccountNumber(), getDate("2024-10-03"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
+        transactions.add(new Transaction(null, 100.0, account.getUserId(), "Concert ticket", account.getAccountNumber(), getDate("2024-10-20"), TransactionType.WITHDRAW, CategoryType.ENTERTAINMENT, account));
+        transactions.add(new Transaction(null, 150.0, account.getUserId(), "Bonus received", account.getAccountNumber(), getDate("2024-09-02"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 30.0, account.getUserId(), "Video game purchase", account.getAccountNumber(), getDate("2024-09-15"), TransactionType.WITHDRAW, CategoryType.ENTERTAINMENT, account));
+        transactions.add(new Transaction(null, 100.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), getDate("2024-08-10"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 40.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), getDate("2024-08-05"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
+        transactions.add(new Transaction(null, 25.0, account.getUserId(), "Bus fare", account.getAccountNumber(), getDate("2024-08-04"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
+        transactions.add(new Transaction(null, 600.0, account.getUserId(), "Rent payment", account.getAccountNumber(), getDate("2024-08-03"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
+        transactions.add(new Transaction(null, 50.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), getDate("2023-12-25"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+        transactions.add(new Transaction(null, 20.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), getDate("2023-12-15"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
+        transactions.add(new Transaction(null, 30.0, account.getUserId(), "Bus fare", account.getAccountNumber(), getDate("2023-12-14"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
+        transactions.add(new Transaction(null, 400.0, account.getUserId(), "Rent payment", account.getAccountNumber(), getDate("2023-12-03"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
 
         transactionService.addTransactions(transactions);
+    }
+
+    // Helper method to convert string date to Date object
+    private Date getDate(String dateString) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public CustomResponse<Account> updateAccount(Long accountId, Account account) {

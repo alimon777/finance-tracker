@@ -3,7 +3,7 @@
     max-width: 100%;
     margin: 0 auto;
     padding: 2rem 1rem;
-    height: calc(100vh - 75px); /* Subtract navbar height */
+    height: calc(100vh - 105px); /* Subtract navbar height */
     overflow: hidden; /* Prevent overflow outside the container */
   }
   

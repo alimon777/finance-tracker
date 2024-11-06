@@ -1,5 +1,5 @@
 .table-header {
-    @apply border-b-2 border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600;
+    @apply border-b-2 border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-600 sticky top-0 bg-gray-100 z-20 border-b border-gray-300;
   }
   
   .table-cell {
@@ -9,33 +9,4 @@
   .table-row {
     @apply hover:bg-gray-50;
   }
-  /* Apply the scroll behavior */
-.scrollable-container {
-  overflow-x: auto;
-  gap: 1rem;
-  transition: 0.3s ease-in-out; /* Smooth transition for scrollbar visibility */
-}
-
-/* Hide scrollbar by default */
-.scrollable-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* Show scrollbar on hover */
-.scrollable-container:hover::-webkit-scrollbar {
-  display: block;
-}
-
-/* Style the scrollbar (optional) */
-.scrollable-container::-webkit-scrollbar {
-  height: 8px;
-}
-
-.scrollable-container::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
-}
-
-.scrollable-container::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
+  

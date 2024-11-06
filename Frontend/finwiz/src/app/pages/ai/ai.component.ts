@@ -5,6 +5,7 @@ import { Transaction } from 'src/app/models/transaction';
 import { AiService } from 'src/app/service/ai/ai.service';
 import { BudgetService } from 'src/app/service/budget/budget.service';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ai',
@@ -15,7 +16,8 @@ export class AiComponent implements OnInit {
   constructor(
     private suggestionService: AiService,
     private transactionService: TransactionService, 
-    private budgetService: BudgetService
+    private budgetService: BudgetService,
+    private router: Router,
   ) {}
 
   transactions: Transaction[] = [];
@@ -70,10 +72,17 @@ export class AiComponent implements OnInit {
   onAddToBudget(): void {
     this.aiBudget = this.suggestionService.parseAiGeneratedBudgetResponse(this.suggestion, this.userId);
     console.log('Budget suggestion added:', this.aiBudget);
-    this.budgetService.createBudget(this.aiBudget).subscribe(() => {});
-    // Implement additional logic as needed
+  
+    this.budgetService.createBudget(this.aiBudget).subscribe(() => {
+      const confirmMessage = 'The budget has been successfully added! Do you want to go to the Budget page?';
+      if (window.confirm(confirmMessage)) {
+        this.router.navigate(['/budget']);
+      } else {
+        alert('Budget added successfully!');
+      }
+    });
   }
-
+  
   formatResponse(response: string): string {
     response = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     response = response.replace(/\*(.*?)\*/g, '<em>$1</em>');

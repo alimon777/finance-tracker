@@ -1,4 +1,4 @@
-<div class="budget-container max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+<div class="budget-container max-w-4xl mx-auto p-4 bg-white shadow-md rounded-lg">
     <h2 class="text-2xl font-semibold mb-4">Budget Management</h2>
   
     <form (ngSubmit)="saveBudget()" class="mb-6">
@@ -31,39 +31,40 @@
       <button type="submit" class="button w-full mt-4">Save Budget</button>
     </form>
   
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="table-header">#</th> <!-- Sequence Number Header -->
-          <!-- <th class="table-header">Budget ID</th> -->
-          <th class="table-header">Start Date</th>
-          <th class="table-header">End Date</th>
-          <th class="table-header">Food</th>
-          <th class="table-header">Housing</th>
-          <th class="table-header">Transportation</th>
-          <th class="table-header">Entertainment</th>
-          <th class="table-header">Created By</th>
-          <th class="table-header">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let budget of budgets; let i = index" class="table-row" 
-            [ngClass]="budget.isExceeded ? 'bg-red-100' : 'bg-green-100'">
-          <td class="table-cell">{{ i + 1 }}</td> 
-          <!-- <td class="table-cell">{{ budget.id }}</td> -->
-          <td class="table-cell">{{ budget.budgetStartDate | date }}</td>
-          <td class="table-cell">{{ budget.budgetEndDate | date }}</td>
-          <td class="table-cell">{{ budget.food }}</td>
-          <td class="table-cell">{{ budget.housing }}</td>
-          <td class="table-cell">{{ budget.transportation }}</td>
-          <td class="table-cell">{{ budget.entertainment }}</td>
-          <td class="table-cell">{{ budget.aiGenerated ? 'AI' : 'User' }}</td>
-          <td class="table-cell">
-            <button (click)="deleteBudget(budget.id)" class="delete-button">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-      
-    </table>    
+   <div class="table-container max-h-[175px] overflow-y-auto scrollable-container">
+  <table class="min-w-full bg-white border border-gray-200">
+    <thead class="bg-gray-100 sticky top-0 z-10"> <!-- Sticky header with z-index for layering -->
+      <tr>
+        <th class="table-header">#</th>
+        <th class="table-header">Start Date</th>
+        <th class="table-header">End Date</th>
+        <th class="table-header">Food</th>
+        <th class="table-header">Housing</th>
+        <th class="table-header">Transportation</th>
+        <th class="table-header">Entertainment</th>
+        <th class="table-header">Created By</th>
+        <th class="table-header">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let budget of budgets; let i = index" class="table-row"
+          [ngClass]="budget.isExceeded ? 'bg-red-100' : 'bg-green-100'">
+        <td class="table-cell">{{ i + 1 }}</td>
+        <td class="table-cell">{{ budget.budgetStartDate | date }}</td>
+        <td class="table-cell">{{ budget.budgetEndDate | date }}</td>
+        <td class="table-cell">{{ budget.food }}</td>
+        <td class="table-cell">{{ budget.housing }}</td>
+        <td class="table-cell">{{ budget.transportation }}</td>
+        <td class="table-cell">{{ budget.entertainment }}</td>
+        <td class="table-cell">{{ budget.aiGenerated ? 'AI' : 'User' }}</td>
+        <td class="table-cell">
+          <button (click)="deleteBudget(budget.id)" class="delete-button">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+       
   </div>
   

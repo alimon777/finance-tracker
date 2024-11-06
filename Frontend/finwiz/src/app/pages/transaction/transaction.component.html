@@ -144,33 +144,29 @@
 
     <div class="bg-white shadow-md rounded-lg p-4 flex-1 max-w-full h-70 overflow-hidden">
         <!-- <h4 class="font-semibold m-2">Transaction List</h4> -->
-        <div class="max-h-48"> <!-- Adjusted height for scrolling rows -->
-            <table class="min-w-full border-collapse border border-gray-200">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="table-header">Account Number</th>
-                        <th class="table-header">Amount</th>
-                        <th class="table-header">Description</th>
-                        <th class="table-header">Transaction Type</th>
-                        <th class="table-header">Transaction Date</th>
-                    </tr>
-                </thead>
-            </table>
-            <div class="scrollable-container overflow-y-auto max-h-44">
-                <table class="min-w-full border-collapse border border-gray-200">
-                    <tbody>
-                        <tr *ngFor="let transaction of transactions" class="table-row">
-                            <td class="table-cell">{{ transaction.accountNumber }}</td>
-                            <td class="table-cell">{{ transaction.amount | currency }}</td>
-                            <td class="table-cell">{{ transaction.description }}</td>
-                            <td class="table-cell">{{ transaction.transactionType }}</td>
-                            <td class="table-cell">{{ transaction.transactionDate | date }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="max-h-48 overflow-y-auto scrollable-container">
+          <table class="min-w-full border-collapse border border-gray-200">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="table-header">Account Number</th>
+                <th class="table-header">Amount</th>
+                <th class="table-header">Description</th>
+                <th class="table-header">Transaction Type</th>
+                <th class="table-header">Transaction Date</th>
+              </tr>
+            </thead>
+            <tbody class="overflow-y-auto max-h-44">
+              <tr *ngFor="let transaction of transactions" class="table-row">
+                <td class="table-cell">{{ transaction.accountNumber }}</td>
+                <td class="table-cell">{{ transaction.amount | currency }}</td>
+                <td class="table-cell">{{ transaction.description }}</td>
+                <td class="table-cell">{{ transaction.transactionType }}</td>
+                <td class="table-cell">{{ transaction.transactionDate | date }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-    </div>
-    
+      </div>
+      
     
 </div>

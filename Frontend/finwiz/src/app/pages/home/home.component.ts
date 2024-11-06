@@ -10,6 +10,12 @@ import { TransactionService } from 'src/app/service/transaction/transaction.serv
 export class HomeComponent implements OnInit {
   userId:number = 0;
   transactions: Transaction[] = [ ];
+  previousWeekDeposits: number = 150;  // Example for the previous week deposits
+  previousWeekWithdrawals: number = 50; // Example for the previous week withdrawals
+  thisMonthDeposits: number = 400;  // Example for this month's deposits
+  thisMonthWithdrawals: number = 130;  // Example for this month's withdrawals
+  thisYearDeposits: number = 1000;  // Example for this year's deposits
+  thisYearWithdrawals: number = 350;
   constructor(private http: HttpClient, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
