@@ -20,10 +20,16 @@ public class ExpenditureService {
 
         ExpenditureSummaryDTO summary = new ExpenditureSummaryDTO();
 
-        // Prepare data for weekly, monthly, and yearly expenditures
-        Map<String, Double> weeklyExpenditureMap = new HashMap<>();
-        Map<String, Double> monthlyExpenditureMap = new HashMap<>();
-        Map<String, Double> yearlyExpenditureMap = new HashMap<>();
+        Map<String, Double> weeklyDepositMap = new HashMap<>();
+        Map<String, Double> weeklyWithdrawMap = new HashMap<>();
+        Map<String, Double> monthlyDepositMap = new HashMap<>();
+        Map<String, Double> monthlyWithdrawMap = new HashMap<>();
+        Map<String, Double> yearlyDepositMap = new HashMap<>();
+        Map<String, Double> yearlyWithdrawMap = new HashMap<>();
+
+        double weeklyWithdrawTotal = 0.0;
+        double monthlyWithdrawTotal = 0.0;
+        double yearlyWithdrawTotal = 0.0;
 
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -32,38 +38,46 @@ public class ExpenditureService {
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        // Iterate over all transactions and categorize them
         for (Transaction transaction : transactions) {
-            if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
-                calendar.setTime(transaction.getTransactionDate());
-                int transactionYear = calendar.get(Calendar.YEAR);
-                int transactionMonth = calendar.get(Calendar.MONTH);
-                int transactionWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+            calendar.setTime(transaction.getTransactionDate());
+            int transactionYear = calendar.get(Calendar.YEAR);
+            int transactionMonth = calendar.get(Calendar.MONTH);
+            int transactionWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
-                // Weekly Expenditure
-                if (transactionYear == currentYear && transactionWeek == currentWeek) {
-                    String category = transaction.getCategoryType().name();
-                    weeklyExpenditureMap.put(category, weeklyExpenditureMap.getOrDefault(category, 0.0) + transaction.getAmount());
+            String category = transaction.getCategoryType().name();
+            double amount = transaction.getAmount();
+
+            if (transactionYear == currentYear) {
+                if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
+                    yearlyWithdrawMap.put(category, yearlyWithdrawMap.getOrDefault(category, 0.0) + amount);
+                    yearlyWithdrawTotal += amount;
+                } else {
+                    yearlyDepositMap.put(category, yearlyDepositMap.getOrDefault(category, 0.0) + amount);
                 }
 
-                // Monthly Expenditure
-                if (transactionYear == currentYear && transactionMonth == currentMonth) {
-                    String category = transaction.getCategoryType().name();
-                    monthlyExpenditureMap.put(category, monthlyExpenditureMap.getOrDefault(category, 0.0) + transaction.getAmount());
-                }
+                if (transactionMonth == currentMonth) {
+                    if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
+                        monthlyWithdrawMap.put(category, monthlyWithdrawMap.getOrDefault(category, 0.0) + amount);
+                        monthlyWithdrawTotal += amount;
+                    } else {
+                        monthlyDepositMap.put(category, monthlyDepositMap.getOrDefault(category, 0.0) + amount);
+                    }
 
-                // Yearly Expenditure
-                if (transactionYear == currentYear) {
-                    String category = transaction.getCategoryType().name();
-                    yearlyExpenditureMap.put(category, yearlyExpenditureMap.getOrDefault(category, 0.0) + transaction.getAmount());
+                    if (transactionWeek == currentWeek) {
+                        if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
+                            weeklyWithdrawMap.put(category, weeklyWithdrawMap.getOrDefault(category, 0.0) + amount);
+                            weeklyWithdrawTotal += amount;
+                        } else {
+                            weeklyDepositMap.put(category, weeklyDepositMap.getOrDefault(category, 0.0) + amount);
+                        }
+                    }
                 }
             }
         }
 
-        // Set the values in the DTO
-        summary.setWeeklyExpenditure(new ExpenditureSummaryDTO.ExpenditureDetail(weeklyExpenditureMap));
-        summary.setMonthlyExpenditure(new ExpenditureSummaryDTO.ExpenditureDetail(monthlyExpenditureMap));
-        summary.setYearlyExpenditure(new ExpenditureSummaryDTO.ExpenditureDetail(yearlyExpenditureMap));
+        summary.setWeekly(new ExpenditureSummaryDTO.ExpenditureDetail(weeklyDepositMap, weeklyWithdrawMap, weeklyWithdrawTotal));
+        summary.setMonthly(new ExpenditureSummaryDTO.ExpenditureDetail(monthlyDepositMap, monthlyWithdrawMap, monthlyWithdrawTotal));
+        summary.setYearly(new ExpenditureSummaryDTO.ExpenditureDetail(yearlyDepositMap, yearlyWithdrawMap, yearlyWithdrawTotal));
 
         return summary;
     }

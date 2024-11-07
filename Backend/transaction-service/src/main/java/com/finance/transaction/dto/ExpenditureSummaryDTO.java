@@ -5,75 +5,75 @@ import java.util.Map;
 
 public class ExpenditureSummaryDTO {
 
-    // Weekly expenditure details
-    private ExpenditureDetail weeklyExpenditure;
+    private ExpenditureDetail weekly;
+    private ExpenditureDetail monthly;
+    private ExpenditureDetail yearly;
 
-    // Monthly expenditure details
-    private ExpenditureDetail monthlyExpenditure;
-
-    // Yearly expenditure details
-    private ExpenditureDetail yearlyExpenditure;
-
-    // Constructor, getters, and setters
-
-    public ExpenditureSummaryDTO() {
-        // Default constructor
+    public ExpenditureDetail getWeekly() {
+        return weekly;
     }
 
-    public ExpenditureSummaryDTO(ExpenditureDetail weeklyExpenditure, ExpenditureDetail monthlyExpenditure, ExpenditureDetail yearlyExpenditure) {
-        this.weeklyExpenditure = weeklyExpenditure;
-        this.monthlyExpenditure = monthlyExpenditure;
-        this.yearlyExpenditure = yearlyExpenditure;
+    public void setWeekly(ExpenditureDetail weekly) {
+        this.weekly = weekly;
     }
 
-    public ExpenditureDetail getWeeklyExpenditure() {
-        return weeklyExpenditure;
+    public ExpenditureDetail getMonthly() {
+        return monthly;
     }
 
-    public void setWeeklyExpenditure(ExpenditureDetail weeklyExpenditure) {
-        this.weeklyExpenditure = weeklyExpenditure;
+    public void setMonthly(ExpenditureDetail monthly){
+        this.monthly = monthly;
     }
 
-    public ExpenditureDetail getMonthlyExpenditure() {
-        return monthlyExpenditure;
+    public ExpenditureDetail getYearly() {
+        return yearly;
     }
 
-    public void setMonthlyExpenditure(ExpenditureDetail monthlyExpenditure) {
-        this.monthlyExpenditure = monthlyExpenditure;
+    public void setYearly(ExpenditureDetail yearly) {
+        this.yearly = yearly;
     }
 
-    public ExpenditureDetail getYearlyExpenditure() {
-        return yearlyExpenditure;
-    }
-
-    public void setYearlyExpenditure(ExpenditureDetail yearlyExpenditure) {
-        this.yearlyExpenditure = yearlyExpenditure;
-    }
-
-    // Nested static class to hold category-wise expenditure details
+    // Nested static class with separate maps for DEPOSIT and WITHDRAW, and a withdraw total
     public static class ExpenditureDetail {
 
-        // A map to hold category-wise expenditure (e.g., Groceries, Rent, etc.)
-        private Map<String, Double> categoryWiseExpenditure;
+        private Map<String, Double> deposit;
+        private Map<String, Double> withdraw;
+        private double withdrawTotal;  // Total of all withdrawals for this period
 
-        // Default constructor
         public ExpenditureDetail() {
-            this.categoryWiseExpenditure = new HashMap<>();
+            this.deposit= new HashMap<>();
+            this.withdraw = new HashMap<>();
+            this.withdrawTotal = 0.0;
         }
 
-        // Constructor with categoryWiseExpenditure
-        public ExpenditureDetail(Map<String, Double> categoryWiseExpenditure) {
-            this.categoryWiseExpenditure = categoryWiseExpenditure;
+        public ExpenditureDetail(Map<String, Double> deposit, Map<String, Double> withdraw, double withdrawTotal) {
+            this.deposit = deposit;
+            this.withdraw = withdraw;
+            this.withdrawTotal = withdrawTotal;
         }
 
-        // Getter for categoryWiseExpenditure
-        public Map<String, Double> getCategoryWiseExpenditure() {
-            return categoryWiseExpenditure;
+        public Map<String, Double> getDeposit() {
+            return deposit;
         }
 
-        // Setter for categoryWiseExpenditure
-        public void setCategoryWiseExpenditure(Map<String, Double> categoryWiseExpenditure) {
-            this.categoryWiseExpenditure = categoryWiseExpenditure;
+        public void setDeposit(Map<String, Double> deposit) {
+            this.deposit = deposit;
+        }
+
+        public Map<String, Double> getWithdraw() {
+            return withdraw;
+        }
+
+        public void setWithdraw(Map<String, Double> withdraw) {
+            this.withdraw = withdraw;
+        }
+
+        public double getWithdrawTotal() {
+            return withdrawTotal;
+        }
+
+        public void setWithdrawTotal(double withdrawTotal) {
+            this.withdrawTotal = withdrawTotal;
         }
     }
 }
