@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { Expenditure } from 'src/app/models/expenditure';
 
 Chart.register(...registerables);
 
@@ -11,18 +12,29 @@ Chart.register(...registerables);
 export class PieChartComponent implements AfterViewInit, OnChanges {
   @ViewChild('pieChart') pieChartRef!: ElementRef;
 
-  @Input() transactions: any[] = []; // Expecting an array of transactions as input
+  @Input() pieChartData: Expenditure = {
+    deposit: {
+      INCOME: 0.0
+    },
+    withdraw: {
+      ENTERTAINMENT: 0.0,
+      TRANSPORTATION: 0.0,
+      HOUSING: 0.0,
+      FOOD: 0.0
+    },
+    withdrawTotal: 0.0
+  };
 
   pieChart!: Chart<'pie', number[], string>;
 
   ngAfterViewInit(): void {
-    if (this.transactions.length > 0) {
+    if (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal>0) {
       this.createPieChart();
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transactions'] && this.transactions.length > 0) {
+    if (changes['pieChartData'] && (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal>0)) {
       this.createPieChart(); // Re-create the pie chart when transactions input changes
     }
   }
@@ -37,10 +49,12 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
     const categories = ['INCOME', 'FOOD', 'HOUSING', 'ENTERTAINMENT', 'TRANSPORTATION'];
   
     // Count the transactions for each category
-    const categoryCounts = categories.map(category => 
-      this.transactions.filter(t => t.categoryType === category).length
-    );
-  
+    let categoryCounts: number[] = [0, 0, 0, 0, 0];
+    categoryCounts[0] = this.pieChartData.deposit.INCOME;
+    categoryCounts[1] = this.pieChartData.withdraw.FOOD;
+    categoryCounts[2] = this.pieChartData.withdraw.HOUSING;
+    categoryCounts[3] = this.pieChartData.withdraw.ENTERTAINMENT;
+    categoryCounts[4] = this.pieChartData.withdraw.TRANSPORTATION;
     // Prepare the chart data
     const pieChartData: ChartConfiguration<'pie', number[], string>['data'] = {
       labels: categories,

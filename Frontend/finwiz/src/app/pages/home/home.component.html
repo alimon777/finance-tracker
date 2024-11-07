@@ -5,27 +5,46 @@
     <!-- Stats Container: Transaction Totals -->
     <div class="stats-container flex-1 p-4 bg-white shadow-lg rounded-lg">
       <h3 class="text-xl font-semibold mb-4">Transaction Totals</h3>
-      <div class="stat-item mb-2">
+    
+      <!-- Previous Week Option -->
+      <div
+        class="stat-item mb-2 cursor-pointer"
+        [class.bg-blue-100]="selectedExpenditure === 'weekly'"
+        (click)="selectExpenditure('weekly')"
+      >
         <h4 class="text-lg font-medium">Previous Week</h4>
-        <p class="text-sm">Deposits: {{ previousWeekDeposits }}</p>
-        <p class="text-sm">Withdrawals: {{ previousWeekWithdrawals }}</p>
+        <p class="text-sm">Deposits: {{ expenditureSummary?.weekly?.deposit?.INCOME || 0 }}</p>
+        <p class="text-sm">Withdrawals: {{ expenditureSummary?.weekly?.withdrawTotal || 0 }}</p>
       </div>
-      <div class="stat-item mb-2">
+    
+      <!-- This Month Option -->
+      <div
+        class="stat-item mb-2 cursor-pointer"
+        [class.bg-blue-100]="selectedExpenditure === 'monthly'"
+        (click)="selectExpenditure('monthly')"
+      >
         <h4 class="text-lg font-medium">This Month</h4>
-        <p class="text-sm">Deposits: {{ thisMonthDeposits }}</p>
-        <p class="text-sm">Withdrawals: {{ thisMonthWithdrawals }}</p>
+        <p class="text-sm">Deposits: {{ expenditureSummary?.monthly?.deposit?.INCOME || 0 }}</p>
+        <p class="text-sm">Withdrawals: {{ expenditureSummary?.monthly?.withdrawTotal || 0 }}</p>
       </div>
-      <div class="stat-item mb-2">
+    
+      <!-- This Year Option -->
+      <div
+        class="stat-item mb-2 cursor-pointer"
+        [class.bg-blue-100]="selectedExpenditure === 'yearly'"
+        (click)="selectExpenditure('yearly')"
+      >
         <h4 class="text-lg font-medium">This Year</h4>
-        <p class="text-sm">Deposits: {{ thisYearDeposits }}</p>
-        <p class="text-sm">Withdrawals: {{ thisYearWithdrawals }}</p>
+        <p class="text-sm">Deposits: {{ expenditureSummary?.yearly?.deposit?.INCOME || 0 }}</p>
+        <p class="text-sm">Withdrawals: {{ expenditureSummary?.yearly?.withdrawTotal || 0 }}</p>
       </div>
     </div>
+    
 
     <!-- Charts Container: Line and Pie Charts -->
     <div class="charts-container flex-1 p-4 min-w-0">
       <app-line-chart [transactions]="transactions"></app-line-chart>
-      <app-pie-chart [transactions]="transactions"></app-pie-chart>
+      <app-pie-chart [pieChartData]="pieChartData"></app-pie-chart>
     </div>
 
     <!-- Financial News Component -->
