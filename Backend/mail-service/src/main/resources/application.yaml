@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: mail-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: finwiz07@gmail.com
+    password: wosi whnr tmug txln
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            
+server:
+  port: 8005
