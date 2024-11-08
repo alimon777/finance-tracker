@@ -8,7 +8,7 @@ import { CustomResponse } from 'src/app/models/custom-response';// Define Custom
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = 'http://localhost:8000/test/accounts'; // Base URL of Spring Boot server
+  private apiUrl = 'http://localhost:8002/api/transactions/accounts'; // Base URL of Spring Boot server
 
   constructor(private http: HttpClient) {}
 
@@ -19,7 +19,7 @@ export class AccountService {
 
   // Get all accounts for a specific user by userId
   getAllAccounts(userId: number): Observable<CustomResponse<Account[]>> {
-    return this.http.get<CustomResponse<Account[]>>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<CustomResponse<Account[]>>(`${this.apiUrl}/${userId}`);
   }
 
   // Update an account by accountId

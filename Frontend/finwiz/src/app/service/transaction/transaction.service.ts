@@ -7,7 +7,7 @@ import { Transaction } from 'src/app/models/transaction'; // Import your Transac
   providedIn: 'root',
 })
 export class TransactionService {
-  private baseUrl = 'http://localhost:8000/test/transactions'; // Adjust to your API base URL
+  private baseUrl = 'http://localhost:8002/api/transactions'; // Adjust to your API base URL
 
   constructor(private http: HttpClient) {}
 

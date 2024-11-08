@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/goals")
+@RequestMapping("/api/goals")
 @CrossOrigin(origins = "http://localhost:4200")
 public class GoalController {
 
@@ -27,11 +27,11 @@ public class GoalController {
         return ResponseEntity.ok(goalService.createGoal(goal));
     }
 
-    @GetMapping("/notifications")
-    public ResponseEntity<List<String>> getGoalNotifications() {
-        List<String> notifications = goalService.getGoalNotifications();
-        return ResponseEntity.ok(notifications);
-    }
+//    @GetMapping("/notifications")
+//    public ResponseEntity<List<String>> getGoalNotifications() {
+//        List<String> notifications = goalService.getGoalNotifications();
+//        return ResponseEntity.ok(notifications);
+//    }
 
 //    @GetMapping("/all")
 //    public ResponseEntity<List<Goal>> getAllGoals() {

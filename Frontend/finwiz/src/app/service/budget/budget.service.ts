@@ -7,7 +7,7 @@ import { Budget } from 'src/app/models/budget';// Create a model for Budget
   providedIn: 'root'
 })
 export class BudgetService {
-  private apiUrl = 'http://localhost:8099/api/budgets'; // Adjust the URL based on your backend
+  private apiUrl = 'http://localhost:8003/api/budgets'; // Adjust the URL based on your backend
 
   constructor(private http: HttpClient) {}
 

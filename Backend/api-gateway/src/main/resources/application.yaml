@@ -1,18 +1,29 @@
 spring:
   application:
-    name: spring-cloud-gateway-app
-
+    name: api-gateway
   cloud:
     gateway:
       routes:
-#        - id: helloservice-route
-#          uri: http://localhost:8071
-#          predicates:
-#            - Path=/rest/service/**
-#        - id: factorialservice-route
-#          uri: http://localhost:8073
-#          predicates:
-#            - Path=/rest/factservice/**
+       - id: user-service
+         uri: http://localhost:8001
+         predicates:
+            - Path=/auth/**  
+       - id: transaction-service
+         uri: http://localhost:8002
+         predicates:
+            - Path=/api/transactions/**
+       - id: budget-service
+         uri: http://localhost:8003
+         predicates:
+            - Path=/api/budgets/**
+       - id: goal-service
+         uri: http://localhost:8004
+         predicates:
+            - Path=/api/goals/**
+       - id: mail-service
+         uri: http://localhost:8005
+         predicates:
+            - Path=/api/mails/**
 
 server:
   port: 8000

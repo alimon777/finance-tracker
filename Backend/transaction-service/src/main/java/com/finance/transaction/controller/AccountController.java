@@ -13,13 +13,13 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/test/accounts")
+@RequestMapping("/api/transactions/accounts")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("{userId}")
     public ResponseEntity<CustomResponse<List<Account>>> getAccountsByUserId(@PathVariable Long userId) {
         CustomResponse<List<Account>> response = accountService.getAccountsByUserId(userId);
         if (response.getData() == null) {

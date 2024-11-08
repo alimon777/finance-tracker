@@ -32,7 +32,7 @@ public class FinanceConfig {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/register", "/login").permitAll()
+						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())

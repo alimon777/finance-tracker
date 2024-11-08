@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/test/transactions")
+@RequestMapping("/api/transactions")
 public class TransactionController {
 
     @Autowired
@@ -31,6 +31,7 @@ public class TransactionController {
     public ResponseEntity<CustomResponse<Transaction>> addTransaction(@RequestBody Transaction transaction) {
         return transactionService.addTransaction(transaction);
     }
+    
     @PostMapping(value="multiple",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addTransactions(@RequestBody List<Transaction> transactions) {
         transactionService.addTransactions(transactions);
