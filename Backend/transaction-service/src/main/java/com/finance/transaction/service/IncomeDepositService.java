@@ -11,9 +11,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,15 +30,19 @@ public class IncomeDepositService {
     }
 
     public List<IncomeDepositDTO> getWeeklyDepositsAndWithdrawals(Long userId) {
-        LocalDate today = LocalDate.now();
-        LocalDate weekStart = today.minusDays(6); // Last 7 days, including today
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
-                userId, Date.from(weekStart.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant())
-        );
+        List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
 
         Map<LocalDate, List<Transaction>> groupedByDate = transactions.stream()
+                .filter(transaction -> {
+                    calendar.setTime(transaction.getTransactionDate());
+                    int transactionYear = calendar.get(Calendar.YEAR);
+                    int transactionWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+                    return transactionYear == currentYear && transactionWeek == currentWeek;
+                })
                 .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate())));
 
         return groupedByDate.entrySet().stream()
