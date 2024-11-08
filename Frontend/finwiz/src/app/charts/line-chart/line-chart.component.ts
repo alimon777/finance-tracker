@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { IncomeDepositDTO } from 'src/app/models/income-deposit';
 
 Chart.register(...registerables);
 
@@ -11,7 +12,7 @@ Chart.register(...registerables);
 export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChartRef!: ElementRef;
 
-  @Input() transactions: any[] = []; // Expecting an array of transactions as input
+  @Input() lineChartData: IncomeDepositDTO[] = []; // Expecting an array of lineChartData as input
 
   lineChart!: Chart<'line', number[], string>;
 
@@ -20,8 +21,8 @@ export class LineChartComponent implements AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['transactions'] && this.transactions.length > 0) {
-      this.createLineChart(); // Recreate chart if transactions input changes
+    if (changes['lineChartData'] && this.lineChartData.length > 0) {
+      this.createLineChart(); // Recreate chart if lineChartData input changes
     }
   }
 
@@ -32,32 +33,24 @@ export class LineChartComponent implements AfterViewInit {
     }
   
     // Prepare the data
-    const labels = this.transactions.map(t => {
-      const date = new Date(t.transactionDate);
-      return date.toLocaleDateString();
-    });
+    const labels = this.lineChartData.map(t => t.periodLabel);
   
-    const depositAmounts = this.transactions
-      .filter(t => t.transactionType === 'DEPOSIT')
-      .map(t => t.amount);
+    const depositAmounts = this.lineChartData.map(t => t.totalDepositsAmount);
   
-    const withdrawalAmounts = this.transactions
-      .filter(t => t.transactionType === 'WITHDRAW')
-      .map(t => t.amount);
-  
+    const withdrawAmounts = this.lineChartData.map(t => t.totalWithdrawalsAmount);
     const lineChartData: ChartConfiguration<'line', number[], string>['data'] = {
       labels: labels,
       datasets: [
         {
           label: 'Deposits',
-          data: this.transactions.map(t => (t.transactionType === 'DEPOSIT' ? t.amount : 0)),
+          data: depositAmounts,
           borderColor: 'blue',
           fill: false,
           tension: 0.1,
         },
         {
           label: 'Withdrawals',
-          data: this.transactions.map(t => (t.transactionType === 'WITHDRAW' ? t.amount : 0)),
+          data: withdrawAmounts,
           borderColor: 'red',
           fill: false,
           tension: 0.1,

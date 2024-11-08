@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
@@ -21,17 +22,14 @@ public class IncomeDepositService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    
-
     public LocalDate convertToLocalDate(Date date) {
         if (date == null) {
             return null;
         }
         return new java.util.Date(date.getTime()).toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
+                .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
-
 
     public List<IncomeDepositDTO> getWeeklyDepositsAndWithdrawals(Long userId) {
         LocalDate today = LocalDate.now();
@@ -46,6 +44,7 @@ public class IncomeDepositService {
                 .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate())));
 
         return groupedByDate.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey()) // Sort by date
                 .map(entry -> {
                     LocalDate date = entry.getKey();
                     List<Transaction> dailyTransactions = entry.getValue();
@@ -78,6 +77,7 @@ public class IncomeDepositService {
                 .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate())));
 
         return groupedByDate.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey()) // Sort by date
                 .map(entry -> {
                     LocalDate date = entry.getKey();
                     List<Transaction> dailyTransactions = entry.getValue();
@@ -110,6 +110,8 @@ public class IncomeDepositService {
                 .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate()).getMonth().toString()));
 
         return groupedByMonth.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey((month1, month2) ->
+                        Month.valueOf(month1).compareTo(Month.valueOf(month2)))) // Sort by month order
                 .map(entry -> {
                     String month = entry.getKey();
                     List<Transaction> monthlyTransactions = entry.getValue();

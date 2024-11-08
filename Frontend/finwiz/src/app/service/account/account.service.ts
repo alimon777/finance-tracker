@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account } from 'src/app/models/account'; // Adjust the import path as needed
-import { CustomResponse } from 'src/app/models/custom-rseponse';// Define CustomResponse if needed
+import { CustomResponse } from 'src/app/models/custom-response';// Define CustomResponse if needed
 
 @Injectable({
   providedIn: 'root'

@@ -4,6 +4,7 @@ import { Transaction } from 'src/app/models/transaction';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
 import { ExpenditureService } from 'src/app/service/expenditure/expenditure.service';
 import { Expenditure } from 'src/app/models/expenditure';
+import { IncomeDepositDTO } from 'src/app/models/income-deposit';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { Expenditure } from 'src/app/models/expenditure';
 export class HomeComponent implements OnInit {
   userId: number = 0;
   transactions: Transaction[] = [];
-  selectedExpenditure: string = 'weekly'; // Default option set here
+  periodLabel: string = 'weekly'; // Default option set here
   expenditureSummary: any;
   pieChartData: Expenditure = {
     deposit: {
@@ -27,6 +28,8 @@ export class HomeComponent implements OnInit {
     withdrawTotal: 0.0
   };
 
+  lineChartData: IncomeDepositDTO[] = [];
+
   constructor(
     private http: HttpClient,
     private transactionService: TransactionService,
@@ -35,14 +38,31 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserId();
-    this.loadTransactions();
     this.fetchExpenditureSummary();
+    this.fetchIncomeDepositSummary();
   }
 
   selectExpenditure(option: string) {
-    this.selectedExpenditure = option;
+    this.periodLabel = option;
     this.fetchExpenditureSummary();
+    this.fetchIncomeDepositSummary();
     this.pieChartData = this.expenditureSummary?.[option]; // Set the pie chart data
+  }
+
+  private fetchIncomeDepositSummary(): void {
+    const userId = Number(localStorage.getItem('userId')); // Retrieve userId from local storage
+
+    this.expenditureService.getIncomeDepositSummary(userId,this.periodLabel).subscribe(
+      (data) => {
+        // After fetching the data, set the default pie chart data
+        if (this.periodLabel) {
+          this.lineChartData = data;
+        }
+      },
+      (error) => {
+        console.error('Error fetching income deposit summary:', error);
+      }
+    );
   }
 
   private fetchExpenditureSummary(): void {
@@ -52,8 +72,8 @@ export class HomeComponent implements OnInit {
       (data) => {
         this.expenditureSummary = data;
         // After fetching the data, set the default pie chart data
-        if (this.selectedExpenditure) {
-          this.pieChartData = this.expenditureSummary?.[this.selectedExpenditure];
+        if (this.periodLabel) {
+          this.pieChartData = this.expenditureSummary?.[this.periodLabel];
         }
       },
       (error) => {
@@ -65,26 +85,5 @@ export class HomeComponent implements OnInit {
   loadUserId(): void {
     const storedUserId = localStorage.getItem('userId');
     this.userId = storedUserId ? +storedUserId : 0;
-  }
-
-  loadTransactions(): void {
-    if (this.userId) {
-      this.transactionService.getTransactions(this.userId).subscribe({
-        next: (response: Transaction[]) => {
-          this.transactions = response.sort((a, b) => {
-            const dateA = new Date(a.transactionDate); // Convert string to Date object
-            const dateB = new Date(b.transactionDate); // Convert string to Date object
-            return dateA.getTime() - dateB.getTime(); // Compare timestamps
-          });
-
-          console.log(this.transactions); // Ensure the transactions are sorted correctly
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error loading transactions:', error.message);
-        },
-      });
-    } else {
-      console.warn('User ID not found in local storage.');
-    }
   }
 }

@@ -9,7 +9,7 @@
       <!-- Previous Week Option -->
       <div
         class="stat-item mb-2 cursor-pointer"
-        [class.bg-blue-100]="selectedExpenditure === 'weekly'"
+        [class.bg-blue-100]="periodLabel === 'weekly'"
         (click)="selectExpenditure('weekly')"
       >
         <h4 class="text-lg font-medium">Previous Week</h4>
@@ -20,7 +20,7 @@
       <!-- This Month Option -->
       <div
         class="stat-item mb-2 cursor-pointer"
-        [class.bg-blue-100]="selectedExpenditure === 'monthly'"
+        [class.bg-blue-100]="periodLabel === 'monthly'"
         (click)="selectExpenditure('monthly')"
       >
         <h4 class="text-lg font-medium">This Month</h4>
@@ -31,7 +31,7 @@
       <!-- This Year Option -->
       <div
         class="stat-item mb-2 cursor-pointer"
-        [class.bg-blue-100]="selectedExpenditure === 'yearly'"
+        [class.bg-blue-100]="periodLabel === 'yearly'"
         (click)="selectExpenditure('yearly')"
       >
         <h4 class="text-lg font-medium">This Year</h4>
@@ -43,7 +43,7 @@
 
     <!-- Charts Container: Line and Pie Charts -->
     <div class="charts-container flex-1 p-4 min-w-0">
-      <app-line-chart [transactions]="transactions"></app-line-chart>
+      <app-line-chart [lineChartData]="lineChartData"></app-line-chart>
       <app-pie-chart [pieChartData]="pieChartData"></app-pie-chart>
     </div>
 

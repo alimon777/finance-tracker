@@ -44,7 +44,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
-    @GetMapping("/expenditure-summary/{userId}")
+    @GetMapping("/summary/{userId}")
     public ExpenditureSummaryDTO getExpenditureSummary(@PathVariable Long userId) {
         return expenditureService.getExpenditureSummary(userId);
     }
@@ -52,18 +52,18 @@ public class TransactionController {
     @Autowired
     private IncomeDepositService incomeDepositService;
 
-    @GetMapping("/weekly-summary")
-    public List<IncomeDepositDTO> getWeeklySummary(@RequestParam Long userId) {
+    @GetMapping("/summary/weekly/{userId}")
+    public List<IncomeDepositDTO> getWeeklySummary(@PathVariable Long userId) {
         return incomeDepositService.getWeeklyDepositsAndWithdrawals(userId);
     }
 
-    @GetMapping("/monthly-summary")
-    public List<IncomeDepositDTO> getMonthlySummary(@RequestParam Long userId) {
+    @GetMapping("/summary/monthly/{userId}")
+    public List<IncomeDepositDTO> getMonthlySummary(@PathVariable Long userId) {
         return incomeDepositService.getMonthlyDepositsAndWithdrawals(userId);
     }
 
-    @GetMapping("/yearly-summary")
-    public List<IncomeDepositDTO> getYearlySummary(@RequestParam Long userId) {
+    @GetMapping("/summary/yearly/{userId}")
+    public List<IncomeDepositDTO> getYearlySummary(@PathVariable Long userId) {
         return incomeDepositService.getYearlyDepositsAndWithdrawals(userId);
     }
 
