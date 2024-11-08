@@ -39,7 +39,6 @@ export class AiService {
     }
   }
   
-
   // Helper function to create a detailed prompt based on transaction data
   createBudgetPrompt(transactions: any[]): string {
     let income = 0;
@@ -95,23 +94,26 @@ export class AiService {
       - Ensure that the sum of all budget categories (Food, Entertainment, Housing, Transportation) does not exceed the total expenses or income.
   
       Format the response like this:
-      <strong>Suggested Budget Breakdown</strong>
+      
   
-      <ul>
-        <li><strong>Total Income:</strong> $${income.toFixed(2)}</li>
-        <li><strong>Total Expenses:</strong> $${expenses.toFixed(2)}</li>
-        <br />
-        <li><strong>Suggested Budget:</strong>
-          <ul>
-            <li><em>Budget for Food:</em> $[amount]</li>
-            <li><em>Budget for Entertainment:</em> $[amount]</li>
-            <li><em>Budget for Housing:</em> $[amount]</li>
-            <li><em>Budget for Transportation:</em> $[amount]</li>
-          </ul>
-        </li>
+        <div class="flex justify-center items-center space-x-4">
+          <p>
+            Total Income: <strong class="font-bold">$${income.toFixed(2)}</strong>
+          </p>
+          <p>
+            Total Expenses: <strong class="font-bold">$${expenses.toFixed(2)}</strong>
+          </p>
+        </div>
+      <br />
+      <ul class=" grid-cols-2 gap-4 flex justify-center items-center space-x-4">
+        <li><em>Budget for Food:</em> $[amount]</li>
+        <li><em>Budget for Entertainment:</em> $[amount]</li>
+        <li><em>Budget for Housing:</em> $[amount]</li>
+        <li><em>Budget for Transportation:</em> $[amount]</li>
       </ul>
-      <h4><strong>Explanation</strong></h4>
-      [Brief explanation of how the suggested budget amounts were calculated based on the current spending.]
+        <br />
+
+      [Brief one small paragraph explanation of how the suggested budget amounts were calculated based on the current spending.]
     `;
   }
 
@@ -140,7 +142,7 @@ export class AiService {
     const budgetBreakdown = response || '';
   
     // Regular expression to match each category and its amount
-    const categoryPattern = /<em>Budget for (\w+):<\/em> \$(\d+(\.\d{1,2})?)/g;
+    const categoryPattern = /Budget for (\w+):<\/em> \$(\d+(\.\d{1,2})?)/g;
     let match;
   
     // Match each category and update the suggestedBudget object

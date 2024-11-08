@@ -6,11 +6,37 @@ import { AiService } from 'src/app/service/ai/ai.service';
 import { BudgetService } from 'src/app/service/budget/budget.service';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
 import { Router } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-ai',
   templateUrl: './ai.component.html',
-  styleUrls: ['./ai.component.css']
+  styleUrls: ['./ai.component.css'],
+  animations: [
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateY(100%)', opacity: 0 }),  // Content starts slightly down and invisible
+        animate('0.5ms', style({ transform: 'translateY(0)', opacity: 1 }))  // Content slides up
+      ]),
+      transition(':leave', [
+        animate('0.5ms', style({ transform: 'translateY(100%)', opacity: 0 }))  // Fade out while sliding down
+      ])
+    ]),
+
+    // Slide up animation for the background
+    trigger('slideUp', [
+      transition(':enter', [
+        style({ backgroundPosition: 'center 20%' }),  // Start with background position 20% down
+        animate('0.8s ease-out', style({ backgroundPosition: 'center 50%' }))  // Slide up to its final position
+      ])
+    ]),
+    trigger('moveUp', [
+      transition(':enter', [
+        style({ transform: 'translateY(100%)' }),  // Start with content hidden below
+        animate('750ms ease-out', style({ transform: 'translateY(0)' }))  // Slide up to position
+      ])
+    ])
+  ]
 })
 export class AiComponent implements OnInit {
   constructor(
@@ -64,6 +90,22 @@ export class AiComponent implements OnInit {
       this.budgetSuggestion = this.formatResponse(this.suggestion);
     } catch (error) {
       this.errorMessage = 'An error occurred while generating the budget suggestion.';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async onRegenerateBudgetSuggestion(): Promise<void> {
+    this.loading = true;
+    this.errorMessage = '';
+    
+    try {
+      const regeneratedSuggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
+      this.budgetSuggestion = regeneratedSuggestion;
+      // If you parse the suggestion into a Budget object, you could do that here
+       this.aiBudget = this.suggestionService.parseAiGeneratedBudgetResponse(regeneratedSuggestion, this.userId);
+    } catch (error) {
+      this.errorMessage = 'An error occurred while regenerating the budget suggestion.';
     } finally {
       this.loading = false;
     }

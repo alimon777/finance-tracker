@@ -33,3 +33,19 @@
     background-color: #555;
   }
   
+
+  /* You can add global styles to this file, and also import other style files */
+
+@layer utilities {
+    .bg-about-img {
+      background-image: url('/assets/about-img.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .bg-stars-img {
+        background-image: url('assets/stars.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+  }
+  
