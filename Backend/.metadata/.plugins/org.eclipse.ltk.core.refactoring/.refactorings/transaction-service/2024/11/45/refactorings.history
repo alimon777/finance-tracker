@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;WebConfig.java&apos; to &apos;budget-service/src/main/java/com.finance.budget.config&apos;&#x0D;&#x0A;- Original project: &apos;transaction-service&apos;&#x0D;&#x0A;- Destination element: &apos;budget-service/src/main/java/com.finance.budget.config&apos;&#x0D;&#x0A;- Original element: &apos;com.finance.transaction.config.WebConfig.java&apos;" description="Copy compilation unit" destination="=budget-service/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.finance.budget.config" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.finance.transaction.config{WebConfig.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1731125977165" units="1" version="1.0"/>
-</session>
