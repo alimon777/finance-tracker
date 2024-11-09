@@ -57,6 +57,7 @@ export class AiComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserId();
     this.loadTransactions();
+    this.loadBudgetSuggestion();  // Load previously stored budget suggestion
   }
 
   loadUserId(): void {
@@ -79,6 +80,14 @@ export class AiComponent implements OnInit {
     }
   }
 
+  // Load saved budget suggestion from localStorage
+  loadBudgetSuggestion(): void {
+    const savedSuggestion = localStorage.getItem('budgetSuggestion');
+    if (savedSuggestion) {
+      this.budgetSuggestion = savedSuggestion;
+    }
+  }
+
   async onGetBudgetSuggestion(): Promise<void> {
     this.loading = true;
     this.errorMessage = '';
@@ -87,7 +96,10 @@ export class AiComponent implements OnInit {
     try {
       await this.loadTransactions();
       this.suggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
-      this.budgetSuggestion = this.formatResponse(this.suggestion);
+      this.budgetSuggestion = this.suggestion;
+      
+      // Save the new budget suggestion to localStorage
+      localStorage.setItem('budgetSuggestion', this.budgetSuggestion);
     } catch (error) {
       this.errorMessage = 'An error occurred while generating the budget suggestion.';
     } finally {
@@ -102,8 +114,12 @@ export class AiComponent implements OnInit {
     try {
       const regeneratedSuggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
       this.budgetSuggestion = regeneratedSuggestion;
-      // If you parse the suggestion into a Budget object, you could do that here
-       this.aiBudget = this.suggestionService.parseAiGeneratedBudgetResponse(regeneratedSuggestion, this.userId);
+      
+      // Save the regenerated suggestion to localStorage
+      localStorage.setItem('budgetSuggestion', this.budgetSuggestion);
+      
+      // Parse it into a Budget object if needed
+      this.aiBudget = this.suggestionService.parseAiGeneratedBudgetResponse(this.budgetSuggestion, this.userId);
     } catch (error) {
       this.errorMessage = 'An error occurred while regenerating the budget suggestion.';
     } finally {
@@ -116,6 +132,9 @@ export class AiComponent implements OnInit {
     console.log('Budget suggestion added:', this.aiBudget);
   
     this.budgetService.createBudget(this.aiBudget).subscribe(() => {
+      // Remove the suggestion from localStorage after adding it to the budget
+      //localStorage.removeItem('budgetSuggestion');
+
       const confirmMessage = 'The budget has been successfully added! Do you want to go to the Budget page?';
       if (window.confirm(confirmMessage)) {
         this.router.navigate(['/budget']);
@@ -134,5 +153,3 @@ export class AiComponent implements OnInit {
     return response;
   }
 }
-
-

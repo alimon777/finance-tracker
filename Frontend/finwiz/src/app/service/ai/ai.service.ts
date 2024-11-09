@@ -97,20 +97,16 @@ export class AiService {
       
   
         <div class="flex justify-center items-center space-x-4">
-          <p>
-            Total Income: <strong class="font-bold">$${income.toFixed(2)}</strong>
-          </p>
-          <p>
-            Total Expenses: <strong class="font-bold">$${expenses.toFixed(2)}</strong>
-          </p>
+        <p>Total Income: <strong class="font-bold">$${income.toFixed(2)}</strong></p>
+        <p>Total Expenses: <strong class="font-bold">$${expenses.toFixed(2)}</strong></p>
         </div>
-      <br />
-      <ul class=" grid-cols-2 gap-4 flex justify-center items-center space-x-4">
+        <br />
+        <ul class=" grid-cols-2 gap-4 flex justify-center items-center space-x-4">
         <li><em>Budget for Food:</em> $[amount]</li>
         <li><em>Budget for Entertainment:</em> $[amount]</li>
         <li><em>Budget for Housing:</em> $[amount]</li>
         <li><em>Budget for Transportation:</em> $[amount]</li>
-      </ul>
+        </ul>
         <br />
 
       [Brief one small paragraph explanation of how the suggested budget amounts were calculated based on the current spending.]
