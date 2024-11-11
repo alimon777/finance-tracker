@@ -1,20 +1,30 @@
-package com.finance.transaction.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/test/**")  // Adjust this to match your API
-                .allowedOrigins("http://localhost:4200") // Allow your frontend origin
-                .allowedMethods("GET", "POST","DELETE","PUT", "OPTIONS") // Allow these methods
-                .allowedHeaders("Content-Type","Authorization") // Allow the Authorization header
-                .allowCredentials(true); // Allow credentials if needed
-    }
-}
-
+//package com.finance.transaction.config;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.web.cors.CorsConfiguration;
+//import org.springframework.web.cors.reactive.CorsWebFilter;
+//import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+//
+//@Configuration
+//public class WebConfig {
+//
+//    @Bean
+//    public CorsWebFilter corsWebFilter() {
+//        CorsConfiguration corsConfig = new CorsConfiguration();
+//        corsConfig.addAllowedOrigin("http://localhost:4200"); // Allow your frontend origin
+//        corsConfig.addAllowedMethod("GET");
+//        corsConfig.addAllowedMethod("POST");
+//        corsConfig.addAllowedMethod("DELETE");
+//        corsConfig.addAllowedMethod("PUT");
+//        corsConfig.addAllowedMethod("OPTIONS");
+//        corsConfig.addAllowedHeader("Content-Type");
+//        corsConfig.addAllowedHeader("Authorization");
+//        corsConfig.setAllowCredentials(true); // Allow credentials if needed
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/test/**", corsConfig); // Adjust this to match your API
+//
+//        return new CorsWebFilter(source);
+//    }
+//}
