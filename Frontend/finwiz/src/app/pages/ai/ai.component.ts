@@ -96,7 +96,7 @@ export class AiComponent implements OnInit {
     try {
       await this.loadTransactions();
       this.suggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
-      this.budgetSuggestion = this.suggestion;
+      this.budgetSuggestion = this.formatResponse(this.suggestion);
       
       // Save the new budget suggestion to localStorage
       localStorage.setItem('budgetSuggestion', this.budgetSuggestion);
@@ -113,7 +113,7 @@ export class AiComponent implements OnInit {
     
     try {
       const regeneratedSuggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
-      this.budgetSuggestion = regeneratedSuggestion;
+      this.budgetSuggestion = this.formatResponse(regeneratedSuggestion);
       
       // Save the regenerated suggestion to localStorage
       localStorage.setItem('budgetSuggestion', this.budgetSuggestion);
@@ -133,8 +133,7 @@ export class AiComponent implements OnInit {
   
     this.budgetService.createBudget(this.aiBudget).subscribe(() => {
       // Remove the suggestion from localStorage after adding it to the budget
-      //localStorage.removeItem('budgetSuggestion');
-
+      localStorage.removeItem('budgetSuggestion');
       const confirmMessage = 'The budget has been successfully added! Do you want to go to the Budget page?';
       if (window.confirm(confirmMessage)) {
         this.router.navigate(['/budget']);

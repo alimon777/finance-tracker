@@ -8,7 +8,7 @@ import { CustomResponse } from 'src/app/models/custom-response';// Define Custom
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = 'http://localhost:8002/api/transactions/accounts'; // Base URL of Spring Boot server
+  private apiUrl = 'http://localhost:8000/api/transactions/accounts'; // Base URL of Spring Boot server
 
   constructor(private http: HttpClient) {}
 

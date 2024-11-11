@@ -45,7 +45,7 @@
 
     <!-- Account Cards (will scroll horizontally) -->
     <div class="scrollable-container flex gap-4">
-        <div *ngFor="let account of accounts" class="border border-blue-100 bg-blue-50 shadow-md rounded-lg p-2 w-60 flex-shrink-0 pl-5">
+        <div *ngFor="let account of accounts" class="border border-blue-100 bg-blue-100 shadow-md rounded-lg p-2 w-60 flex-shrink-0 pl-5">
             <h4 class="font-semibold mt-6 m-2"> {{ account.bankName }}</h4>
             <p class="m-2">{{ account.accountNumber}}</p>
             <p class="m-2">{{ account.accountBalance | currency }}</p>

@@ -52,7 +52,7 @@
   
   <!-- Goals List -->
   <div *ngIf="goals.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-    <div *ngFor="let goal of goals; let i = index" class="bg-white shadow-lg rounded-lg p-4 flex flex-col">
+    <div *ngFor="let goal of goals; let i = index" class="bg-white shadow-lg rounded-lg p-4 flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-indigo-300">
       <!-- Goal Header -->
       <div class="flex justify-between items-center mb-2">
         <h3 class="text-lg font-semibold text-gray-800">{{ goal.goalName }}</h3>

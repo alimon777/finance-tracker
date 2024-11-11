@@ -19,7 +19,7 @@ interface ExpenditureSummaryDTO {
   providedIn: 'root'
 })
 export class ExpenditureService {
-  private apiUrl = ' http://localhost:8002/api/transactions/summary'; // Replace with your actual backend URL
+  private apiUrl = ' http://localhost:8000/api/transactions/summary'; // Replace with your actual backend URL
 
   constructor(private http: HttpClient) {}
 

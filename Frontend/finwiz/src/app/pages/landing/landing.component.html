@@ -1,53 +1,52 @@
-<div class="container mx-auto mt-10 p-4 text-center">
-    <!-- Hero Section -->
-    <div class="mb-16">
-      <h1 class="text-4xl font-bold text-indigo-700 mb-4">Welcome to finWiz</h1>
-      <p class="text-lg text-gray-600 mb-6">Your all-in-one tool for budgeting, saving, and financial insights.</p>
-      <button (click)="navigateToLogin()" class="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-500">
-        Get Started
-      </button>
+<div class="container mx-auto mt-10 p-4 text-center h-screen w-screen bg-white">
+  <!-- Hero Section -->
+  <div class="mb-16">
+    <h1 class="text-4xl font-bold text-indigo-700 mb-4">Welcome to finWiz</h1>
+    <p class="text-lg text-gray-600 mb-6">Your all-in-one tool for budgeting, saving, and financial insights.</p>
+    <button (click)="navigateToLogin()" class="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-500">
+      Get Started
+    </button>
+  </div>
+
+  <!-- Features Section with Hovering Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <!-- Budget Tracking Feature -->
+    <div class="bg-blue-100 p-6 shadow-md rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <h3 class="text-2xl font-semibold text-indigo-600">Budget Tracking</h3>
+      <p class="text-gray-500 mt-4">Manage your spending and stay within budget with easy tracking and insights.</p>
     </div>
-  
-    <!-- Features Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Budget Tracking Feature -->
-      <div class="bg-white p-6 shadow-md rounded-lg">
-        <h3 class="text-2xl font-semibold text-indigo-600">Budget Tracking</h3>
-        <p class="text-gray-500 mt-4">Manage your spending and stay within budget with easy tracking and insights.</p>
-      </div>
-  
-      <!-- Saving Goals Feature -->
-      <div class="bg-white p-6 shadow-md rounded-lg">
-        <h3 class="text-2xl font-semibold text-indigo-600">Saving Goals</h3>
-        <p class="text-gray-500 mt-4">Set and achieve your financial goals with a dedicated goal tracking feature.</p>
-      </div>
-  
-      <!-- AI Suggestions Feature -->
-      <div class="bg-white p-6 shadow-md rounded-lg">
-        <h3 class="text-2xl font-semibold text-indigo-600">AI Suggestions</h3>
-        <p class="text-gray-500 mt-4">Get personalized suggestions to optimize your expenses and increase savings.</p>
-      </div>
-  
-      <!-- Transaction Tracking Feature -->
-      <div class="bg-white p-6 shadow-md rounded-lg">
-        <h3 class="text-2xl font-semibold text-indigo-600">Transaction Tracking</h3>
-        <p class="text-gray-500 mt-4">Keep track of every transaction and categorize expenses effortlessly.</p>
-      </div>
+
+    <!-- Saving Goals Feature -->
+    <div class="bg-blue-100 p-6 shadow-md rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <h3 class="text-2xl font-semibold text-indigo-600">Saving Goals</h3>
+      <p class="text-gray-500 mt-4">Set and achieve your financial goals with a dedicated goal tracking feature.</p>
     </div>
-  
-    <!-- Footer Links -->
-    <div class="mt-16 text-center">
-      <div class="mb-4">
-        <a href="https://facebook.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Facebook</a>
-        <a href="https://twitter.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Twitter</a>
-        <a href="https://instagram.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Instagram</a>
-      </div>
-      <button (click)="navigateToRegister()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500">
-        Sign Up
-      </button>
-      <p class="mt-4">
-        <a href="mailto:support@finwiz.com" class="text-gray-500 hover:text-gray-700">Contact Us</a>
-      </p>
+
+    <!-- AI Suggestions Feature -->
+    <div class="bg-blue-100 p-6 shadow-md rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <h3 class="text-2xl font-semibold text-indigo-600">AI Suggestions</h3>
+      <p class="text-gray-500 mt-4">Get personalized suggestions to optimize your expenses and increase savings.</p>
+    </div>
+
+    <!-- Transaction Tracking Feature -->
+    <div class="bg-blue-100 p-6 shadow-md rounded-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+      <h3 class="text-2xl font-semibold text-indigo-600">Transaction Tracking</h3>
+      <p class="text-gray-500 mt-4">Keep track of every transaction and categorize expenses effortlessly.</p>
     </div>
   </div>
-  
+
+  <!-- Footer Links -->
+  <div class="mt-16 text-center">
+    <div class="mb-4">
+      <a href="https://facebook.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Facebook</a>
+      <a href="https://twitter.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Twitter</a>
+      <a href="https://instagram.com" class="text-indigo-600 hover:text-indigo-400 mx-2">Instagram</a>
+    </div>
+    <button (click)="navigateToRegister()" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500">
+      Sign Up
+    </button>
+    <p class="mt-4">
+      <a href="mailto:support@finwiz.com" class="text-gray-500 hover:text-gray-700">Contact Us</a>
+    </p>
+  </div>
+</div>

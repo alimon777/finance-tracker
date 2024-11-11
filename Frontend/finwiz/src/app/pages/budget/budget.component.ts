@@ -14,6 +14,8 @@ export class BudgetComponent implements OnInit {
 
   constructor(private budgetService: BudgetService) {}
 
+  currentDate: string = new Date().toISOString().split('T')[0];
+
   ngOnInit(): void {
     // Retrieve userId from local storage
     const storedUserId = localStorage.getItem('userId');
