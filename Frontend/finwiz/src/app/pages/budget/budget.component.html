@@ -5,7 +5,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="budgetStartDate" class="label">Budget Start Date:</label>
-          <input type="date" [(ngModel)]="budget.budgetStartDate" name="budgetStartDate" required class="form-field" />
+          <input type="date" [(ngModel)]="budget.budgetStartDate" name="budgetStartDate" required class="form-field" [attr.min]="currentDate" />
         </div>
         <div>
           <label for="budgetEndDate" class="label">Budget End Date:</label>

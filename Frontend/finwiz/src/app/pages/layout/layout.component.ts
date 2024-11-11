@@ -22,6 +22,7 @@ export class LayoutComponent {
       this.router.navigate(['/login']); // Redirect to login if no token
     }
   }
+  
 
 
   logout() {

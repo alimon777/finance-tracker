@@ -1,2 +1,15 @@
 
-<router-outlet></router-outlet>
+<style>
+    /* Prevent scrolling */
+    body {
+        overflow: auto; /* Prevents scrolling */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Full viewport height */
+    }
+    .container {
+        height: 100%; /* Full height for the container */
+    }
+</style>
+<body>
+    <router-outlet></router-outlet>
+</body>

@@ -30,6 +30,11 @@ export class HomeComponent implements OnInit {
 
   lineChartData: IncomeDepositDTO[] = [];
 
+  // State to track which dropdown is expanded
+  isWeeklyExpanded = false;
+  isMonthlyExpanded = false;
+  isYearlyExpanded = false;
+
   constructor(
     private http: HttpClient,
     private transactionService: TransactionService,
@@ -41,7 +46,24 @@ export class HomeComponent implements OnInit {
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
+  // Toggle the dropdown for the selected period
+  toggleDropdown(period: 'weekly' | 'monthly' | 'yearly') {
+    if (period === 'weekly') {
+      this.isWeeklyExpanded = !this.isWeeklyExpanded;
+      this.periodLabel = 'weekly'; // Update the selected period when toggling
+    } else if (period === 'monthly') {
+      this.isMonthlyExpanded = !this.isMonthlyExpanded;
+      this.periodLabel = 'monthly';
+    } else if (period === 'yearly') {
+      this.isYearlyExpanded = !this.isYearlyExpanded;
+      this.periodLabel = 'yearly';
+    }
+    // Update expenditure summary and pie chart data when the dropdown is toggled
+    this.fetchExpenditureSummary();
+    this.fetchIncomeDepositSummary();
+  }
 
+  // Method to select the expenditure period and update the data
   selectExpenditure(option: string) {
     this.periodLabel = option;
     this.fetchExpenditureSummary();
@@ -49,12 +71,13 @@ export class HomeComponent implements OnInit {
     this.pieChartData = this.expenditureSummary?.[option]; // Set the pie chart data
   }
 
+  // Fetch income deposit summary from the API
   private fetchIncomeDepositSummary(): void {
     const userId = Number(localStorage.getItem('userId')); // Retrieve userId from local storage
 
-    this.expenditureService.getIncomeDepositSummary(userId,this.periodLabel).subscribe(
+    this.expenditureService.getIncomeDepositSummary(userId, this.periodLabel).subscribe(
       (data) => {
-        // After fetching the data, set the default pie chart data
+        // After fetching the data, set the default line chart data
         if (this.periodLabel) {
           this.lineChartData = data;
         }
@@ -64,14 +87,14 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-
+  // Fetch expenditure summary from the API
   private fetchExpenditureSummary(): void {
     const userId = Number(localStorage.getItem('userId')); // Retrieve userId from local storage
 
     this.expenditureService.getExpenditureSummary(userId).subscribe(
       (data) => {
         this.expenditureSummary = data;
-        // After fetching the data, set the default pie chart data
+        // After fetching the data, set the pie chart data
         if (this.periodLabel) {
           this.pieChartData = this.expenditureSummary?.[this.periodLabel];
         }
@@ -81,7 +104,7 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-
+  // Load the userId from localStorage
   loadUserId(): void {
     const storedUserId = localStorage.getItem('userId');
     this.userId = storedUserId ? +storedUserId : 0;
