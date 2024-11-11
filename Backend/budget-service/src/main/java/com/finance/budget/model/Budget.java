@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "budget")
 public class Budget {
     @Id
@@ -26,6 +28,6 @@ public class Budget {
     private Double transportation;  // Major budget category for transportation
     private Double entertainment;  // Major budget category for entertainment
     private Boolean aiGenerated;
-    private Boolean isExceeded;  // Indicates if budget is exceeded
+    private Double total;  // Indicates if budget is exceeded
 
 }
