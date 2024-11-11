@@ -23,4 +23,8 @@ export class GoalService {
   deleteGoal(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
+
+  updateGoal(goal: Goal): Observable<Goal> {
+    return this.http.put<Goal>(`${this.baseUrl}/update/${goal['id']}`, goal);
+  }
 }

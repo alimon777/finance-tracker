@@ -82,6 +82,7 @@ export class AiComponent implements OnInit {
 
   // Load saved budget suggestion from localStorage
   loadBudgetSuggestion(): void {
+    
     const savedSuggestion = localStorage.getItem('budgetSuggestion');
     if (savedSuggestion) {
       this.budgetSuggestion = savedSuggestion;

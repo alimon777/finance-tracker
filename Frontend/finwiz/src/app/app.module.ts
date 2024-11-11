@@ -21,6 +21,7 @@ import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
 import { NewsComponent } from './pages/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { UpdateGoalModalComponent } from './pages/update-goal-modal/update-goal-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CommonModule } from '@angular/common';
     LineChartComponent,
     PieChartComponent,
     NewsComponent,
+    UpdateGoalModalComponent,
   ],
   imports: [
     LayoutComponent,

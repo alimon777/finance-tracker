@@ -63,4 +63,21 @@ public class GoalController {
         goalService.deleteGoal(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Goal> updateGoal(@PathVariable Long id, @RequestBody Goal updatedGoal) {
+        Goal existingGoal = goalService.getGoalById(id);
+        if (existingGoal == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingGoal.setGoalName(updatedGoal.getGoalName());
+        existingGoal.setValue(updatedGoal.getValue());
+        existingGoal.setDescription(updatedGoal.getDescription());
+        existingGoal.setDurationInMonths(updatedGoal.getDurationInMonths());
+        existingGoal.setStartDate(updatedGoal.getStartDate());
+
+        Goal savedGoal = goalService.saveGoal(existingGoal);
+        return ResponseEntity.ok(savedGoal);
+    }
 }

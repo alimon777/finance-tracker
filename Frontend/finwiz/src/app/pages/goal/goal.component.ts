@@ -20,6 +20,8 @@ export class GoalComponent implements OnInit {
   };
   goals: any[] = [];
   goalIdToDelete: number | null = null;
+  selectedGoal: any | null = null;
+  showEditModal: boolean = false;
 
   constructor(private goalService: GoalService) { }
 
@@ -96,5 +98,20 @@ export class GoalComponent implements OnInit {
       durationInMonths: 0,
       startDate: new Date()
     };
+  }
+
+  openEditModal(goal: Goal): void {
+    this.selectedGoal = { ...goal };
+    this.showEditModal = true;
+  }
+
+  onModalClose(updatedGoal: Goal | null): void {
+    if (updatedGoal) {
+      const index = this.goals.findIndex(goal => goal.id === updatedGoal['id']);
+      if (index !== -1) {
+        this.goals[index] = updatedGoal;
+      }
+    }
+    this.showEditModal = false;
   }
 }

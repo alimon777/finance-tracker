@@ -1,4 +1,5 @@
 export interface Goal {
+    [x: string]: any;
     userId?:number;
     goalName: string;
     value: number;

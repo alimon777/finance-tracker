@@ -26,6 +26,7 @@ export class AuthService {
     localStorage.setItem('token', response.token);
     localStorage.setItem('userId', response.userId);
     localStorage.setItem('username', response.username);
+    localStorage.removeItem('budgetSuggestion'); 
   }
 
   // Method to retrieve token from local storage
@@ -38,5 +39,6 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
+    localStorage.removeItem('budgetSuggestion');
   }
 }

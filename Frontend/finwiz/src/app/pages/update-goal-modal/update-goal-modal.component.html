@@ -1,0 +1,53 @@
+<p>update-goal-modal works!</p>
+<div class="modal-overlay" *ngIf="isVisible">
+    <div class="modal-container">
+      <h2 class="text-xl font-bold mb-4">Edit Goal</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div>
+          <label class="block text-sm font-medium">Goal Name:</label>
+          <input 
+            type="text" 
+            [(ngModel)]="goal.goalName" 
+            name="goalName" 
+            class="form-input mt-1 block w-full" 
+            required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Value:</label>
+          <input 
+            type="number" 
+            [(ngModel)]="goal.value" 
+            name="value" 
+            class="form-input mt-1 block w-full" 
+            required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Description:</label>
+          <input 
+            type="text" 
+            [(ngModel)]="goal.description" 
+            name="description" 
+            class="form-input mt-1 block w-full" 
+            required />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Duration (Months):</label>
+          <input 
+            type="number" 
+            [(ngModel)]="goal.durationInMonths" 
+            name="durationInMonths" 
+            class="form-input mt-1 block w-full" 
+            required />
+        </div>
+        <div class="flex justify-end space-x-4 mt-4">
+          <button type="button" (click)="onCancel()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+            Cancel
+          </button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

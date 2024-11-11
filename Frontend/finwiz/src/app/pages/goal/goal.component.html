@@ -49,7 +49,7 @@
   <div *ngIf="goals.length === 0" class="text-center text-gray-500 py-6">
     <p>No goals yet</p>
   </div>
-  
+
   <!-- Goals List -->
   <div *ngIf="goals.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
     <div *ngFor="let goal of goals; let i = index" class="bg-white shadow-lg rounded-lg p-4 flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-indigo-300">
@@ -58,7 +58,7 @@
         <h3 class="text-lg font-semibold text-gray-800">{{ goal.goalName }}</h3>
         <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-sm">{{ i + 1 }}</span>
       </div>
-      
+
       <!-- Goal Body -->
       <div class="mb-2 text-gray-600">
         <p><span class="font-medium">Value:</span> {{ goal.value | currency }}</p>
@@ -67,13 +67,25 @@
         <p><span class="font-medium">Duration:</span> {{ goal.durationInMonths }} Months</p>
         <p><span class="font-medium">Days Left:</span> {{ calculateDaysLeft(goal) }} days</p>
       </div>
-      
+
       <!-- Goal Footer -->
-      <div class="mt-auto flex justify-end">
+      <div class="mt-auto flex justify-end space-x-2">
+        <button 
+          (click)="openEditModal(goal)" 
+          class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none">
+          Edit
+        </button>
         <button (click)="confirmDelete(goal.id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none">
           Delete
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Modal Component -->
+  <app-update-goal-modal 
+    *ngIf="showEditModal" 
+    [goal]="selectedGoal" 
+    (close)="onModalClose($event)">
+  </app-update-goal-modal>
 </div>
