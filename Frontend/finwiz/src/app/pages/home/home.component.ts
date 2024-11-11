@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   lineChartData: IncomeDepositDTO[] = [];
 
   // State to track which dropdown is expanded
-  isWeeklyExpanded = false;
+  isWeeklyExpanded = true;
   isMonthlyExpanded = false;
   isYearlyExpanded = false;
 
@@ -48,14 +48,21 @@ export class HomeComponent implements OnInit {
   }
   // Toggle the dropdown for the selected period
   toggleDropdown(period: 'weekly' | 'monthly' | 'yearly') {
-    if (period === 'weekly') {
-      this.isWeeklyExpanded = !this.isWeeklyExpanded;
+    if (period === 'weekly' ) {
+      this.isWeeklyExpanded = true;
+      this.isMonthlyExpanded=false;
+      this.isYearlyExpanded=false;
       this.periodLabel = 'weekly'; // Update the selected period when toggling
     } else if (period === 'monthly') {
-      this.isMonthlyExpanded = !this.isMonthlyExpanded;
+      this.isWeeklyExpanded = false;
+      this.isMonthlyExpanded=true;
+      this.isYearlyExpanded=false;
+      
       this.periodLabel = 'monthly';
     } else if (period === 'yearly') {
-      this.isYearlyExpanded = !this.isYearlyExpanded;
+      this.isWeeklyExpanded = false;
+      this.isMonthlyExpanded=false;
+      this.isYearlyExpanded=true;
       this.periodLabel = 'yearly';
     }
     // Update expenditure summary and pie chart data when the dropdown is toggled
