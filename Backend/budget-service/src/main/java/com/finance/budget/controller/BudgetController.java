@@ -2,6 +2,8 @@ package com.finance.budget.controller;
 
 import com.finance.budget.model.Budget;
 import com.finance.budget.service.BudgetService;
+import com.finance.budget.dto.Transaction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,18 +40,16 @@ public class BudgetController {
         Optional<Budget> budget = budgetService.getBudgetById(id);
         return budget.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    // Update budget
-    @PutMapping("/{userId}/{id}")
-    public ResponseEntity<Budget> updateBudget(@PathVariable Long userId, @PathVariable Long id, @RequestBody Budget budgetDetails) {
-        Budget updatedBudget = budgetService.updateBudget(id, budgetDetails);
-        return ResponseEntity.ok(updatedBudget);
-    }
-
+    
     // Delete budget
     @DeleteMapping("/{userId}/{id}")
     public ResponseEntity<Void> deleteBudget(@PathVariable Long userId, @PathVariable Long id) {
         budgetService.deleteBudget(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/check-exceedance")
+    ResponseEntity<String> checkExceedance(@RequestBody Transaction transaction){
+    	return ResponseEntity.ok(budgetService.checkExceedance(transaction));
     }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.finance.transaction.model.Account;
+import com.finance.transaction.client.BudgetServiceClient;
 import com.finance.transaction.dto.CustomResponse;
 import com.finance.transaction.model.Transaction;
 import com.finance.transaction.model.TransactionType;
@@ -25,6 +26,9 @@ public class TransactionService {
 
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private BudgetServiceClient budgetServiceClient;
 
 	public List<Transaction> getTransactions(Long userId) {
 		return transactionRepository.findAllByUserId(userId);
@@ -52,7 +56,7 @@ public class TransactionService {
 
 		accountRepository.saveAndFlush(account);
 		Transaction savedTransaction = transactionRepository.save(transaction);
-
+		budgetServiceClient.checkExceedance(savedTransaction);
 		return ResponseEntity.ok(new CustomResponse<>("Transaction successful", savedTransaction));
 	}
 

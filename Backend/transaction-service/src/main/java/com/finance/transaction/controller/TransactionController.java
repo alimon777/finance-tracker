@@ -2,6 +2,7 @@ package com.finance.transaction.controller;
 
 import java.util.List;
 
+import com.finance.transaction.client.BudgetServiceClient;
 import com.finance.transaction.dto.CustomResponse;
 import com.finance.transaction.dto.ExpenditureSummaryDTO;
 import com.finance.transaction.dto.IncomeDepositDTO;
@@ -23,6 +24,12 @@ public class TransactionController {
 
     @Autowired
     private ExpenditureService expenditureService;
+    
+    @Autowired
+    private IncomeDepositService incomeDepositService;
+    
+    @Autowired
+    private BudgetServiceClient budgetServiceClient;
 
 
     // Endpoint to add a transaction
@@ -49,8 +56,6 @@ public class TransactionController {
         return expenditureService.getExpenditureSummary(userId);
     }
 
-    @Autowired
-    private IncomeDepositService incomeDepositService;
 
     @GetMapping("/summary/weekly/{userId}")
     public List<IncomeDepositDTO> getWeeklySummary(@PathVariable Long userId) {
@@ -65,6 +70,11 @@ public class TransactionController {
     @GetMapping("/summary/yearly/{userId}")
     public List<IncomeDepositDTO> getYearlySummary(@PathVariable Long userId) {
         return incomeDepositService.getYearlyDepositsAndWithdrawals(userId);
+    }
+    
+    @PostMapping("/budgetapi")
+    public ResponseEntity<String> checkExceedence(@RequestBody Transaction transaction){
+    	return budgetServiceClient.checkExceedance(transaction); 
     }
 
 }
