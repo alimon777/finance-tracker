@@ -10,6 +10,6 @@ export class Budget {
     transportation!: number;
     entertainment!: number;
     aiGenerated!: boolean;
-    isExceeded!: boolean;
+    total!:number;
   }
   

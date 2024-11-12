@@ -22,6 +22,11 @@ export class BudgetComponent implements OnInit {
 
   currentDate: string = new Date().toISOString().split('T')[0];
 
+  total:number = 0;
+  updateTotal() {
+    this.total = (this.budget.food || 0) + (this.budget.housing || 0) + 
+                 (this.budget.transportation || 0) + (this.budget.entertainment || 0);
+  }
   ngOnInit(): void {    
     this.userId = this.storageService.fetchUserId();
     this.userDetails = this.storageService.fetchUserDetails();
@@ -47,6 +52,7 @@ export class BudgetComponent implements OnInit {
     }
     this.budget.userId = this.userId;
     this.budget.aiGenerated = false;
+    this.budget.total=this.total;
     this.budgetService.createBudget(this.budget).subscribe(() => {
       this.loadBudgets();
       this.budget = new Budget(); // Reset form

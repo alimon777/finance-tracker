@@ -23,7 +23,6 @@ public class BudgetService {
     private EmailServiceClient emailServiceClient;
     
     private Double calculateTotal(Budget budget) {
-//    	return budget.getFood()+budget.getEntertainment()+budget.getHousing()+budget.getTransportation();
     	return (budget.getFood() != null ? budget.getFood() : 0) +
     	       (budget.getHousing() != null ? budget.getHousing() : 0) +
     	       (budget.getTransportation() != null ? budget.getTransportation() : 0) +
