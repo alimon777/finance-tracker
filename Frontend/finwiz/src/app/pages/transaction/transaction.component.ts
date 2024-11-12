@@ -43,6 +43,9 @@ export class TransactionComponent implements OnInit {
     this.loadAccounts(); // Load accounts on initialization
     this.loadTransactions();
   }
+  getTotalBalance() {
+    return this.accounts.reduce((acc, account) => acc + account.accountBalance, 0);
+  }
 
   loadAccounts(): void {
     if (this.userId) {
@@ -68,6 +71,7 @@ export class TransactionComponent implements OnInit {
         if (response.data) { // Ensure response.data is not null
           this.accounts.push(response.data); // Add the created account to the list
         }
+        this.loadAccounts();
         this.loadTransactions();
         this.newAccount = new Account(); // Reset the form
       },

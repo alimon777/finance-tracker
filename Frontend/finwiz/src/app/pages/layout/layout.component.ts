@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from 'src/app/service/auth/auth.service';
@@ -6,7 +7,7 @@ import { StorageService } from 'src/app/service/storage/storage.service';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet,RouterModule],
+  imports: [RouterOutlet,RouterModule,CommonModule],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
 })
@@ -18,7 +19,12 @@ export class LayoutComponent {
     private storageService: StorageService,
     private router: Router
   ) {}
+  
+  isMobileMenuOpen: boolean = false;
 
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
   ngOnInit() {
     this.token = this.storageService.getToken(); // Get the token
     this.username = localStorage.getItem('username');
