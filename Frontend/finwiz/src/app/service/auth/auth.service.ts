@@ -22,10 +22,11 @@ export class AuthService {
   }
 
   // Method to store token in local storage
-  storeToken(response: { token: string; userId: string; username: string }) {
+  storeToken(response: { token: string; userId: string; username: string , email: string}) {
     localStorage.setItem('token', response.token);
     localStorage.setItem('userId', response.userId);
     localStorage.setItem('username', response.username);
+    localStorage.setItem('email',response.email);
     localStorage.removeItem('budgetSuggestion'); 
   }
 
@@ -39,6 +40,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
+    localStorage.removeItem('email');
     localStorage.removeItem('budgetSuggestion');
   }
 }

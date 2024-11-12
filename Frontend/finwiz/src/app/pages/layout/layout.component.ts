@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from 'src/app/service/auth/auth.service';
+import { StorageService } from 'src/app/service/storage/storage.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,20 +14,21 @@ export class LayoutComponent {
   username: string | null = null;
   token: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private storageService: StorageService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.token = this.authService.getToken(); // Get the token
+    this.token = this.storageService.getToken(); // Get the token
     this.username = localStorage.getItem('username');
     if (!this.token) {
       this.router.navigate(['/login']); // Redirect to login if no token
     }
   }
-  
-
 
   logout() {
-    this.authService.clearToken(); // Clear token from storage
+    this.storageService.clearStorage(); // Clear token from storage
     this.router.navigate(['/login']);
   }
 }

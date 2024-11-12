@@ -5,6 +5,7 @@ import { TransactionService } from 'src/app/service/transaction/transaction.serv
 import { ExpenditureService } from 'src/app/service/expenditure/expenditure.service';
 import { Expenditure } from 'src/app/models/expenditure';
 import { IncomeDepositDTO } from 'src/app/models/income-deposit';
+import { StorageService } from 'src/app/service/storage/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -36,13 +37,12 @@ export class HomeComponent implements OnInit {
   isYearlyExpanded = false;
 
   constructor(
-    private http: HttpClient,
-    private transactionService: TransactionService,
-    private expenditureService: ExpenditureService
+    private expenditureService: ExpenditureService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {
-    this.loadUserId();
+    this.userId = this.storageService.fetchUserId();
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
       this.isWeeklyExpanded = false;
       this.isMonthlyExpanded=true;
       this.isYearlyExpanded=false;
-      
       this.periodLabel = 'monthly';
     } else if (period === 'yearly') {
       this.isWeeklyExpanded = false;
@@ -80,9 +79,8 @@ export class HomeComponent implements OnInit {
 
   // Fetch income deposit summary from the API
   private fetchIncomeDepositSummary(): void {
-    const userId = Number(localStorage.getItem('userId')); // Retrieve userId from local storage
 
-    this.expenditureService.getIncomeDepositSummary(userId, this.periodLabel).subscribe(
+    this.expenditureService.getIncomeDepositSummary(this.userId, this.periodLabel).subscribe(
       (data) => {
         // After fetching the data, set the default line chart data
         if (this.periodLabel) {
@@ -96,9 +94,8 @@ export class HomeComponent implements OnInit {
   }
   // Fetch expenditure summary from the API
   private fetchExpenditureSummary(): void {
-    const userId = Number(localStorage.getItem('userId')); // Retrieve userId from local storage
 
-    this.expenditureService.getExpenditureSummary(userId).subscribe(
+    this.expenditureService.getExpenditureSummary(this.userId).subscribe(
       (data) => {
         this.expenditureSummary = data;
         // After fetching the data, set the pie chart data
@@ -110,10 +107,5 @@ export class HomeComponent implements OnInit {
         console.error('Error fetching expenditure summary:', error);
       }
     );
-  }
-  // Load the userId from localStorage
-  loadUserId(): void {
-    const storedUserId = localStorage.getItem('userId');
-    this.userId = storedUserId ? +storedUserId : 0;
   }
 }

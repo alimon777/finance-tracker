@@ -4,6 +4,7 @@ import { Account } from 'src/app/models/account';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Transaction } from 'src/app/models/transaction';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
+import { StorageService } from 'src/app/service/storage/storage.service';
 
 @Component({
   selector: 'app-transaction',
@@ -31,17 +32,16 @@ export class TransactionComponent implements OnInit {
   // User ID variable
   userId: number = 0;
 
-  constructor(private accountService: AccountService,private transactionService: TransactionService) { }
+  constructor(
+    private accountService: AccountService,
+    private transactionService: TransactionService,
+    private storageService: StorageService
+  ) { }
 
   ngOnInit(): void {
-    this.loadUserId(); // Load userId on initialization
+    this.userId = this.storageService.fetchUserId(); 
     this.loadAccounts(); // Load accounts on initialization
     this.loadTransactions();
-  }
-
-  loadUserId(): void {
-    const storedUserId = localStorage.getItem('userId');
-    this.userId = storedUserId ? +storedUserId : 0; 
   }
 
   loadAccounts(): void {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BudgetService } from 'src/app/service/budget/budget.service';
 import { Budget } from 'src/app/models/budget';
+import { StorageService } from 'src/app/service/storage/storage.service';
+import { UserDetails } from 'src/app/models/user-details';
 
 @Component({
   selector: 'app-budget',
@@ -10,17 +12,19 @@ import { Budget } from 'src/app/models/budget';
 export class BudgetComponent implements OnInit {
   budgets: Budget[] = [];
   budget: Budget = new Budget();
-  userId: number = 0; // Remove initial value
+  userId: number = 0;
+  userDetails : UserDetails = { username:"", email:""}
 
-  constructor(private budgetService: BudgetService) {}
+  constructor(
+    private budgetService: BudgetService,
+    private storageService: StorageService
+  ) {}
 
   currentDate: string = new Date().toISOString().split('T')[0];
 
-  ngOnInit(): void {
-    // Retrieve userId from local storage
-    const storedUserId = localStorage.getItem('userId');
-    this.userId = storedUserId ? +storedUserId : 0; // Convert to number or set default to 0
-
+  ngOnInit(): void {    
+    this.userId = this.storageService.fetchUserId();
+    this.userDetails = this.storageService.fetchUserDetails();
     if (this.userId) {
       this.loadBudgets();
     } else {
@@ -41,10 +45,8 @@ export class BudgetComponent implements OnInit {
       alert('Start Date cannot be later than End Date.'); // Display an alert or use a different notification method
       return; // Exit the function if validation fails
     }
-
-    this.budget.userId = this.userId; // Set userId from local storage
+    this.budget.userId = this.userId;
     this.budget.aiGenerated = false;
-    this.budget.isExceeded = false;
     this.budgetService.createBudget(this.budget).subscribe(() => {
       this.loadBudgets();
       this.budget = new Budget(); // Reset form

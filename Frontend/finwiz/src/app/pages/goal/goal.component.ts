@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GoalService } from 'src/app/service/goal/goal.service';
 import { Goal } from 'src/app/models/goal';
+import { StorageService } from 'src/app/service/storage/storage.service';
 
 @Component({
   selector: 'app-goal',
@@ -23,11 +24,10 @@ export class GoalComponent implements OnInit {
   selectedGoal: any | null = null;
   showEditModal: boolean = false;
 
-  constructor(private goalService: GoalService) { }
+  constructor(private goalService: GoalService, private storageService: StorageService) { }
 
   ngOnInit(): void {
-    const storedUserId = localStorage.getItem('userId');
-    this.userId = storedUserId ? +storedUserId : 0; // Convert to number or set default to 0
+    this.userId = this.storageService.fetchUserId();
 
     if (this.userId) {
       this.loadGoals();
