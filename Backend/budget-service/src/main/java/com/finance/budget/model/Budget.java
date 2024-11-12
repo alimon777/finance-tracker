@@ -18,16 +18,15 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long userId;  // User ID
-    private LocalDate budgetStartDate;  // Budget start date
-    private LocalDate budgetEndDate;    // Budget end date
-
-    private Double food;  // Major budget category for food
-    private Double housing;  // Major budget category for housing
-    private Double transportation;  // Major budget category for transportation
-    private Double entertainment;  // Major budget category for entertainment
+    private Long userId;
+    private String username;
+    private String email;
+    private LocalDate budgetStartDate;  
+    private LocalDate budgetEndDate;    
+    private Double food;  
+    private Double housing;  
+    private Double transportation; 
+    private Double entertainment;  
+    private Double total;  
     private Boolean aiGenerated;
-    private Double total;  // Indicates if budget is exceeded
-
 }

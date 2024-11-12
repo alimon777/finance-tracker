@@ -49,9 +49,8 @@ public class TransactionService {
 		} else {
 			account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
 		}
-//
-//		transaction.setBalance(account.getAccountBalance());
-		transaction.setTransactionDate(new Date());
+		if(transaction.getTransactionDate()==null)
+			transaction.setTransactionDate(new Date());
 		transaction.setAccount(account);
 
 		accountRepository.saveAndFlush(account);

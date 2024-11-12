@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -32,13 +31,6 @@ public class BudgetController {
     public ResponseEntity<List<Budget>> getBudgetsByUserId(@PathVariable Long userId) {
         List<Budget> budgets = budgetService.getBudgetsByUserId(userId);
         return ResponseEntity.ok(budgets);
-    }
-
-    // Get budget by ID
-    @GetMapping("/{userId}/{id}")
-    public ResponseEntity<Budget> getBudgetById(@PathVariable Long userId, @PathVariable Long id) {
-        Optional<Budget> budget = budgetService.getBudgetById(id);
-        return budget.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
     // Delete budget

@@ -36,6 +36,7 @@ public class AuthService {
     	UserResponse userDetails = new UserResponse();
     	userDetails.setUserId(user.getId());
     	userDetails.setUsername(user.getUsername());
+    	userDetails.setEmail(user.getEmail());
     	return userDetails;
     }
 }

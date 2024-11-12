@@ -1,4 +1,4 @@
-package com.finance.mail.model;
+package com.finance.budget.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

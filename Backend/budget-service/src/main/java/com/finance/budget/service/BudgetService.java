@@ -1,5 +1,7 @@
 package com.finance.budget.service;
 
+import com.finance.budget.client.EmailServiceClient;
+import com.finance.budget.dto.EmailDetails;
 import com.finance.budget.dto.Transaction;
 import com.finance.budget.model.Budget;
 import com.finance.budget.repository.BudgetRepo;
@@ -17,6 +19,9 @@ public class BudgetService {
     @Autowired
     private BudgetRepo budgetRepository;
     
+    @Autowired
+    private EmailServiceClient emailServiceClient;
+    
     private Double calculateTotal(Budget budget) {
 //    	return budget.getFood()+budget.getEntertainment()+budget.getHousing()+budget.getTransportation();
     	return (budget.getFood() != null ? budget.getFood() : 0) +
@@ -30,11 +35,6 @@ public class BudgetService {
     public Budget createBudget(Budget budget) {
     	budget.setTotal(calculateTotal(budget));
         return budgetRepository.save(budget);
-    }
-
-    // Get all budgets
-    public List<Budget> getAllBudgets() {
-        return budgetRepository.findAll();
     }
 
     // Get all budgets for a specific user
@@ -53,79 +53,111 @@ public class BudgetService {
     }
     
     public String checkExceedance(Transaction transaction) {
-    	String result = "Budget List : ";
     	List<Budget> budgetList = budgetRepository.findBudgetsByDateRangeAndNonNegativeTotalForUser(
                 transaction.getTransactionDate().toInstant()
                 .atZone(ZoneId.systemDefault())
-                .toLocalDate(),transaction.getUserId());
+                .toLocalDate(), transaction.getUserId());
+    	
+    	if(budgetList.isEmpty()) {
+    		return "No Budget exceeded in this category";
+    	}
+        StringBuilder emailBody = new StringBuilder("Dear " + budgetList.get(0).getUsername() + ",\n\n");
+        emailBody.append("The following transaction on ")
+                 .append(transaction.getTransactionDate())
+                 .append(" caused your budget to exceed in specific categories:\n\n");
 
-       List<Budget> exceededBudgetList = new ArrayList<>();
-       List<Transaction> exceededTransactionList = new ArrayList<>();
+        List<Budget> exceededBudgetList = new ArrayList<>();
+        
+        for (Budget budget : budgetList) {
+            if (budget.getTotal() >= 0) {
+                Double initialAmount;
+                boolean categoryExceeded = false;
+                boolean totalExceeded = false;
 
-            // Step 2: Loop through each budget and apply the transaction to the relevant category
-       for (Budget budget : budgetList) {
-            if(budget.getTotal()>=0) {
-            	Double amount = 0d;
                 switch (transaction.getCategoryType()) {
                     case FOOD:
-                    	budget.setTotal(budget.getTotal() - transaction.getAmount());
-                    	amount=budget.getFood();
-                    	budget.setFood(budget.getFood() - transaction.getAmount());	
-                    	if(amount>=0) {
-                    		if(budget.getFood()<0 || budget.getTotal()<0) {
-                        		exceededBudgetList.add(budget);
-                                exceededTransactionList.add(transaction);
-                        	}
-                    	}
+                        initialAmount = budget.getFood();
+                        budget.setFood(initialAmount - transaction.getAmount());
+                        if (initialAmount >= 0 && budget.getFood() < 0) categoryExceeded = true;
                         break;
+
                     case HOUSING:
-                    	budget.setTotal(budget.getTotal() - transaction.getAmount());
-                    	amount=budget.getHousing();
-                    	budget.setHousing(budget.getHousing() - transaction.getAmount());
-                    	if(amount>=0) {                    		
-                    		if(budget.getHousing()<0 || budget.getTotal()<0) {
-                        		exceededBudgetList.add(budget);
-                                exceededTransactionList.add(transaction);
-                        	}
-                    	}
+                        initialAmount = budget.getHousing();
+                        budget.setHousing(initialAmount - transaction.getAmount());
+                        if (initialAmount >= 0 && budget.getHousing() < 0) categoryExceeded = true;
                         break;
+
                     case TRANSPORTATION:
-                    	budget.setTotal(budget.getTotal() - transaction.getAmount());
-                    	amount= budget.getTransportation();
-                    	budget.setTransportation(budget.getTransportation() - transaction.getAmount());
-                    	if(amount>=0) {                 		
-                    		if(budget.getTransportation()<0 || budget.getTotal()<0) {
-                        		exceededBudgetList.add(budget);
-                                exceededTransactionList.add(transaction);
-                        	}
-                    	}
-                    	break;
-                    case ENTERTAINMENT:
-                    	budget.setTotal(budget.getTotal() - transaction.getAmount());
-                    	amount=budget.getEntertainment();
-                    	budget.setEntertainment(budget.getEntertainment() - transaction.getAmount());
-                    	if(amount>=0) {
-                    		if(budget.getEntertainment()<0 || budget.getTotal()<0) {
-                        		exceededBudgetList.add(budget);
-                                exceededTransactionList.add(transaction);
-                        	}
-                    	}
+                        initialAmount = budget.getTransportation();
+                        budget.setTransportation(initialAmount - transaction.getAmount());
+                        if (initialAmount >= 0 && budget.getTransportation() < 0) categoryExceeded = true;
                         break;
+
+                    case ENTERTAINMENT:
+                        initialAmount = budget.getEntertainment();
+                        budget.setEntertainment(initialAmount - transaction.getAmount());
+                        if (initialAmount >= 0 && budget.getEntertainment() < 0) categoryExceeded = true;
+                        break;
+
                     default:
                         break;
-                }budgetRepository.save(budget);
+                }
+
+                // Check if total budget exceeded
+                budget.setTotal(budget.getTotal() - transaction.getAmount());
+                if (budget.getTotal() < 0) totalExceeded = true;
+
+                if (categoryExceeded || totalExceeded) {
+                    exceededBudgetList.add(budget);
+                    budgetRepository.save(budget);
+
+                    if (categoryExceeded) {
+                        emailBody.append("Category: ").append(transaction.getCategoryType())
+                                 .append(" exceeded by ");
+                        switch (transaction.getCategoryType()) {
+                        	case FOOD:
+                                 emailBody.append(Math.abs(budget.getFood()));
+                                 break;
+                        	case ENTERTAINMENT:
+                        		 emailBody.append(Math.abs(budget.getEntertainment()));
+                        		 break;
+                        	case HOUSING:
+                        		 emailBody.append(Math.abs(budget.getHousing()));
+                        		 break;
+                        	case TRANSPORTATION:
+                        		 emailBody.append(Math.abs(budget.getTransportation()));
+                        		 break;
+                        	default:
+                        		 break;
+                        }
+                        emailBody.append(" on transaction date: ")
+                                 .append(transaction.getTransactionDate())
+                                 .append("\n");
+                    }
+                    if (totalExceeded) {
+                        emailBody.append("Total budget exceeded by ")
+                                 .append(Math.abs(budget.getTotal()))
+                                 .append(" for the period ")
+                                 .append(budget.getBudgetStartDate())
+                                 .append(" to ")
+                                 .append(budget.getBudgetEndDate())
+                                 .append("\n");
+                    }
+                }
             }
         }
 
-        if (!budgetList.isEmpty()) {
-        	for(Budget budget:budgetList) {
-           	 	result+=budget.toString()+"\n";
-            }
-        	result+="Exceeded budget list :";
-        	for(Budget budget:exceededBudgetList) {
-           	 	result+=budget.toString()+"\n";
-            }
+        // Send email if budget exceeded
+        if (!exceededBudgetList.isEmpty()) {
+            EmailDetails emailDetails = new EmailDetails(
+                    exceededBudgetList.get(0).getEmail(),
+                    emailBody.toString(),
+                    "Budget Exceeded Notification"
+            );
+            emailServiceClient.sendMail(emailDetails);
         }
-    	return result;
+
+        return emailBody.toString();
     }
+
 }
