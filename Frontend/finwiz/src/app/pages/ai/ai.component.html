@@ -39,12 +39,12 @@
           {{ errorMessage }}
       </div>
       <!-- AI's Budget Suggestion -->
-      <div *ngIf="budgetSuggestion" class="mt-6 w-full max-w-full p-4 border rounded-lg shadow-md bg-slate-200" [@slideIn]>
+      <div *ngIf="budgetSuggestion" class="mt-5 w-full max-w-full p-4 border rounded-lg shadow-md bg-slate-200" [@slideIn]>
           <h4 class="text-gray-700 font-medium flex justify-center underline">Budget Suggestion by finWiz</h4>
-          <div class="flex justify-end w-full">
+          <div class="flex justify-start w-full">
               <button
                   (click)="onRegenerateBudgetSuggestion()"
-                  class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none"
+                  class="bg-blue-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-blue-600 focus:outline-none"
                   [disabled]="loading"
               >
                   <span *ngIf="loading">
@@ -52,17 +52,18 @@
                   </span>
                   <span *ngIf="!loading">Regenerate</span>
               </button>
+              <div class=" flex justify-end items-center w-full">
+                <!-- Button to add suggestion to budget -->
+                <button
+                    (click)="onAddToBudget()"
+                    class="bg-green-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-green-600 focus:outline-none"
+                >
+                    Add to Budget
+                </button>
+            </div>
           </div>
-          <div [innerHTML]="budgetSuggestion"></div>
-
-          <!-- Button to add suggestion to budget -->
-          <div class="flex justify-center items-center">
-              <button
-                  (click)="onAddToBudget()"
-                  class="bg-green-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-green-600 focus:outline-none"
-              >
-                  Add to Budget
-              </button>
+          <div class="-mt-12">
+            <div class="mt-5"[innerHTML]="budgetSuggestion"></div>
           </div>
       </div>
   </div>

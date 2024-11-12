@@ -94,6 +94,13 @@ export class AiComponent implements OnInit {
     this.errorMessage = '';
     this.budgetSuggestion = '';
 
+    if (this.transactions.length === 0) {
+      this.loading = false;
+      // Show the alert
+      window.alert('No transactions found. Please add transactions to generate a budget suggestion.');
+      return;
+    }
+  
     try {
       await this.loadTransactions();
       this.suggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
