@@ -22,6 +22,9 @@ public class AuthService {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return repository.save(newUser);
     }
+    public boolean usernameExists(String username) {
+        return repository.findByUsername(username).isPresent();
+    }
 
     public String generateToken(String username) {
         return jwtService.generateToken(username);

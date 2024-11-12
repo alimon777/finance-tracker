@@ -18,7 +18,7 @@ export class RegisterComponent {
       this.errorMessage = 'Passwords do not match. Please try again.';
       return;
     }
-    
+  
     this.authService.register(this.user).subscribe(
       response => {
         this.successMessage = 'Registration successful! Please login.';
@@ -27,9 +27,11 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error => {
-        this.errorMessage = 'Registration failed. Please try again.';
+        // Error already handled and parsed in the service, so directly use it
+        this.errorMessage = error; // `error` here will be a string due to `handleError` in `AuthService`
         console.error('Registration error', error);
       }
     );
   }
+  
 }

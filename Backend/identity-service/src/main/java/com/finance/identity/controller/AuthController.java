@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.finance.identity.dto.AuthRequest;
 import com.finance.identity.entity.User;
-import com.finance.identity.repository.UserCredentialRepository;
 import com.finance.identity.service.AuthService;
 import com.finance.identity.dto.UserResponse;
+import com.finance.identity.exceptions.UserAlreadyExistsException;
+import com.finance.identity.exceptions.AuthenticationFailedException;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,30 +24,22 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-//    @PostMapping("/register")
-//    public String addNewUser(@RequestBody User user) {
-//    	System.out.println("register endpoint...");
-//        return service.saveUser(user);
-//    }
-    
     @PostMapping("/register")
-	public ResponseEntity<User> register(@RequestBody User user) {
-	User u = service.saveUser(user);
-	if(u!=null)
-		return ResponseEntity.ok(u);
-	else
-		return new ResponseEntity("Username already exists", HttpStatus.NOT_FOUND);
-}
+    public ResponseEntity<User> register(@RequestBody User user) {
+        if (service.usernameExists(user.getUsername())) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+        User u = service.saveUser(user);
+        return ResponseEntity.ok(u);
+    }
 
     @PostMapping("/token")
     public String getToken(@RequestBody AuthRequest authRequest) {
-    	System.out.println("token endpoint..." + authRequest.getUsername());
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authenticate.isAuthenticated()) {
-        	System.out.println(authRequest.getUsername());
             return service.generateToken(authRequest.getUsername());
         } else {
-            throw new RuntimeException("invalid access");
+            throw new AuthenticationFailedException("Invalid credentials");
         }
     }
 
@@ -55,17 +48,16 @@ public class AuthController {
         service.validateToken(token);
         return "Token is valid";
     }
-    
+
     @PostMapping("/login")
-	public ResponseEntity<UserResponse> login(@RequestBody AuthRequest authRequest) {
-    	Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-		
-		if (authenticate.isAuthenticated()) {
-			UserResponse userResponse = service.getLoginnedUserDetails(authRequest.getUsername());
-			userResponse.setToken(service.generateToken(authRequest.getUsername()));
-			return ResponseEntity.ok(userResponse);
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-	}
+    public ResponseEntity<UserResponse> login(@RequestBody AuthRequest authRequest) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        if (authenticate.isAuthenticated()) {
+            UserResponse userResponse = service.getLoginnedUserDetails(authRequest.getUsername());
+            userResponse.setToken(service.generateToken(authRequest.getUsername()));
+            return ResponseEntity.ok(userResponse);
+        } else {
+            throw new AuthenticationFailedException("Invalid credentials");
+        }
+    }
 }
