@@ -1,7 +1,7 @@
 <div class="goal-container max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
   <h2 class="text-2xl font-semibold text-gray-800 mb-4">Goal Management</h2>
 
-  <form (ngSubmit)="onSubmit()" class="mb-6">
+  <form #goalForm="ngForm" (ngSubmit)="onSubmit(goalForm)" class="mb-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label for="goalName" class="block text-sm font-medium text-gray-700">Goal Name:</label>
@@ -9,38 +9,70 @@
             type="text" 
             [(ngModel)]="goal.goalName" 
             name="goalName" 
+            #goalName="ngModel"
             required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+            [ngClass]="{'border-red-500': goalName.invalid && (goalName.touched || formSubmitted)}">
+        <div *ngIf="goalName.invalid && (goalName.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+          Goal Name is required.
+        </div>
       </div>
+  
       <div>
         <label for="value" class="block text-sm font-medium text-gray-700">Value:</label>
         <input 
             type="number" 
             [(ngModel)]="goal.value" 
             name="value" 
+            #value="ngModel"
             required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            min="1"
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+            [ngClass]="{'border-red-500': value.invalid && (value.touched || formSubmitted)}">
+        <div *ngIf="value.invalid && (value.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+          <span *ngIf="value.errors?.['required']">Value is required.</span>
+          <span *ngIf="value.errors?.['min']">Value must be greater than 0.</span>
+        </div>
       </div>
+  
       <div>
         <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
         <input 
             type="text" 
             [(ngModel)]="goal.description" 
             name="description" 
+            #description="ngModel"
             required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+            [ngClass]="{'border-red-500': description.invalid && (description.touched || formSubmitted)}">
+        <div *ngIf="description.invalid && (description.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+          Description is required.
+        </div>
       </div>
+  
       <div>
         <label for="durationInMonths" class="block text-sm font-medium text-gray-700">Duration (Months):</label>
         <input 
             type="number" 
             [(ngModel)]="goal.durationInMonths" 
             name="durationInMonths" 
+            #durationInMonths="ngModel"
             required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            min="1"
+            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
+            [ngClass]="{'border-red-500': durationInMonths.invalid && (durationInMonths.touched || formSubmitted)}">
+        <div *ngIf="durationInMonths.invalid && (durationInMonths.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+          <span *ngIf="durationInMonths.errors?.['required']">Duration is required.</span>
+          <span *ngIf="durationInMonths.errors?.['min']">Duration must be greater than 0.</span>
+        </div>
       </div>
     </div>
-    <button type="submit" class="bg-indigo-600 text-white py-2 px-4 mt-4 w-full rounded-md font-semibold hover:bg-indigo-500 focus:outline-none">
+    
+    <!-- Save Goal Button: Disabled if form is invalid -->
+    <button 
+      type="submit" 
+      class="bg-indigo-600 text-white py-2 px-4 mt-4 w-full rounded-md font-semibold hover:bg-indigo-500 focus:outline-none"
+      [disabled]="goalForm.invalid">  <!-- Disable button if form is invalid -->
       Save Goal
     </button>
   </form>
@@ -68,6 +100,7 @@
         <p><span class="font-medium">Days Left:</span> {{ calculateDaysLeft(goal) }} days</p>
       </div>
 
+
       <!-- Goal Footer -->
       <div class="mt-auto flex justify-end space-x-2">
         <button 
@@ -75,7 +108,7 @@
           class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none">
           Edit
         </button>
-        <button (click)="confirmDelete(goal.id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none">
+        <button (click)="deleteGoal(goal.id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none">
           Delete
         </button>
       </div>

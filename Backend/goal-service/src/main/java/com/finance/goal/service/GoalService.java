@@ -34,7 +34,7 @@ public class GoalService {
         try {
             LocalDate startDate = LocalDate.now();
             goal.setStartDate(startDate);
-
+            
             return goalRepository.save(goal);
         } catch (Exception e) {
             logger.error("Error creating goal: ", e);  // Log the error with the exception details
@@ -82,6 +82,13 @@ public class GoalService {
     }
     
     public List<Goal> getAllGoalsForUser(Long userId) {
-        return goalRepository.findByUserId(userId);
+        List<Goal> goals = goalRepository.findByUserId(userId);
+        if (goals == null || goals.isEmpty()) {
+            logger.error("No goals found for user with id: {}", userId);
+            throw new GoalNotFoundException("No goals found for user with id: " + userId);
+        }
+        return goals;
     }
+
+
 }

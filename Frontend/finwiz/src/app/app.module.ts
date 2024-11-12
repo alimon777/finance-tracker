@@ -22,6 +22,7 @@ import { NewsComponent } from './pages/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { UpdateGoalModalComponent } from './pages/update-goal-modal/update-goal-modal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { UpdateGoalModalComponent } from './pages/update-goal-modal/update-goal-
     PieChartComponent,
     NewsComponent,
     UpdateGoalModalComponent,
+
   ],
   imports: [
     LayoutComponent,
@@ -47,7 +49,9 @@ import { UpdateGoalModalComponent } from './pages/update-goal-modal/update-goal-
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
+    MatSnackBarModule
+
   ],
   providers: [
     {

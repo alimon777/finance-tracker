@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GoalService } from 'src/app/service/goal/goal.service';
 import { Goal } from 'src/app/models/goal';
 import { StorageService } from 'src/app/service/storage/storage.service';
+import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-goal',
@@ -14,9 +16,9 @@ export class GoalComponent implements OnInit {
 
   goal: Goal = {
     goalName: '',
-    value: 0,
+    value: null,
     description: '',
-    durationInMonths: 0,
+    durationInMonths: null,
     startDate: new Date()
   };
   goals: any[] = [];
@@ -24,7 +26,10 @@ export class GoalComponent implements OnInit {
   selectedGoal: any | null = null;
   showEditModal: boolean = false;
 
-  constructor(private goalService: GoalService, private storageService: StorageService) { }
+ 
+
+
+  constructor(private goalService: GoalService, private storageService: StorageService, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
@@ -36,43 +41,88 @@ export class GoalComponent implements OnInit {
 
     }
   }
+  formSubmitted = false;
 
-  onSubmit(): void {
-    this.goal.userId=this.userId;
-    if (!this.goal.goalName || this.goal.value <= 0 || this.goal.durationInMonths <= 0) {
-      alert('All fields are required, and value/duration must be greater than zero!');
-      return;
+  onSubmit(form: NgForm): void {
+    this.formSubmitted = true;  // Set flag to true when save is attempted
+
+    if (form.invalid) {
+      this.snackbar.open('Please fill in all fields correctly', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+      return;  // Early return if form is invalid
     }
+
+    this.goal.userId = this.userId;
 
     this.goalService.createGoal(this.goal).subscribe(
       (newGoal) => {
         this.goals.push(newGoal);
-        this.resetForm();
+        form.resetForm();
+        this.formSubmitted = false;  // Reset the flag after a successful submission
+        this.snackbar.open('Goal Created Successfully', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
       },
       (error) => {
         console.error('Error saving goal:', error);
+        this.snackbar.open('Error saving goal', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
       }
     );
   }
-
+  
+  
   loadGoals(): void {
-    this.goalService.getAllGoals(this.userId).subscribe((data: Goal[]) => {
-      this.goals = data;
-  });
-}
-
-  confirmDelete(goalId: number): void {
-    const confirmDelete = window.confirm('Are you sure you want to delete this goal?');
-    if (confirmDelete) {
-      this.deleteGoal(goalId);
-    }
+    this.goalService.getAllGoals(this.userId).subscribe(
+      (data: Goal[]) => {
+        this.goals = data;
+      },
+      (error) => {
+        console.error('Error loading goals:', error);
+        this.snackbar.open('Failed to load goals. Please try again later.', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+      }
+    );
   }
+  
+
+  // confirmDelete(goalId: number): void {
+  //   const confirmDelete = window.confirm('Are you sure you want to delete this goal?');
+  //   if (confirmDelete) {
+  //     this.deleteGoal(goalId);
+  //   }
+  // }
 
   deleteGoal(goalId: number): void {
-    this.goalService.deleteGoal(goalId).subscribe(() => {
-      // Filter out the deleted goal from the local list of goals
-      this.goals = this.goals.filter(goal => goal.id !== goalId);
+    this.goalService.deleteGoal(goalId).subscribe( {
+      next: () =>{
+        this.goals = this.goals.filter(goal => goal.id !== goalId);
       this.loadGoals();
+      this.snackbar.open('Goal Deleted Successfully', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      })
+      },
+      error: () => {
+        console.error('Error deleting goal:');
+        this.snackbar.open('Error while deleting goal', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        })
+      }
     });
   }
   
@@ -81,6 +131,9 @@ export class GoalComponent implements OnInit {
   calculateDaysLeft(goal: Goal): number {
     const currentDate = new Date();
     const createdDate = new Date(goal.startDate);
+    if (goal.durationInMonths === null) {
+      return 0;  // If durationInMonths is null, return 0 days left
+    }
     const endDate = new Date(createdDate.setMonth(createdDate.getMonth() + goal.durationInMonths));
     
     // Calculate the difference in time
@@ -93,9 +146,9 @@ export class GoalComponent implements OnInit {
   resetForm(): void {
     this.goal = {
       goalName: '',
-      value: 0,
+      value:null,
       description: '',
-      durationInMonths: 0,
+      durationInMonths: null,
       startDate: new Date()
     };
   }
