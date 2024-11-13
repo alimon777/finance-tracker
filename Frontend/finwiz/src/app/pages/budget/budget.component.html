@@ -124,6 +124,9 @@
       <h2 class="text-lg font-semibold text-gray-800">Saved Budgets</h2>
       <span class="text-sm text-gray-500">{{ budgets.length }} budgets</span>
   </div>
+  <div *ngIf="budgets.length === 0" class="text-center text-gray-500 py-6">
+    <p>No budgets added yet</p>
+  </div>
   
   <div class="space-y-3 max-h-[calc(100vh-16rem)] overflow-y-auto pr-2 custom-scrollbar">
       <div *ngFor="let budget of budgets; let i = index" 
