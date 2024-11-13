@@ -3,7 +3,7 @@ import { GoalService } from 'src/app/service/goal/goal.service';
 import { Goal } from 'src/app/models/goal';
 import { StorageService } from 'src/app/service/storage/storage.service';
 import { NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'src/app/service/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-goal',
@@ -11,8 +11,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./goal.component.css']
 })
 export class GoalComponent implements OnInit {
-  userId:number=0;
-  user: any;
+  userId: number = 0;
+  goals: any[] = [];
+  formSubmitted = false;
+  goalIdToDelete: number | null = null;
+  selectedGoal: any | null = null;
+  showEditModal: boolean = false;
 
   goal: Goal = {
     goalName: '',
@@ -21,38 +25,27 @@ export class GoalComponent implements OnInit {
     durationInMonths: null,
     startDate: new Date()
   };
-  goals: any[] = [];
-  goalIdToDelete: number | null = null;
-  selectedGoal: any | null = null;
-  showEditModal: boolean = false;
 
- 
-
-
-  constructor(private goalService: GoalService, private storageService: StorageService, private snackbar: MatSnackBar) { }
+  constructor(
+    private goalService: GoalService,
+    private storageService: StorageService,
+    private snackbarService: SnackbarService
+  ) {}
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
-
     if (this.userId) {
       this.loadGoals();
     } else {
       console.error('User ID not found in local storage');
-
     }
   }
-  formSubmitted = false;
 
   onSubmit(form: NgForm): void {
-    this.formSubmitted = true;  // Set flag to true when save is attempted
-
+    this.formSubmitted = true;
     if (form.invalid) {
-      this.snackbar.open('Please fill in all fields correctly', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
-      return;  // Early return if form is invalid
+      this.snackbarService.show('Please fill in all fields correctly');
+      return;
     }
 
     this.goal.userId = this.userId;
@@ -61,92 +54,43 @@ export class GoalComponent implements OnInit {
       (newGoal) => {
         this.goals.push(newGoal);
         form.resetForm();
-        this.formSubmitted = false;  // Reset the flag after a successful submission
-        this.snackbar.open('Goal Created Successfully', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+        this.formSubmitted = false;
+        this.snackbarService.show('Goal Created Successfully');
       },
       (error) => {
-        console.error('Error saving goal:', error);
-        this.snackbar.open('Error saving goal', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
+        this.snackbarService.show(error.message);
       }
     );
   }
-  
-  
+
   loadGoals(): void {
-    this.goalService.getAllGoals(this.userId).subscribe(
-      (data: Goal[]) => {
+    this.goalService.getAllGoals(this.userId).subscribe({
+      next: (data: Goal[]) => {
         this.goals = data;
       },
-      (error) => {
-        console.error('Error loading goals:', error);
-        this.snackbar.open('Failed to load goals. Please try again later.', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-      }
-    );
-  }
-  
-
-  // confirmDelete(goalId: number): void {
-  //   const confirmDelete = window.confirm('Are you sure you want to delete this goal?');
-  //   if (confirmDelete) {
-  //     this.deleteGoal(goalId);
-  //   }
-  // }
-
-  deleteGoal(goalId: number): void {
-    this.goalService.deleteGoal(goalId).subscribe( {
-      next: () =>{
-        this.goals = this.goals.filter(goal => goal.id !== goalId);
-      this.loadGoals();
-      this.snackbar.open('Goal Deleted Successfully', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      })
-      },
-      error: () => {
-        console.error('Error deleting goal:');
-        this.snackbar.open('Error while deleting goal', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        })
+      error: (error) => {
+        this.snackbarService.show(error.message);
       }
     });
   }
-  
 
-  // Calculate remaining days for each goal
-  calculateDaysLeft(goal: Goal): number {
-    const currentDate = new Date();
-    const createdDate = new Date(goal.startDate);
-    if (goal.durationInMonths === null) {
-      return 0;  // If durationInMonths is null, return 0 days left
-    }
-    const endDate = new Date(createdDate.setMonth(createdDate.getMonth() + goal.durationInMonths));
-    
-    // Calculate the difference in time
-    const timeDiff = endDate.getTime() - currentDate.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));  // Convert time to days
-
-    return daysLeft >= 0 ? daysLeft : 0;  // Return 0 if the goal has passed
+  deleteGoal(goalId: number): void {
+    this.goalService.deleteGoal(goalId).subscribe({
+      next: () => {
+        this.goals = this.goals.filter(goal => goal.id !== goalId);
+        this.loadGoals();
+        this.snackbarService.show('Goal Deleted Successfully');
+      },
+      error: (error) => {
+        this.snackbarService.show(error.message);
+      }
+    });
   }
 
   resetForm(): void {
     this.goal = {
       goalName: '',
-      value:null,
+      value: null,
       description: '',
       durationInMonths: null,
       startDate: new Date()
@@ -166,5 +110,17 @@ export class GoalComponent implements OnInit {
       }
     }
     this.showEditModal = false;
+  }
+
+  calculateDaysLeft(goal: Goal): number {
+    const currentDate = new Date();
+    const createdDate = new Date(goal.startDate);
+    if (goal.durationInMonths === null) {
+      return 0;
+    }
+    const endDate = new Date(createdDate.setMonth(createdDate.getMonth() + goal.durationInMonths));
+    const timeDiff = endDate.getTime() - currentDate.getTime();
+    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return daysLeft >= 0 ? daysLeft : 0;
   }
 }

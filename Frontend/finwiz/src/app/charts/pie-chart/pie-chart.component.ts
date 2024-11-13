@@ -55,6 +55,7 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
     categoryCounts[2] = this.pieChartData.withdraw.HOUSING;
     categoryCounts[3] = this.pieChartData.withdraw.ENTERTAINMENT;
     categoryCounts[4] = this.pieChartData.withdraw.TRANSPORTATION;
+  
     // Prepare the chart data
     const pieChartData: ChartConfiguration<'pie', number[], string>['data'] = {
       labels: categories,
@@ -64,12 +65,17 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       }]
     };
   
-    // Chart options with label position at the bottom
+    // Chart options with label position at the bottom and adjusted position
     const pieChartOptions: ChartConfiguration<'pie', number[], string>['options'] = {
       responsive: true,
+      layout: {
+        padding: {
+          left: 40, // Add padding to the left to move the chart towards the right
+        }
+      },
       plugins: {
         legend: {
-          position: 'bottom', // Set the legend position to bottom
+          position: 'right', // Set the legend position to the right
           labels: {
             boxWidth: 20, // Optional: Customize label box width
             padding: 15 // Optional: Add some space between the labels
@@ -85,5 +91,6 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       options: pieChartOptions,
     });
   }
+  
   
 }

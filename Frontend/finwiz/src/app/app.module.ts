@@ -24,6 +24,9 @@ import { CommonModule } from '@angular/common';
 import { UpdateGoalModalComponent } from './pages/update-goal-modal/update-goal-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { AuthGuardService } from './service/auth/auth-guard.service';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +61,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       provide: HTTP_INTERCEPTORS,
       useClass: CustomInterceptor,
       multi: true
-    }
+    },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

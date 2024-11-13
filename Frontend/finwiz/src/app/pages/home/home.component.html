@@ -1,8 +1,12 @@
-<div class="dashboard-container bg-blue-50 flex flex-col md:flex-row gap-6">
+<div class="bg-blue-700 flex flex-col items-center p-3">
+  <h1 class="text-2xl font-bold text-white">Dashboard</h1>
+    <p class="text-blue-100 mt-1">Track your income and expenses</p>
+</div>
+<div class="dashboard-container bg-blue-50 flex flex-col md:flex-row gap-6 ">
   <div class="flex flex-col md:flex-row gap-6 w-full">
     
-    <!-- Stats Container: Transaction Totals -->
-    <div class="stats-container flex-1 p-6 bg-blue-100 shadow-md rounded-lg">
+    <!-- Stats Container -->
+    <div class="stats-container flex-1 pl-6 pr-6 pt-4 bg-blue-100 shadow-md rounded-lg">
       <h3 class="text-2xl font-semibold text-blue-950 mb-4">Transaction Totals</h3>
       
       <!-- Weekly Option -->
@@ -24,7 +28,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </div>
-
+    
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isWeeklyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
           <p>Entertainment: {{ expenditureSummary?.weekly?.withdraw?.ENTERTAINMENT || 0 }}</p>
@@ -53,7 +57,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </div>
-
+    
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isMonthlyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
           <p>Entertainment: {{ expenditureSummary?.monthly?.withdraw?.ENTERTAINMENT || 0 }}</p>
@@ -82,7 +86,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </div>
-
+    
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isYearlyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
           <p>Entertainment: {{ expenditureSummary?.yearly?.withdraw?.ENTERTAINMENT || 0 }}</p>
@@ -92,15 +96,18 @@
         </div>
       </div>
     </div>
+    
 
-    <!-- Charts Container: Line and Pie Charts -->
-    <div class="charts-container flex-1 p-6 bg-blue-50  rounded-lg min-w-0">
+    <!-- Charts Container -->
+    <div class="charts-container flex-1 bg-blue-50 rounded-lg min-w-0 overflow-y-clip">
+      <h2 class="mt-4 mb-1">Spending Trends</h2>
       <app-line-chart [lineChartData]="lineChartData"></app-line-chart>
+      <h2 class="mt-[-20px] mb-1">Expense Distribution</h2>
       <app-pie-chart [pieChartData]="pieChartData"></app-pie-chart>
     </div>
     
     <!-- Financial News Component -->
-    <div class="financial-news flex-1 p-6 bg-blue-100 shadow-md rounded-lg">
+    <div class="financial-news flex-1 pl-6 pr-6 bg-blue-100 shadow-md rounded-lg">
       <app-news></app-news>
     </div>
   </div>

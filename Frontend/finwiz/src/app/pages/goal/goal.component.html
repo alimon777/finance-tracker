@@ -1,124 +1,164 @@
-<div class="goal-container max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Goal Management</h2>
+<!-- Goal Management Container -->
+<div class="container mx-auto max-w-7xl">
+  <div class="bg-white shadow-lg overflow-hidden">
+    <div class="bg-blue-700 flex flex-col items-center p-3">
+      <h1 class="text-2xl font-bold text-white">Manage Goals</h1>
+      <p class="text-blue-100 mt-1">Track and manage your financial goals</p>
+    </div>
 
-  <form #goalForm="ngForm" (ngSubmit)="onSubmit(goalForm)" class="mb-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <label for="goalName" class="block text-sm font-medium text-gray-700">Goal Name:</label>
-        <input 
-            type="text" 
-            [(ngModel)]="goal.goalName" 
-            name="goalName" 
-            #goalName="ngModel"
-            required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
-            [ngClass]="{'border-red-500': goalName.invalid && (goalName.touched || formSubmitted)}">
-        <div *ngIf="goalName.invalid && (goalName.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          Goal Name is required.
-        </div>
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 mt-[-10px]">
+      <!-- Form Section -->
+      <div class="bg-gray-50 rounded-lg p-3">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Create New Goal</h2>
+        
+        <form #goalForm="ngForm" (ngSubmit)="onSubmit(goalForm)" class="space-y-4">
+          <div>
+            <label for="goalName" class="block text-sm font-medium text-gray-700 mb-1">Goal Name</label>
+            <input 
+              type="text" 
+              [(ngModel)]="goal.goalName" 
+              name="goalName" 
+              #goalName="ngModel"
+              required 
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              [ngClass]="{'border-red-500': goalName.invalid && (goalName.touched || formSubmitted)}"
+            />
+            <div *ngIf="goalName.invalid && (goalName.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+              Goal Name is required.
+            </div>
+          </div>
+
+          <div>
+            <label for="value" class="block text-sm font-medium text-gray-700 mb-1">Target Value</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2 text-gray-500">$</span>
+              <input 
+                type="number" 
+                [(ngModel)]="goal.value" 
+                name="value" 
+                #value="ngModel"
+                required 
+                min="1"
+                class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                [ngClass]="{'border-red-500': value.invalid && (value.touched || formSubmitted)}"
+              />
+            </div>
+            <div *ngIf="value.invalid && (value.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+              <span *ngIf="value.errors?.['required']">Value is required.</span>
+              <span *ngIf="value.errors?.['min']">Value must be greater than 0.</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <input 
+              type="text" 
+              [(ngModel)]="goal.description" 
+              name="description" 
+              #description="ngModel"
+              required 
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              [ngClass]="{'border-red-500': description.invalid && (description.touched || formSubmitted)}"
+            />
+            <div *ngIf="description.invalid && (description.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+              Description is required.
+            </div>
+          </div>
+
+          <div>
+            <label for="durationInMonths" class="block text-sm font-medium text-gray-700 mb-1">Duration (Months)</label>
+            <input 
+              type="number" 
+              [(ngModel)]="goal.durationInMonths" 
+              name="durationInMonths" 
+              #durationInMonths="ngModel"
+              required 
+              min="1"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              [ngClass]="{'border-red-500': durationInMonths.invalid && (durationInMonths.touched || formSubmitted)}"
+            />
+            <div *ngIf="durationInMonths.invalid && (durationInMonths.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
+              <span *ngIf="durationInMonths.errors?.['required']">Duration is required.</span>
+              <span *ngIf="durationInMonths.errors?.['min']">Duration must be greater than 0.</span>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium"
+            [disabled]="goalForm.invalid"
+          >
+            Save Goal
+          </button>
+        </form>
       </div>
-  
-      <div>
-        <label for="value" class="block text-sm font-medium text-gray-700">Value:</label>
-        <input 
-            type="number" 
-            [(ngModel)]="goal.value" 
-            name="value" 
-            #value="ngModel"
-            required 
-            min="1"
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
-            [ngClass]="{'border-red-500': value.invalid && (value.touched || formSubmitted)}">
-        <div *ngIf="value.invalid && (value.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <span *ngIf="value.errors?.['required']">Value is required.</span>
-          <span *ngIf="value.errors?.['min']">Value must be greater than 0.</span>
+
+      <!-- Goals List Section -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-gray-800">Saved Goals</h2>
+          <span class="text-sm text-gray-500">{{ goals.length }} goals</span>
         </div>
-      </div>
-  
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
-        <input 
-            type="text" 
-            [(ngModel)]="goal.description" 
-            name="description" 
-            #description="ngModel"
-            required 
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
-            [ngClass]="{'border-red-500': description.invalid && (description.touched || formSubmitted)}">
-        <div *ngIf="description.invalid && (description.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          Description is required.
+
+        <!-- No Goals Message -->
+        <div *ngIf="goals.length === 0" class="text-center text-gray-500 py-6">
+          <p>No goals added yet</p>
         </div>
-      </div>
-  
-      <div>
-        <label for="durationInMonths" class="block text-sm font-medium text-gray-700">Duration (Months):</label>
-        <input 
-            type="number" 
-            [(ngModel)]="goal.durationInMonths" 
-            name="durationInMonths" 
-            #durationInMonths="ngModel"
-            required 
-            min="1"
-            class="form-control mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" 
-            [ngClass]="{'border-red-500': durationInMonths.invalid && (durationInMonths.touched || formSubmitted)}">
-        <div *ngIf="durationInMonths.invalid && (durationInMonths.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
-          <span *ngIf="durationInMonths.errors?.['required']">Duration is required.</span>
-          <span *ngIf="durationInMonths.errors?.['min']">Duration must be greater than 0.</span>
+
+        <!-- Goals List -->
+        <div class="space-y-3 max-h-[calc(100vh-16rem)] overflow-y-auto pr-2 custom-scrollbar">
+          <div *ngFor="let goal of goals; let i = index" 
+            class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-base font-medium text-blue-600">{{ goal.goalName }}</span>
+              <button 
+                (click)="deleteGoal(goal.id)" 
+                class="text-gray-400 hover:text-red-500 focus:outline-none"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Target Value</span>
+                <span class="font-medium text-green-600">${{ goal.value.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Duration</span>
+                <span class="font-medium">{{ goal.durationInMonths }} Months</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Days Left</span>
+                <span class="font-medium">{{ calculateDaysLeft(goal) }} days</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600 block">Description</span>
+                <span class="font-medium">{{ goal.description }}</span>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-gray-100 flex justify-end">
+              <button 
+                (click)="openEditModal(goal)" 
+                class="text-blue-600 hover:text-blue-700 focus:outline-none text-sm font-medium"
+              >
+                Edit Goal
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    
-    <!-- Save Goal Button: Disabled if form is invalid -->
-    <button 
-      type="submit" 
-      class="bg-indigo-600 text-white py-2 px-4 mt-4 w-full rounded-md font-semibold hover:bg-indigo-500 focus:outline-none"
-      [disabled]="goalForm.invalid">  <!-- Disable button if form is invalid -->
-      Save Goal
-    </button>
-  </form>
-
-  <!-- Display message if no goals exist -->
-  <div *ngIf="goals.length === 0" class="text-center text-gray-500 py-6">
-    <p>No goals yet</p>
   </div>
-
-  <!-- Goals List -->
-  <div *ngIf="goals.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-    <div *ngFor="let goal of goals; let i = index" class="bg-white shadow-lg rounded-lg p-4 flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-indigo-300">
-      <!-- Goal Header -->
-      <div class="flex justify-between items-center mb-2">
-        <h3 class="text-lg font-semibold text-gray-800">{{ goal.goalName }}</h3>
-        <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-sm">{{ i + 1 }}</span>
-      </div>
-
-      <!-- Goal Body -->
-      <div class="mb-2 text-gray-600">
-        <p><span class="font-medium">Value:</span> {{ goal.value | currency }}</p>
-        <p><span class="font-medium">Description:</span> {{ goal.description }}</p>
-        <p><span class="font-medium">Start Date:</span> {{ goal.startDate | date }}</p>
-        <p><span class="font-medium">Duration:</span> {{ goal.durationInMonths }} Months</p>
-        <p><span class="font-medium">Days Left:</span> {{ calculateDaysLeft(goal) }} days</p>
-      </div>
-
-
-      <!-- Goal Footer -->
-      <div class="mt-auto flex justify-end space-x-2">
-        <button 
-          (click)="openEditModal(goal)" 
-          class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none">
-          Edit
-        </button>
-        <button (click)="deleteGoal(goal.id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none">
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Component -->
-  <app-update-goal-modal 
-    *ngIf="showEditModal" 
-    [goal]="selectedGoal" 
-    (close)="onModalClose($event)">
-  </app-update-goal-modal>
 </div>
+
+<!-- Modal Component -->
+<app-update-goal-modal 
+  *ngIf="showEditModal" 
+  [goal]="selectedGoal" 
+  (close)="onModalClose($event)">
+</app-update-goal-modal>

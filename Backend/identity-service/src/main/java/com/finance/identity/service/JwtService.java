@@ -28,12 +28,11 @@ public class JwtService {
     }
 
     private String createToken(Map<String, Object> claims, String userName) {
-    	System.out.println("cReating token.....");
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) //30 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) //5 minutes
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

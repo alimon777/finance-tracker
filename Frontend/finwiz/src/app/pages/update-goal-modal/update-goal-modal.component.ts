@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Goal } from 'src/app/models/goal';
 import { GoalService } from 'src/app/service/goal/goal.service';
+import { SnackbarService } from 'src/app/service/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-update-goal-modal',
@@ -9,21 +10,21 @@ import { GoalService } from 'src/app/service/goal/goal.service';
 })
 export class UpdateGoalModalComponent {
 
-  @Input()
-  goal!: Goal;
+  @Input() goal!: Goal;
   @Output() close = new EventEmitter<Goal | null>();
 
   isVisible = true;
 
-  constructor(private goalService: GoalService) {}
+  constructor(private goalService: GoalService, private snackbarService: SnackbarService) {}
 
   onSubmit(): void {
     this.goalService.updateGoal(this.goal).subscribe(
       (updatedGoal) => {
+        this.snackbarService.show('Goal updated successfully'); // Show success message
         this.close.emit(updatedGoal);
       },
       (error) => {
-        console.error('Error updating goal:', error);
+        this.snackbarService.show(error.message); 
         this.close.emit(null);
       }
     );

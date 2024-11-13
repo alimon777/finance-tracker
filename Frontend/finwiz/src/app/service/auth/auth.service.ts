@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { StorageService } from '../storage/storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,17 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class AuthService {
   private baseUrl = 'http://localhost:8000/auth'; // Your Spring Boot backend URL
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    public jwtHelper: JwtHelperService,
+    private storageService: StorageService,
+    private router: Router
+  ) {}
+
+  public isAuthenticated(): boolean {
+    const token = this.storageService.getToken();
+    return !this.jwtHelper.isTokenExpired(token);
+  }
 
   // Login method to authenticate the user
   login(credentials: any): Observable<any> {
@@ -27,29 +40,40 @@ export class AuthService {
     );
   }
 
-  // Method to store token in local storage
-  storeToken(response: { token: string; userId: string; username: string , email: string}) {
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('userId', response.userId);
-    localStorage.setItem('username', response.username);
-    localStorage.setItem('email',response.email);
-    localStorage.removeItem('budgetSuggestion'); 
-  }
-
-  // Method to retrieve token from local storage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return this.storageService.getToken();
   }
 
-  // Method to clear token from local storage
-  clearToken() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    localStorage.removeItem('email');
-    localStorage.removeItem('budgetSuggestion');
+  // Check if the token is expired
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    console.log(token, "hello");
+    if (!token) {
+      return true;
+    }
+    
+    
+    const tokenPayload = this.decodeToken(token);
+    const expirationTime = tokenPayload.exp * 1000; // JWT expiration is in seconds, convert to milliseconds
+    const currentTime = Date.now();
+    console.log(expirationTime , currentTime);
+    return currentTime >= expirationTime;
   }
 
+  // Decode the JWT token and extract its payload
+  decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);  // Decode from base64
+    return JSON.parse(decodedPayload);  // Parse as JSON
+  }
+
+
+  // Clear token and log the user out
+  clearToken(): void {
+    this.storageService.clearStorage();
+    this.router.navigate(['/login']); // Redirect to login
+  }
+ 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
 
