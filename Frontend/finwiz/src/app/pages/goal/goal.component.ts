@@ -69,7 +69,7 @@ export class GoalComponent implements OnInit {
         this.goals = data;
       },
       error: (error) => {
-        this.snackbarService.show(error.message);
+        //this.snackbarService.show(error.message);
       }
     });
   }
