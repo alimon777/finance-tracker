@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
-    private Long userId; // or appropriate type
-    private String username;  // Assuming 'users' is your user class
+    private Long userId; 
+    private String username;  
     private String token;
     private String email;
 }

@@ -10,6 +10,9 @@ import { TransactionComponent } from './pages/transaction/transaction.component'
 import { BudgetComponent } from './pages/budget/budget.component';
 import { GoalComponent } from './pages/goal/goal.component';
 import { AiComponent } from './pages/ai/ai.component';
+import { 
+  AuthGuardService as AuthGuard 
+} from './service/auth/auth-guard.service';
 
 const routes: Routes = [
   // { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -20,12 +23,12 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'transaction', component: TransactionComponent },
-      { path: 'budget', component: BudgetComponent },
-      { path: 'goal', component: GoalComponent },
-      { path: 'ai', component: AiComponent },
-      { path: '**', component:PageNotFoundComponent }
+      { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
+      { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard]  },
+      { path: 'budget', component: BudgetComponent, canActivate: [AuthGuard]  },
+      { path: 'goal', component: GoalComponent, canActivate: [AuthGuard]  },
+      { path: 'ai', component: AiComponent, canActivate: [AuthGuard]  },
+      // { path: '**', component:PageNotFoundComponent  }
     ]
   },
   // Wildcard route for a 404 page redirection
