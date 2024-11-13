@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Transaction } from 'src/app/models/transaction';
 import { HttpClient } from '@angular/common/http';
 import { Budget } from 'src/app/models/budget';
 

@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Transaction } from 'src/app/models/transaction';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
 import { StorageService } from 'src/app/service/storage/storage.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'src/app/service/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-transaction',
@@ -37,12 +37,12 @@ export class TransactionComponent implements OnInit {
     private accountService: AccountService,
     private transactionService: TransactionService,
     private storageService: StorageService,
-    private snackbar: MatSnackBar
+    private snackbarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId(); 
-    this.loadAccounts(); // Load accounts on initialization
+    this.loadAccounts(); 
     this.loadTransactions();
   }
   getTotalBalance() {
@@ -50,18 +50,15 @@ export class TransactionComponent implements OnInit {
   }
 
   loadAccounts(): void {
-    if (this.userId) {
       this.accountService.getAllAccounts(this.userId).subscribe({
         next: (response) => {
           this.accounts = response.data || []; // Load accounts for the user, default to an empty array if null
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error loading accounts:', error.message);
+          // this.snackbarService.show(error.message);
+          // console.error('Error loading accounts:', error.message);
         }
       });
-    } else {
-      console.warn('User ID not found in local storage.'); // Warn if userId is not found
-    }
   }
 
   onSubmitAccount(): void {
@@ -73,17 +70,13 @@ export class TransactionComponent implements OnInit {
         if (response.data) { // Ensure response.data is not null
           this.accounts.push(response.data); // Add the created account to the list
         }
-        //this.loadAccounts();
+        this.snackbarService.show("Successfully added account");
         this.loadTransactions();
         this.newAccount = new Account(); // Reset the form
       },
-      error: (error: HttpErrorResponse) => { 
-        this.snackbar.open(`Error adding account: ${error.message}`, 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-        console.error('Error adding account:', error.message);
+      error: (error: HttpErrorResponse) => {
+        this.snackbarService.show(error.message);
+        // console.error('Error adding account:', error.message);
       }
     });
   }
@@ -91,28 +84,27 @@ export class TransactionComponent implements OnInit {
     this.accountService.deleteAccount(accountId).subscribe({
       next: () => {
         this.accounts = this.accounts.filter(account => account.id !== accountId);
+        this.snackbarService.show("Successfully deleted account");
         this.loadAccounts(); // Remove the deleted account from the list
         this.loadTransactions();
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error deleting account:', error.message);
+        this.snackbarService.show(error.message);
+        // console.error('Error deleting account:', error.message);
       }
     });
   }
 
   loadTransactions(): void {
-    if (this.userId) {
       this.transactionService.getTransactions(this.userId).subscribe({
         next: (response: Transaction[]) => { // Specify the response type here
           this.transactions = response; // Ensure the response structure matches
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error loading transactions:', error.message);
+          // this.snackbarService.show(error.message);
+          // console.error('Error loading transactions:', error.message);
         },
       });
-    } else {
-      console.warn('User ID not found in local storage.');
-    }
   }
 
   onSubmitTransaction(): void {
@@ -121,21 +113,16 @@ export class TransactionComponent implements OnInit {
     this.newTransaction.userId=this.userId;    
     this.transactionService.addTransaction(this.newTransaction).subscribe({
       next: (response) => {
-        console.log('Transaction added', response);
+        this.snackbarService.show("Transaction added successfully");
         this.loadTransactions(); // Reload transactions after adding
         this.loadAccounts();
         this.resetTransactionForm(); // Reset form after submission
       },
       error: (error: HttpErrorResponse) => { 
-        this.snackbar.open(`${error.message}`, 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        });
-        console.error('Error adding transaction:', error.message);
+        this.snackbarService.show(error.message);
+        // console.error('Error adding transaction:', error.message);
       }
     });
-
   }
 
   resetTransactionForm(): void {

@@ -1,116 +1,141 @@
 <!-- Navigation Bar -->
- <div class="flex flex-col">
-<nav class="bg-blue-700 border-blue-700 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <!-- Logo and Brand -->
-            <div class="flex items-center">
-                <a href="/" class="flex items-center space-x-3">
-                    <!-- Logo Icon -->
-                    <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-2xl font-bold text-white">finWiz</span>
-                </a>
-            </div>
-
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex md:items-center md:space-x-1">
-                <a [routerLink]="['/home']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600 text-white"
-                   class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-home mr-2"></i>Home
-                </a>
-                <a [routerLink]="['/transaction']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600 text-white"
-                   class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-exchange-alt mr-2"></i>Transactions
-                </a>
-                <a [routerLink]="['/budget']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600 text-white"
-                   class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-chart-pie mr-2"></i>Budgets
-                </a>
-                <a [routerLink]="['/goal']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600 text-white"
-                   class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-bullseye mr-2"></i>Goals
-                </a>
-                <a [routerLink]="['/ai']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600 text-white"
-                   class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-robot mr-2"></i>AI Suggestions
-                </a>
-            </div>
-
-            <!-- User Profile Section -->
-            <div class="hidden md:flex items-center space-x-4">
-                <div class="flex items-center space-x-3">
-                    <div class="flex flex-col items-end">
-                        <span class="text-sm text-blue-100">Welcome back,</span>
-                        <span class="text-sm font-medium text-white">{{ username }}</span>
-                    </div>
-                    <button (click)="logout()" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
-                        <i class="fas fa-sign-out-alt mr-2"></i>
-                        Logout
-                    </button>
+<div class="flex flex-col">
+    <nav class="bg-blue-700 border-blue-700 md:sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a [routerLink]="['/home']" class="flex items-center space-x-3">
+                        
+                        <span class="text-2xl font-bold text-white">finWiz</span>
+                    </a>
                 </div>
-            </div>
-
-            <!-- Mobile menu button -->
-            <div class="flex items-center md:hidden">
-                <button type="button" 
-                        (click)="toggleMobileMenu()"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile menu, toggle classes based on menu state -->
-    <div class="md:hidden" [ngClass]="{'block': isMobileMenuOpen, 'hidden': !isMobileMenuOpen}">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-            <a [routerLink]="['/home']" routerLinkActive="bg-blue-500 text-white"
-               class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                <i class="fas fa-home mr-2"></i>Home
-            </a>
-            <a [routerLink]="['/transaction']" routerLinkActive="bg-blue-500 text-white"
-               class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                <i class="fas fa-exchange-alt mr-2"></i>Transactions
-            </a>
-            <a [routerLink]="['/budget']" routerLinkActive="bg-blue-500 text-white"
-               class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                <i class="fas fa-chart-pie mr-2"></i>Budgets
-            </a>
-            <a [routerLink]="['/goal']" routerLinkActive="bg-blue-500 text-white"
-               class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                <i class="fas fa-bullseye mr-2"></i>Goals
-            </a>
-            <a [routerLink]="['/ai']" routerLinkActive="bg-blue-500 text-white"
-               class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
-                <i class="fas fa-robot mr-2"></i>AI Suggestions
-            </a>
-            
-            <!-- Mobile User Profile -->
-            <div class="pt-4 pb-3 border-t border-blue-700">
-                <div class="flex items-center px-3">
-                    <div class="flex-1 min-w-0">
-                        <div class="text-sm font-medium text-white">{{ username }}</div>
+    
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex md:items-center md:space-x-1">
+                    <a [routerLink]="['/home']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                        <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        Home
+                    </a>
+                    <a [routerLink]="['/transaction']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                        <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                        </svg>
+                        Transactions
+                    </a>
+                    <a [routerLink]="['/budget']"routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                        <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                        </svg>
+                        Budgets
+                    </a>
+                    <a [routerLink]="['/goal']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                        <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="6" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="2" stroke-width="2"/>
+                        </svg>
+                        Goals
+                    </a>
+                    <a [routerLink]="['/ai']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="px-4 py-2 rounded-md text-lg font-medium text-blue-100 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                        <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                        AI Suggestions
+                    </a>
+                </div>
+    
+                <!-- User Profile Section -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex flex-col items-end">
+                            <span class="text-sm text-blue-100">Welcome,</span>
+                            <span class="text-lg font-medium text-white">{{ username }}</span>
+                        </div>
+                        <button onclick="logout()" 
+                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
                     </div>
-                    <button (click)="logout()" 
-                            class="ml-auto flex-shrink-0 bg-red-600 p-1 rounded-full text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="ml-2">Logout</span>
+                </div>
+    
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" 
+                            onclick="toggleMobileMenu()"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
+    
+        <!-- Mobile menu -->
+        <div class="md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a [routerLink]="['/home']"routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600" class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Home
+                </a>
+                <a [routerLink]="['/transaction']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                    </svg>
+                    Transactions
+                </a>
+                <a [routerLink]="['/budget']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                    </svg>
+                    Budgets
+                </a>
+                <a [routerLink]="['/goal']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="6" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="2" stroke-width="2"/>
+                    </svg>
+                    Goals
+                </a>
+                <a [routerLink]="['/ai']" routerLinkActive="bg-gradient-to-t from-blue-700 to-blue-600"  class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:text-white hover:bg-blue-500">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                    </svg>
+                    AI Suggestions
+                </a>
+                
+                <!-- Mobile User Profile -->
+                <div class="pt-4 pb-3 border-t border-blue-700">
+                    <div class="flex items-center px-3">
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-medium text-white">{{ username }}</div>
+                        </div>
+                        <button onclick="logout()" 
+                                class="ml-auto flex-shrink-0 bg-red-600 p-4 rounded-full text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Router Outlet -->
+    <div class="max-h-[calc(100vh-25rem)]">
+        <router-outlet></router-outlet>
     </div>
-</nav>
-
-<!-- Router Outlet -->
- <div class="max-h-[calc(100vh-25rem)]">
-<router-outlet></router-outlet>
-</div>
-</div>
+    </div>

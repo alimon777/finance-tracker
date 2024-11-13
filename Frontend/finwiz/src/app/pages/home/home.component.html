@@ -7,7 +7,7 @@
     
     <!-- Stats Container -->
     <div class="stats-container flex-1 pl-6 pr-6 pt-4 bg-blue-100 shadow-md rounded-lg">
-      <h3 class="text-2xl font-semibold text-blue-950 mb-4">Transaction Totals</h3>
+      <h3 class="place-self-center text-2xl font-semibold text-blue-950 mb-4">Transaction Totals</h3>
       
       <!-- Weekly Option -->
       <div 
@@ -18,8 +18,8 @@
         <div class="flex items-center justify-between">
           <div>
             <h4 class="text-xl font-medium text-blue-950">This Week</h4>
-            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.weekly?.deposit?.INCOME || 0 }}</p>
-            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.weekly?.withdrawTotal || 0 }}</p>
+            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.weekly?.deposit?.INCOME || 0 | currency:'INR'}}</p>
+            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.weekly?.withdrawTotal || 0 | currency:'INR'}}</p>
           </div>
           <svg 
             class="w-5 h-5 text-blue-950 transition-transform duration-300" 
@@ -31,10 +31,10 @@
     
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isWeeklyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
-          <p>Entertainment: {{ expenditureSummary?.weekly?.withdraw?.ENTERTAINMENT || 0 }}</p>
-          <p>Transportation: {{ expenditureSummary?.weekly?.withdraw?.TRANSPORTATION || 0 }}</p>
-          <p>Housing: {{ expenditureSummary?.weekly?.withdraw?.HOUSING || 0 }}</p>
-          <p>Food: {{ expenditureSummary?.weekly?.withdraw?.FOOD || 0 }}</p>
+          <p>Entertainment: {{ expenditureSummary?.weekly?.withdraw?.ENTERTAINMENT || 0 | currency:'INR'}}</p>
+          <p>Transportation: {{ expenditureSummary?.weekly?.withdraw?.TRANSPORTATION || 0 | currency:'INR'}}</p>
+          <p>Housing: {{ expenditureSummary?.weekly?.withdraw?.HOUSING || 0 | currency:'INR'}}</p>
+          <p>Food: {{ expenditureSummary?.weekly?.withdraw?.FOOD || 0 | currency:'INR'}}</p>
         </div>
       </div>
       
@@ -47,8 +47,8 @@
         <div class="flex items-center justify-between">
           <div>
             <h4 class="text-xl font-medium text-blue-950">This Month</h4>
-            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.monthly?.deposit?.INCOME || 0 }}</p>
-            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.monthly?.withdrawTotal || 0 }}</p>
+            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.monthly?.deposit?.INCOME || 0 | currency:'INR'}}</p>
+            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.monthly?.withdrawTotal || 0 | currency:'INR'}}</p>
           </div>
           <svg 
             class="w-5 h-5 text-blue-950 transition-transform duration-300" 
@@ -60,10 +60,10 @@
     
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isMonthlyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
-          <p>Entertainment: {{ expenditureSummary?.monthly?.withdraw?.ENTERTAINMENT || 0 }}</p>
-          <p>Transportation: {{ expenditureSummary?.monthly?.withdraw?.TRANSPORTATION || 0 }}</p>
-          <p>Housing: {{ expenditureSummary?.monthly?.withdraw?.HOUSING || 0 }}</p>
-          <p>Food: {{ expenditureSummary?.monthly?.withdraw?.FOOD || 0 }}</p>
+          <p>Entertainment: {{ expenditureSummary?.monthly?.withdraw?.ENTERTAINMENT || 0 | currency:'INR'}}</p>
+          <p>Transportation: {{ expenditureSummary?.monthly?.withdraw?.TRANSPORTATION || 0 | currency:'INR'}}</p>
+          <p>Housing: {{ expenditureSummary?.monthly?.withdraw?.HOUSING || 0 | currency:'INR'}}</p>
+          <p>Food: {{ expenditureSummary?.monthly?.withdraw?.FOOD || 0 | currency:'INR'}}</p>
         </div>
       </div>
       
@@ -76,8 +76,8 @@
         <div class="flex items-center justify-between">
           <div>
             <h4 class="text-xl font-medium text-blue-950">This Year</h4>
-            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.yearly?.deposit?.INCOME || 0 }}</p>
-            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.yearly?.withdrawTotal || 0 }}</p>
+            <p class="text-md text-blue-950">Deposits: {{ expenditureSummary?.yearly?.deposit?.INCOME || 0 | currency:'INR'}}</p>
+            <p class="text-md text-blue-950">Withdrawals: {{ expenditureSummary?.yearly?.withdrawTotal || 0 | currency:'INR'}}</p>
           </div>
           <svg 
             class="w-5 h-5 text-blue-950 transition-transform duration-300" 
@@ -89,21 +89,22 @@
     
         <!-- Dropdown for Withdrawal Breakdown -->
         <div *ngIf="isYearlyExpanded" class="ml-4 mt-2 text-sm text-blue-950">
-          <p>Entertainment: {{ expenditureSummary?.yearly?.withdraw?.ENTERTAINMENT || 0 }}</p>
-          <p>Transportation: {{ expenditureSummary?.yearly?.withdraw?.TRANSPORTATION || 0 }}</p>
-          <p>Housing: {{ expenditureSummary?.yearly?.withdraw?.HOUSING || 0 }}</p>
-          <p>Food: {{ expenditureSummary?.yearly?.withdraw?.FOOD || 0 }}</p>
+          <p>Entertainment: {{ expenditureSummary?.yearly?.withdraw?.ENTERTAINMENT || 0 | currency:'INR'}}</p>
+          <p>Transportation: {{ expenditureSummary?.yearly?.withdraw?.TRANSPORTATION || 0 | currency:'INR'}}</p>
+          <p>Housing: {{ expenditureSummary?.yearly?.withdraw?.HOUSING || 0 | currency:'INR'}}</p>
+          <p>Food: {{ expenditureSummary?.yearly?.withdraw?.FOOD || 0 | currency:'INR'}}</p>
         </div>
       </div>
     </div>
     
 
     <!-- Charts Container -->
-    <div class="charts-container flex-1 bg-blue-50 rounded-lg min-w-0 overflow-y-clip">
-      <h2 class="mt-4 mb-1">Spending Trends</h2>
+    <div class="h-[450px] charts-container flex-1 bg-blue-50 rounded-lg min-w-0 overflow-y-clip">
+      <h2 class="place-self-center md:place-self-start font-medium mt-4 mb-1 text-blue-950">Spending Trends</h2>
       <app-line-chart [lineChartData]="lineChartData"></app-line-chart>
-      <h2 class="mt-[-20px] mb-1">Expense Distribution</h2>
+      <h2 class="place-self-center  md:place-self-start font-medium mt-[-20px] mb-1 text-blue-950">Expense Distribution</h2>
       <app-pie-chart [pieChartData]="pieChartData"></app-pie-chart>
+
     </div>
     
     <!-- Financial News Component -->

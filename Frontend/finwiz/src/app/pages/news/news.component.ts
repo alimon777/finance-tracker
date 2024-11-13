@@ -24,7 +24,7 @@ export class NewsComponent implements OnInit {
     this.loading = true; // Show loading state
     this.newsService.getFinancialNews().subscribe(
       (data: any) => {
-        this.articles = data.articles;
+        this.articles = data.articles.filter((article: any) => article.title !== '[Removed]');
         this.currentArticle = this.articles[this.currentArticleIndex]; // Set the first article
         this.loading = false; // Hide loading state
       },
