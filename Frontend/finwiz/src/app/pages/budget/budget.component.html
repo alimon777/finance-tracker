@@ -10,114 +10,110 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 mt-[-10px]">
           <!-- Form Section -->
           <div class="bg-gray-50 rounded-lg p-3">
-              <h2 class="text-lg font-semibold text-gray-800 mb-4">Create New Budget</h2>
-              
-              <form (ngSubmit)="saveBudget()" class="space-y-4">
-                  <!-- Date Range -->
-                  <div class="grid grid-cols-2 gap-4">
-                      <div>
-                          <label for="budgetStartDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                          <input 
-                              type="date" 
-                              [(ngModel)]="budget.budgetStartDate" 
-                              name="budgetStartDate" 
-                              required 
-                              [attr.min]="currentDate"
-                              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                          />
-                      </div>
-                      <div>
-                          <label for="budgetEndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                          <input 
-                              type="date" 
-                              [(ngModel)]="budget.budgetEndDate" 
-                              name="budgetEndDate" 
-                              required 
-                              [attr.min]="currentDate"
-                              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          />
-                      </div>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Create New Budget</h2>
+          
+            <form [formGroup]="budgetForm" (ngSubmit)="saveBudget()" class="space-y-4">
+              <!-- Date Range -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="budgetStartDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                  <input
+                    type="date"
+                    formControlName="budgetStartDate"
+                    required
+                    [attr.min]="currentDate"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label for="budgetEndDate" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                  <input
+                    type="date"
+                    formControlName="budgetEndDate"
+                    required
+                    [attr.min]="currentDate"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+          
+              <!-- Budget Categories -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="food" class="block text-sm font-medium text-gray-700 mb-1">Food Budget</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                    <input
+                      type="number"
+                      formControlName="food"
+                      required
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    />
                   </div>
-
-                  <!-- Budget Categories -->
-                  <div class="grid grid-cols-2 gap-4">
-                      <div>
-                          <label for="food" class="block text-sm font-medium text-gray-700 mb-1">Food Budget</label>
-                          <div class="relative">
-                              <span class="absolute left-3 top-2 text-gray-500">₹</span>
-                              <input 
-                                  type="number" 
-                                  [(ngModel)]="budget.food" 
-                                  name="food" 
-                                  required 
-                                  class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                  (input)="updateTotal()"
-                              />
-                          </div>
-                      </div>
-                      <div>
-                          <label for="housing" class="block text-sm font-medium text-gray-700 mb-1">Housing Budget</label>
-                          <div class="relative">
-                              <span class="absolute left-3 top-2 text-gray-500">₹</span>
-                              <input 
-                                  type="number" 
-                                  [(ngModel)]="budget.housing" 
-                                  name="housing" 
-                                  required 
-                                  class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                  (input)="updateTotal()"
-                              />
-                          </div>
-                      </div>
-                      <div>
-                          <label for="transportation" class="block text-sm font-medium text-gray-700 mb-1">Transportation</label>
-                          <div class="relative">
-                              <span class="absolute left-3 top-2 text-gray-500">₹</span>
-                              <input 
-                                  type="number" 
-                                  [(ngModel)]="budget.transportation" 
-                                  name="transportation" 
-                                  required 
-                                  class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                  (input)="updateTotal()"
-                              />
-                          </div>
-                      </div>
-                      <div>
-                          <label for="entertainment" class="block text-sm font-medium text-gray-700 mb-1">Entertainment</label>
-                          <div class="relative">
-                              <span class="absolute left-3 top-2 text-gray-500">₹</span>
-                              <input 
-                                  type="number" 
-                                  [(ngModel)]="budget.entertainment" 
-                                  name="entertainment" 
-                                  required 
-                                  class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                  (input)="updateTotal()"
-                              />
-                          </div>
-                      </div>
+                </div>
+                <div>
+                  <label for="housing" class="block text-sm font-medium text-gray-700 mb-1">Housing Budget</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                    <input
+                      type="number"
+                      formControlName="housing"
+                      required
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    />
                   </div>
-
-                  <!-- Total -->
-                  <div class="bg-white p-3 rounded-lg shadow-sm">
-                      <div class="flex justify-between items-center">
-                          <span class="text-base font-semibold text-gray-700">Total Budget:</span>
-                          <span [ngClass]="{'text-red-600': total < 0, 'text-green-600': total >= 0}" class="text-lg font-bold">
-                              {{ total < 0 ? '-₹' + (-total).toFixed(2) : '₹' + total.toFixed(2) }}
-                          </span>
-                      </div>
+                </div>
+                <div>
+                  <label for="transportation" class="block text-sm font-medium text-gray-700 mb-1">Transportation</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                    <input
+                      type="number"
+                      formControlName="transportation"
+                      required
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    />
                   </div>
-
-                  <!-- Submit Button -->
-                  <button 
-                      type="submit" 
-                      class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium"
-                  >
-                      Save Budget
-                  </button>
-              </form>
+                </div>
+                <div>
+                  <label for="entertainment" class="block text-sm font-medium text-gray-700 mb-1">Entertainment</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                    <input
+                      type="number"
+                      formControlName="entertainment"
+                      required
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Total -->
+              <div class="bg-white p-3 rounded-lg shadow-sm">
+                <div class="flex justify-between items-center">
+                  <span class="text-base font-semibold text-gray-700">Total Budget:</span>
+                  <span [ngClass]="{'text-red-600': total < 0, 'text-green-600': total >= 0}" class="text-lg font-bold">
+                    {{ total < 0 ? '-₹' + (-total).toFixed(2) : '₹' + total.toFixed(2) }}
+                  </span>
+                </div>
+              </div>
+          
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="budgetForm.invalid"
+                class="w-full py-2 px-4 rounded-lg transition-all duration-200 font-medium"
+                [ngClass]="{
+                  'bg-blue-600 text-white': !budgetForm.invalid,
+                  'bg-gray-300 text-gray-500': budgetForm.invalid
+                }"
+              >
+                Save Budget
+              </button>
+            </form>
           </div>
+          
 
           <!-- Saved Budgets Section -->
 <div class="bg-gray-50 rounded-lg p-4">

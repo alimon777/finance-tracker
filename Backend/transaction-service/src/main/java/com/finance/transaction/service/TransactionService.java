@@ -1,6 +1,5 @@
 package com.finance.transaction.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,20 +55,14 @@ public class TransactionService {
 
 		accountRepository.saveAndFlush(account);
 		Transaction savedTransaction = transactionRepository.save(transaction);
-		//budgetServiceClient.checkExceedance(savedTransaction);
 		return ResponseEntity.ok(new CustomResponse<>("Transaction successful", savedTransaction));
 	}
-
-//	public void addTransactions(List<Transaction> transactions) {
-//		List<Transaction> savedTransactions = transactionRepository.saveAll(transactions);
-//		// Create a response with the list of saved transactions
-//	}
 	
-	public ResponseEntity<CustomResponse<Transaction>> addTransaction(Transaction transaction) {
+	public CustomResponse<Transaction> addTransaction(Transaction transaction) {
 
 	    Account account = accountRepository.findByAccountNumber(transaction.getAccountNumber());
 	    if (account == null) {
-	        return new ResponseEntity<>(new CustomResponse<>("Account not found with account number: " + transaction.getAccountNumber(), null), HttpStatus.NOT_FOUND);
+	        return new CustomResponse<>("No account found for the transaction: " ,transaction);
 	    }
 
 	    if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
@@ -88,9 +81,10 @@ public class TransactionService {
 
 	    accountRepository.saveAndFlush(account);
 	    Transaction savedTransaction = transactionRepository.save(transaction);
-	    budgetServiceClient.checkExceedance(savedTransaction);
+	    if(savedTransaction.getTransactionType()== TransactionType.WITHDRAW)
+	    	budgetServiceClient.checkExceedance(savedTransaction);
 
-	    return ResponseEntity.ok(new CustomResponse<>("Transaction successful", savedTransaction));
+	    return new CustomResponse<>("Transaction successful", savedTransaction);
 	}
 
 }
