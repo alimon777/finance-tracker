@@ -38,11 +38,11 @@ public class TransactionController {
         return transactionService.addTransaction(transaction);
     }
     
-    @PostMapping(value="multiple",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addTransactions(@RequestBody List<Transaction> transactions) {
-        transactionService.addTransactions(transactions);
-        return ResponseEntity.ok("added");
-    }
+//    @PostMapping(value="multiple",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<String> addTransactions(@RequestBody List<Transaction> transactions) {
+//        transactionService.addTransactions(transactions);
+//        return ResponseEntity.ok("added");
+//    }
 
     // Endpoint to get all transactions of a user by userId
     @GetMapping("/{userId}")

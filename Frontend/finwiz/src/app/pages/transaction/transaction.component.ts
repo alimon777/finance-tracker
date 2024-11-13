@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Transaction } from 'src/app/models/transaction';
 import { TransactionService } from 'src/app/service/transaction/transaction.service';
 import { StorageService } from 'src/app/service/storage/storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-transaction',
@@ -35,7 +36,8 @@ export class TransactionComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private transactionService: TransactionService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -71,16 +73,20 @@ export class TransactionComponent implements OnInit {
         if (response.data) { // Ensure response.data is not null
           this.accounts.push(response.data); // Add the created account to the list
         }
-        this.loadAccounts();
+        //this.loadAccounts();
         this.loadTransactions();
         this.newAccount = new Account(); // Reset the form
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => { 
+        this.snackbar.open(`Error adding account: ${error.message}`, 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
         console.error('Error adding account:', error.message);
       }
     });
   }
-
   onDeleteAccount(accountId: number): void {
     this.accountService.deleteAccount(accountId).subscribe({
       next: () => {
@@ -120,9 +126,14 @@ export class TransactionComponent implements OnInit {
         this.loadAccounts();
         this.resetTransactionForm(); // Reset form after submission
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('Error adding transaction', error.message);
-      },
+      error: (error: HttpErrorResponse) => { 
+        this.snackbar.open(`${error.message}`, 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+        console.error('Error adding transaction:', error.message);
+      }
     });
 
   }
