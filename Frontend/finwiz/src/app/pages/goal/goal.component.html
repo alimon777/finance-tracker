@@ -21,7 +21,7 @@
               name="goalName" 
               #goalName="ngModel"
               required 
-              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
               [ngClass]="{'border-red-500': goalName.invalid && (goalName.touched || formSubmitted)}"
             />
             <div *ngIf="goalName.invalid && (goalName.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
@@ -40,7 +40,7 @@
                 #value="ngModel"
                 required 
                 min="1"
-                class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                 [ngClass]="{'border-red-500': value.invalid && (value.touched || formSubmitted)}"
               />
             </div>
@@ -58,7 +58,7 @@
               name="description" 
               #description="ngModel"
               required 
-              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
               [ngClass]="{'border-red-500': description.invalid && (description.touched || formSubmitted)}"
             />
             <div *ngIf="description.invalid && (description.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
@@ -75,7 +75,7 @@
               #durationInMonths="ngModel"
               required 
               min="1"
-              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
               [ngClass]="{'border-red-500': durationInMonths.invalid && (durationInMonths.touched || formSubmitted)}"
             />
             <div *ngIf="durationInMonths.invalid && (durationInMonths.touched || formSubmitted)" class="text-red-500 text-sm mt-1">
