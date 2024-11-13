@@ -45,11 +45,6 @@ export class BudgetComponent implements OnInit {
   }
 
   saveBudget(): void {
-    // Check if the start date is greater than the end date
-    if (new Date(this.budget.budgetStartDate) > new Date(this.budget.budgetEndDate)) {
-      alert('Start Date cannot be later than End Date.'); // Display an alert or use a different notification method
-      return; // Exit the function if validation fails
-    }
     this.budget.userId = this.userId;
     this.budget.aiGenerated = false;
     this.budget.total=this.total;
