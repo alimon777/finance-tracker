@@ -1,203 +1,242 @@
 <!-- Banking Dashboard Container -->
 <div class="min-h-screen bg-gray-50">
-  <div class="bg-blue-700 flex flex-col items-center p-3">
-    <h1 class="text-2xl font-bold text-white">Transaction Tracking</h1>
-    <p class="text-blue-100 mt-1">Keep track of every transaction and categorize expenses effortlessly.</p>
-  </div>
-
-  <!-- Accounts Section -->
-  <section class="mb-8 p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-800">Account Overview</h2>
-      <div class="text-sm text-gray-500">
-        Total Balance: {{ getTotalBalance() | currency:'INR' }}
-      </div>
+    <div class="bg-blue-700 flex flex-col items-center p-3">
+      <h1 class="text-2xl font-bold text-white">Transaction Tracking</h1>
+      <p class="text-blue-100 mt-1">Keep track of every transaction and categorize expenses effortlessly.</p>
     </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <!-- Add Account Card -->
-      <div class="lg:col-span-1">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 ">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Account</h3>
-          <form (ngSubmit)="onSubmitAccount()" class="space-y-4">
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Bank Name</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Enter bank name"
-                [(ngModel)]="newAccount.bankName"
-                name="bankName"
-                required
-              />
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Account Number</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Enter account number"
-                [(ngModel)]="newAccount.accountNumber"
-                name="accountNumber"
-                required
-              />
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Initial Balance</label>
-              <div class="relative">
-                <span class="absolute left-3 top-2 text-gray-500">₹</span>
+  
+    <!-- Accounts Section -->
+    <section class="mb-8 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Account Overview</h2>
+        <div class="text-sm text-gray-500">
+          Total Balance: {{ getTotalBalance() | currency:'INR' }}
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Add Account Card -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Account</h3>
+            <form [formGroup]="accountForm" (ngSubmit)="onSubmitAccount()" class="space-y-4">
+              <!-- Bank Name Field -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Bank Name</label>
                 <input
-                type="number"
-                class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Min. balance ₹1500"
-                min="1500"
-                [(ngModel)]="newAccount.accountBalance"
-                name="accountBalance"
-                required
+                  type="text"
+                  formControlName="bankName"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  [ngClass]="{'border-red-500': bankName?.invalid && bankName?.touched}"
+                  placeholder="Enter bank name"
                 />
+                <div *ngIf="bankName?.invalid && bankName?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="bankName?.errors?.['required']">Bank name is required</span>
+                  <span *ngIf="bankName?.errors?.['minlength']">Bank name must be at least 2 characters</span>
+                </div>
+              </div>
+  
+              <!-- Account Number Field -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Account Number</label>
+                <input
+                  type="text"
+                  formControlName="accountNumber"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  [ngClass]="{'border-red-500': accountNumber?.invalid && accountNumber?.touched}"
+                  placeholder="Enter account number"
+                />
+                <div *ngIf="accountNumber?.invalid && accountNumber?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="accountNumber?.errors?.['required']">Account number is required</span>
+                  <span *ngIf="accountNumber?.errors?.['pattern']">Please enter a valid account number (9-18 digits)</span>
+                </div>
+              </div>
+  
+              <!-- Initial Balance Field -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Initial Balance</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                  <input
+                    type="number"
+                    formControlName="accountBalance"
+                    class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    [ngClass]="{'border-red-500': accountBalance?.invalid && accountBalance?.touched}"
+                    placeholder="Min. balance ₹500"
+                  />
+                </div>
+                <div *ngIf="accountBalance?.invalid && accountBalance?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="accountBalance?.errors?.['required']">Initial balance is required</span>
+                  <span *ngIf="accountBalance?.errors?.['min']">Minimum balance should be ₹500</span>
+                </div>
+              </div>
+  
+              <button
+                type="submit"
+                class="w-full bg-indigo-600 text-white font-medium py-1.5 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
+                [disabled]="accountForm.invalid"
+                [ngClass]="{'opacity-50 cursor-not-allowed': accountForm.invalid}"
+              >
+                Add Account
+              </button>
+            </form>
+          </div>
+        </div>
+  
+        <!-- Account Cards -->
+        <div class="lg:col-span-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div *ngFor="let account of accounts"
+                 class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">{{ account.bankName }}</h4>
+                  <p class="text-sm text-gray-500">{{ account.accountNumber }}</p>
+                </div>
+                <button
+                  (click)="onDeleteAccount(account.id)"
+                  class="text-gray-400 hover:text-red-500 transition-colors duration-150"
+                >
+                  <span class="sr-only">Delete account</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              <div class="text-2xl font-bold text-gray-900 mb-2">
+                {{ account.accountBalance | currency:'INR' }}
+              </div>
+            </div>
+  
+            <!-- Empty State -->
+            <div *ngIf="accounts.length === 0"
+                 class="col-span-full bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-8 text-center">
+              <p class="text-gray-500">No accounts added yet. Add your first account to get started.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Transactions Section -->
+    <section class="mb-8 pl-6 pr-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Transaction Management</h2>
+  
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Add Transaction Form -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">New Transaction</h3>
+            <form [formGroup]="transactionForm" (ngSubmit)="onSubmitTransaction()" class="space-y-4">
+              <!-- Account Selection -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Account</label>
+                <select
+                  formControlName="accountNumber"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  [ngClass]="{'border-red-500': transAccountNumber?.invalid && transAccountNumber?.touched}"
+                >
+                  <option value="">Select Account</option>
+                  <option *ngFor="let account of accounts" [value]="account.accountNumber">
+                    {{ account.bankName }} - {{ account.accountNumber }}
+                  </option>
+                </select>
+                <div *ngIf="transAccountNumber?.invalid && transAccountNumber?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="transAccountNumber?.errors?.['required']">Please select an account</span>
+                </div>
+              </div>
+  
+              <!-- Amount Field -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Amount</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-gray-500">₹</span>
+                  <input
+                    type="number"
+                    formControlName="amount"
+                    class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    [ngClass]="{'border-red-500': transAmount?.invalid && transAmount?.touched}"
+                    placeholder="Enter amount"
+                  />
+                </div>
+                <div *ngIf="transAmount?.invalid && transAmount?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="transAmount?.errors?.['required']">Amount is required</span>
+                  <span *ngIf="transAmount?.errors?.['min']">Amount must be greater than 0</span>
+                </div>
+              </div>
+  
+              <!-- Transaction Type -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Transaction Type</label>
+                <select
+                  formControlName="transactionType"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  [ngClass]="{'border-red-500': transType?.invalid && transType?.touched}"
+                >
+                  <option value="">Select Type</option>
+                  <option value="DEPOSIT">Deposit</option>
+                  <option value="WITHDRAW">Withdraw</option>
+                </select>
+                <div *ngIf="transType?.invalid && transType?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="transType?.errors?.['required']">Transaction type is required</span>
+                </div>
+              </div>
+  
+              <!-- Category Type -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Category</label>
+                <select
+                formControlName="categoryType"
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                [ngClass]="{
+                    'border-red-500': transCategory?.invalid && transCategory?.touched,
+                    'bg-gray-100': transactionForm.get('transactionType')?.value === 'DEPOSIT'
+                }"
+                [attr.disabled]="transactionForm.get('transactionType')?.value === 'DEPOSIT'"
+                >
+                <option value="">Select Category</option>
+                <ng-container *ngIf="transactionForm.get('transactionType')?.value === 'DEPOSIT'">
+                    <option value="INCOME">Income</option>
+                </ng-container>
+                <ng-container *ngIf="transactionForm.get('transactionType')?.value === 'WITHDRAW'">
+                    <option value="FOOD">Food</option>
+                    <option value="TRANSPORTATION">Transportation</option>
+                    <option value="HOUSING">Housing</option>
+                    <option value="ENTERTAINMENT">Entertainment</option>
+                </ng-container>
+                </select>
+                <div *ngIf="transCategory?.invalid && transCategory?.touched" class="text-red-500 text-xs mt-1">
+                <span *ngIf="transCategory?.errors?.['required']">Category is required</span>
                 </div>
             </div>
-
-            <button
-              type="submit"
-              class="w-full bg-indigo-600 text-white font-medium py-1.5 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
-            >
-              Add Account
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Account Cards -->
-      <div class="lg:col-span-3">
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <div *ngFor="let account of accounts"
-               class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h4 class="font-semibold text-lg text-gray-800">{{ account.bankName }}</h4>
-                <p class="text-sm text-gray-500">{{ account.accountNumber }}</p>
-              </div>
-              <button
-                (click)="onDeleteAccount(account.id)"
-                class="text-gray-400 hover:text-red-500 transition-colors duration-150"
-              >
-                <span class="sr-only">Delete account</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                </svg>
-              </button>
-            </div>
-            <div class="text-2xl font-bold text-gray-900 mb-2">
-              {{ account.accountBalance | currency:'INR' }}
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div *ngIf="accounts.length === 0"
-               class="col-span-full bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-8 text-center">
-            <p class="text-gray-500">No accounts added yet. Add your first account to get started.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Transactions Section -->
-  <section class="mb-8 pl-6 pr-6">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Transaction Management</h2>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Add Transaction Form -->
-      <div class="lg:col-span-1">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">New Transaction</h3>
-          <form (ngSubmit)="onSubmitTransaction()" class="space-y-4">
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Account</label>
-              <select
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                [(ngModel)]="newTransaction.accountNumber"
-                name="accountNumber"
-                required
-              >
-                <option value="" disabled>Select Account</option>
-                <option *ngFor="let account of accounts" [value]="account.accountNumber">
-                  {{ account.bankName }} - {{ account.accountNumber }}
-                </option>
-              </select>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Amount</label>
-              <div class="relative">
-                <span class="absolute left-3 top-2 text-gray-500">₹</span>
+            
+              <!-- Description Field -->
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Description</label>
                 <input
-                type="number"
-                min="1"
-                class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Enter amount"
-                [(ngModel)]="newTransaction.amount"
-                name="amount"
-                required
+                  type="text"
+                  formControlName="description"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  [ngClass]="{'border-red-500': transDescription?.invalid && transDescription?.touched}"
+                  placeholder="Enter description"
                 />
+                <div *ngIf="transDescription?.invalid && transDescription?.touched" class="text-red-500 text-xs mt-1">
+                  <span *ngIf="transDescription?.errors?.['required']">Description is required</span>
+                  <span *ngIf="transDescription?.errors?.['minlength']">Description must be at least 3 characters</span>
+                </div>
               </div>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Transaction Type</label>
-              <select
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                [(ngModel)]="newTransaction.transactionType"
-                name="transactionType"
-                (change)="onTransactionTypeChange()"
-                required
+  
+              <button
+                type="submit"
+                class="w-full bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
+                [disabled]="transactionForm.invalid"
+                [ngClass]="{'opacity-50 cursor-not-allowed': transactionForm.invalid}"
               >
-                <option value="" disabled>Select Type</option>
-                <option value="DEPOSIT">Deposit</option>
-                <option value="WITHDRAW">Withdraw</option>
-              </select>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Category</label>
-              <select
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                [(ngModel)]="newTransaction.categoryType"
-                name="categoryType"
-                [disabled]="newTransaction.transactionType === 'DEPOSIT'"
-              >
-                <option value="" disabled>Select Category</option>
-                <option value="INCOME" *ngIf="newTransaction.transactionType !== 'WITHDRAW'">Income</option>
-                <option value="FOOD" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Food</option>
-                <option value="TRANSPORTATION" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Transportation</option>
-                <option value="HOUSING" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Housing</option>
-                <option value="ENTERTAINMENT" *ngIf="newTransaction.transactionType !== 'DEPOSIT'">Entertainment</option>
-              </select>
-            </div>
-
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Description</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                placeholder="Enter description"
-                [(ngModel)]="newTransaction.description"
-                name="description"
-              />
-            </div>
-
-            <button
-              type="submit"
-              class="w-full bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
-            >
-              Add Transaction
-            </button>
-          </form>
+                Add Transaction
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
 
       <!-- Transactions Table -->
       <div class="lg:col-span-2">
@@ -242,7 +281,7 @@
                       {{ transaction.transactionType }}
                     </span>
                   </td>
-                  <td class="px-5 py-4 whitespace-nowrap text-sm text-right"
+                  <td class="pl-3 pr-5 py-4 whitespace-nowrap text-sm text-right"
                       [ngClass]="{
                         'text-green-600': transaction.transactionType === 'DEPOSIT',
                         'text-red-600': transaction.transactionType === 'WITHDRAW'
