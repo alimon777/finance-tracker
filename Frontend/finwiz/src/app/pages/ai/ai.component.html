@@ -1,6 +1,6 @@
-<div class="bg-blue-700 flex flex-col items-center p-3">
+<div class="bg-indigo-700 flex flex-col items-center p-3">
   <h1 class="text-2xl font-bold text-white">AI Suggestions</h1>
-    <p class="text-blue-100 mt-1">Enhance your budget allocations using AI</p>
+    <p class="text-indigo-100 mt-1">Enhance your budget allocations using AI</p>
 </div>
 <div class="max-w-screen border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center flex-1" *ngIf="!budgetSuggestion" [@moveUp]>
     <div class="flex items-center justify-center w-full">
@@ -19,7 +19,7 @@
   <div class="relative h-screen flex-1 bg-gray-100 z-2">
     <div class="flex flex-col items-center justify-center p-6 space-y-4 max-w-3xl max-h-screen mx-auto z-10 relative">
       <div *ngIf="!budgetSuggestion" class="flex flex-col items-center justify-center mt-5">
-        <button (click)="onGetBudgetSuggestion()" class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none" [disabled]="loading">
+        <button (click)="onGetBudgetSuggestion()" class="bg-indigo-500 text-white py-2 px-6 rounded-md hover:bg-indigo-600 focus:outline-none" [disabled]="loading">
           <span *ngIf="loading">
             <i class="fa fa-spinner fa-spin"></i> Loading...
           </span>
@@ -34,7 +34,7 @@
       <div *ngIf="budgetSuggestion" class="mt-5 w-full max-w-full p-4 border rounded-lg shadow-md bg-slate-200" [@slideIn]>
         <h4 class="text-gray-700 font-medium flex justify-center underline">Budget Suggestion by finWiz</h4>
         <div class="flex justify-start w-full">
-          <button (click)="onRegenerateBudgetSuggestion()" class="bg-blue-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-blue-600 focus:outline-none" [disabled]="loading">
+          <button (click)="onRegenerateBudgetSuggestion()" class="bg-indigo-500 text-white py-2 px-6 mt-4 rounded-md hover:bg-indigo-600 focus:outline-none" [disabled]="loading">
             <span *ngIf="loading">
               <i class="fa fa-spinner fa-spin"></i> Loading...
             </span>

@@ -32,7 +32,15 @@ export class AccountService {
 
   // Get all accounts for a specific user by userId
   getAllAccounts(userId: number): Observable<CustomResponse<Account[]>> {
-    return this.http.get<CustomResponse<Account[]>>(`${this.apiUrl}/${userId}`);
+    return this.http.get<CustomResponse<Account[]>>(`${this.apiUrl}/${userId}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An unknown error occurred while adding the account.';
+        if (error.status === 404) {
+          errorMessage = 'No Accounts available';
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
   // Update an account by accountId

@@ -1,9 +1,9 @@
 <!-- Budget Management Container -->
 <div class="container mx-auto max-w-7xl">
   <div class="bg-white shadow-lg overflow-hidden">
-      <div class="bg-blue-700 flex flex-col items-center p-3">
+      <div class="bg-indigo-700 flex flex-col items-center p-3">
         <h1 class="text-2xl font-bold text-white">Manage Budgets</h1>
-          <p class="text-blue-100 mt-1">Track and manage your financial allocations</p>
+          <p class="text-indigo-100 mt-1">Track and manage your financial allocations</p>
       </div>
 
       <!-- Main Content -->
@@ -22,7 +22,7 @@
                     formControlName="budgetStartDate"
                     required
                     [attr.min]="currentDate"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
                 <div>
@@ -32,7 +32,7 @@
                     formControlName="budgetEndDate"
                     required
                     [attr.min]="currentDate"
-                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -47,7 +47,7 @@
                       type="number"
                       formControlName="food"
                       required
-                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                       type="number"
                       formControlName="housing"
                       required
-                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                       type="number"
                       formControlName="transportation"
                       required
-                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -83,7 +83,7 @@
                       type="number"
                       formControlName="entertainment"
                       required
-                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                      class="w-full pl-8 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@
                 [disabled]="budgetForm.invalid"
                 class="w-full py-2 px-4 rounded-lg transition-all duration-200 font-medium"
                 [ngClass]="{
-                  'bg-blue-600 text-white': !budgetForm.invalid,
+                  'bg-indigo-600 text-white': !budgetForm.invalid,
                   'bg-gray-300 text-gray-500': budgetForm.invalid
                 }"
               >
@@ -129,7 +129,7 @@
       <div *ngFor="let budget of budgets; let i = index" 
           class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all">
           <div class="flex justify-between items-center mb-2">
-              <span class="text-base font-medium text-blue-600">Budget #{{ i + 1 }}</span>
+              <span class="text-base font-medium text-indigo-600">Budget #{{ i + 1 }}</span>
               <button 
                   (click)="deleteBudget(budget.id)" 
                   class="text-gray-400 hover:text-red-500 focus:outline-none"

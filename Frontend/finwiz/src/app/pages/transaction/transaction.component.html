@@ -1,8 +1,8 @@
 <!-- Banking Dashboard Container -->
 <div class="min-h-screen bg-gray-50">
-    <div class="bg-blue-700 flex flex-col items-center p-3">
+    <div class="bg-indigo-700 flex flex-col items-center p-3">
       <h1 class="text-2xl font-bold text-white">Transaction Tracking</h1>
-      <p class="text-blue-100 mt-1">Keep track of every transaction and categorize expenses effortlessly.</p>
+      <p class="text-indigo-100 mt-1">Keep track of every transaction and categorize expenses effortlessly.</p>
     </div>
   
     <!-- Accounts Section -->
@@ -170,7 +170,7 @@
                 <label class="block text-sm font-medium text-gray-700">Transaction Type</label>
                 <select
                   formControlName="transactionType"
-                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none"
                   [ngClass]="{'border-red-500': transType?.invalid && transType?.touched}"
                 >
                   <option value="">Select Type</option>
@@ -183,32 +183,31 @@
               </div>
   
               <!-- Category Type -->
-            <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Category</label>
-                <select
-                formControlName="categoryType"
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                [ngClass]="{
-                    'border-red-500': transCategory?.invalid && transCategory?.touched,
-                    'bg-gray-100': transactionForm.get('transactionType')?.value === 'DEPOSIT'
-                }"
-                [attr.disabled]="transactionForm.get('transactionType')?.value === 'DEPOSIT'"
-                >
-                <option value="">Select Category</option>
-                <ng-container *ngIf="transactionForm.get('transactionType')?.value === 'DEPOSIT'">
-                    <option value="INCOME">Income</option>
-                </ng-container>
-                <ng-container *ngIf="transactionForm.get('transactionType')?.value === 'WITHDRAW'">
-                    <option value="FOOD">Food</option>
-                    <option value="TRANSPORTATION">Transportation</option>
-                    <option value="HOUSING">Housing</option>
-                    <option value="ENTERTAINMENT">Entertainment</option>
-                </ng-container>
-                </select>
-                <div *ngIf="transCategory?.invalid && transCategory?.touched" class="text-red-500 text-xs mt-1">
-                <span *ngIf="transCategory?.errors?.['required']">Category is required</span>
-                </div>
-            </div>
+            <!-- Category Type -->
+<div class="space-y-2">
+  <label class="block text-sm font-medium text-gray-700">Category</label>
+  <select
+      formControlName="categoryType"
+      class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:outline-none"
+      [ngClass]="{'border-red-500': transCategory?.invalid && transCategory?.touched}"
+  >
+      
+      <ng-container *ngIf="transactionForm.get('transactionType')?.value == 'DEPOSIT'">
+          <option value="INCOME">Income</option>
+      </ng-container>
+      
+      <ng-container *ngIf="transactionForm.get('transactionType')?.value == 'WITHDRAW'">
+        <option value="">Select Category</option>
+          <option value="FOOD">Food</option>
+          <option value="TRANSPORTATION">Transportation</option>
+          <option value="HOUSING">Housing</option>
+          <option value="ENTERTAINMENT">Entertainment</option>
+      </ng-container>
+  </select>
+  <div *ngIf="transCategory?.invalid && transCategory?.touched" class="text-red-500 text-xs mt-1">
+      <span *ngIf="transCategory?.errors?.['required']">Category is required</span>
+  </div>
+</div>
             
               <!-- Description Field -->
               <div class="space-y-2">

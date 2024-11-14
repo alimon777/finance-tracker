@@ -22,6 +22,5 @@ public class User {
     private String username; // this should be username to avoid errors when requesting token
     private String email;
     private String password;
-    private String firstName;
-	private String lastName;
+    private String name;
 }

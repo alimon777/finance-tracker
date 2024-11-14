@@ -50,7 +50,7 @@ export class TransactionComponent implements OnInit {
       amount: [null, [Validators.required, Validators.min(1)]],
       transactionType: ['', Validators.required],
       categoryType: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(3)]]
+      description: ['', [Validators.required, Validators.minLength(0)]]
     });
 
     // Subscribe to transaction type changes
@@ -59,7 +59,7 @@ export class TransactionComponent implements OnInit {
       if (type === 'DEPOSIT') {
         categoryControl?.setValue('INCOME');
         categoryControl?.disable();
-      } else {
+      } else if(type === 'WITHDRAW') {
         categoryControl?.enable();
         categoryControl?.setValue('');
       }
@@ -149,7 +149,8 @@ export class TransactionComponent implements OnInit {
         this.accounts = response.data || [];
       },
       error: (error: HttpErrorResponse) => {
-        this.snackbarService.show(error.message);
+        //console.warn(error.message)
+        //this.snackbarService.show(error.message);
       }
     });
   }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -7,31 +8,47 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
-  user = { username: '', password: '', confirmPassword: '', firstName: '', lastName: '', email: '', phone: '' };
+  registerForm: FormGroup;
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('^\\+?[0-9]{10,15}$')]],
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+    }, { validator: this.passwordMatchValidator });
+  }
+
+  passwordMatchValidator(group: FormGroup) {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { mismatch: true };
+  }
 
   onSubmit() {
-    if (this.user.password !== this.user.confirmPassword) {
-      this.errorMessage = 'Passwords do not match. Please try again.';
+    if (this.registerForm.invalid) {
+      this.errorMessage = 'Please correct the errors in the form before submitting.';
       return;
     }
-  
-    this.authService.register(this.user).subscribe(
+
+    const formData = this.registerForm.value;
+    this.authService.register(formData).subscribe(
       response => {
-        this.successMessage = 'Registration successful! Please login.';
-        window.alert('Registration successful! Please login.');
+        this.successMessage = 'Account successfully created!';
         this.errorMessage = null;
-        this.router.navigate(['/login']);
+        this.registerForm.reset();
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error => {
-        // Error already handled and parsed in the service, so directly use it
-        this.errorMessage = error; // `error` here will be a string due to `handleError` in `AuthService`
-        console.error('Registration error', error);
+        this.successMessage = null;
+        this.errorMessage = error;
       }
     );
-  }
-  
+}
 }
