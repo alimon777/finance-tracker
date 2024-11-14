@@ -25,24 +25,6 @@ public class GoalController {
     public ResponseEntity<Goal> createGoal(@RequestBody Goal goal) {
         return ResponseEntity.ok(goalService.createGoal(goal));
     }
-
-//    @GetMapping("/notifications")
-//    public ResponseEntity<List<String>> getGoalNotifications() {
-//        List<String> notifications = goalService.getGoalNotifications();
-//        return ResponseEntity.ok(notifications);
-//    }
-
-//    @GetMapping("/all")
-//    public ResponseEntity<List<Goal>> getAllGoals() {
-//        try {
-//            List<Goal> goals = goalService.getAllGoals();
-//            return ResponseEntity.ok(goals);
-//        } catch (Exception e) {
-//            // Log the exception and return a 500 response if an error occurs
-//            logger.error("An unexpected error occurred", e);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
     
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Goal>> getAllGoals(@PathVariable Long userId) {
