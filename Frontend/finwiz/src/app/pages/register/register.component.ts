@@ -50,5 +50,5 @@ export class RegisterComponent {
         this.errorMessage = error;
       }
     );
-}
+  }
 }

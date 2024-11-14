@@ -45,10 +45,10 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       this.pieChart.destroy();
     }
   
-    // Define the categories for the pie chart
+
     const categories = ['INCOME', 'FOOD', 'HOUSING', 'ENTERTAINMENT', 'TRANSPORTATION'];
   
-    // Count the transactions for each category
+
     let categoryCounts: number[] = [0, 0, 0, 0, 0];
     categoryCounts[0] = this.pieChartData.deposit.INCOME;
     categoryCounts[1] = this.pieChartData.withdraw.FOOD;
@@ -65,20 +65,19 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
       }]
     };
   
-    // Chart options with label position at the bottom and adjusted position
     const pieChartOptions: ChartConfiguration<'pie', number[], string>['options'] = {
       responsive: true,
       layout: {
         padding: {
-          left: 40, // Add padding to the left to move the chart towards the right
+          left: 40, 
         }
       },
       plugins: {
         legend: {
-          position: 'right', // Set the legend position to the right
+          position: 'right', 
           labels: {
-            boxWidth: 20, // Optional: Customize label box width
-            padding: 15 // Optional: Add some space between the labels
+            boxWidth: 20, 
+            padding: 15 
           }
         }
       }

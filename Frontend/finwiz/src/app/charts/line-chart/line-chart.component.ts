@@ -12,7 +12,7 @@ Chart.register(...registerables);
 export class LineChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChartRef!: ElementRef;
 
-  @Input() lineChartData: IncomeDepositDTO[] = []; // Expecting an array of lineChartData as input
+  @Input() lineChartData: IncomeDepositDTO[] = [];
 
   lineChart!: Chart<'line', number[], string>;
 
@@ -31,12 +31,12 @@ export class LineChartComponent implements AfterViewInit {
     if (this.lineChart) {
       this.lineChart.destroy();
     }
-  
+
     // Prepare the data
     const labels = this.lineChartData.map(t => t.periodLabel);
-  
+
     const depositAmounts = this.lineChartData.map(t => t.totalDepositsAmount);
-  
+
     const withdrawAmounts = this.lineChartData.map(t => t.totalWithdrawalsAmount);
     const lineChartData: ChartConfiguration<'line', number[], string>['data'] = {
       labels: labels,
@@ -57,7 +57,7 @@ export class LineChartComponent implements AfterViewInit {
         }
       ]
     };
-  
+
     const lineChartOptions: ChartConfiguration<'line', number[], string>['options'] = {
       responsive: true,
       scales: {
@@ -66,7 +66,7 @@ export class LineChartComponent implements AfterViewInit {
         }
       }
     };
-  
+
     // Create the new chart
     this.lineChart = new Chart(this.lineChartRef.nativeElement, {
       type: 'line',
@@ -74,5 +74,5 @@ export class LineChartComponent implements AfterViewInit {
       options: lineChartOptions,
     });
   }
-  
+
 }

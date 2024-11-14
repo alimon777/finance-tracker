@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8000/auth'; // Your Spring Boot backend URL
+  private baseUrl = 'http://localhost:8000/auth'; 
 
   constructor(
     private http: HttpClient,
@@ -44,14 +44,11 @@ export class AuthService {
     return this.storageService.getToken();
   }
 
-  // Check if the token is expired
   isTokenExpired(): boolean {
     const token = this.getToken();
-    console.log(token, "hello");
     if (!token) {
       return true;
     }
-    
     
     const tokenPayload = this.decodeToken(token);
     const expirationTime = tokenPayload.exp * 1000; // JWT expiration is in seconds, convert to milliseconds

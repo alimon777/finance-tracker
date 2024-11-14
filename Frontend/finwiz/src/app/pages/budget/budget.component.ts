@@ -13,11 +13,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class BudgetComponent implements OnInit {
   budgets: Budget[] = [];
-  budgetForm!: FormGroup;// Reactive form group
+  budgetForm!: FormGroup;
   userId: number = 0;
   userDetails: UserDetails = { username: "", email: "" };
   currentDate: string = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
-  total: number = 0; // Total budget calculation
+  total: number = 0; 
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +57,7 @@ export class BudgetComponent implements OnInit {
   updateTotal(): void {
     const formValue = this.budgetForm.value;
     this.total = (formValue.food || 0) + (formValue.housing || 0) +
-                 (formValue.transportation || 0) + (formValue.entertainment || 0);
+      (formValue.transportation || 0) + (formValue.entertainment || 0);
   }
 
   loadBudgets(): void {
@@ -74,7 +74,7 @@ export class BudgetComponent implements OnInit {
   // Save budget after form validation
   saveBudget(): void {
     if (this.budgetForm.invalid) {
-      return; // Don't proceed if the form is invalid
+      return; 
     }
 
     const budgetData = this.budgetForm.value;
@@ -86,7 +86,7 @@ export class BudgetComponent implements OnInit {
       () => {
         this.loadBudgets();
         this.budgetForm.reset();
-        this.snackbarService.show('Budget created');
+        this.snackbarService.show('Budget created successfully');
       },
       error => {
         this.snackbarService.show(error.message);
@@ -98,7 +98,7 @@ export class BudgetComponent implements OnInit {
     this.budgetService.deleteBudget(this.userId, id).subscribe(
       () => {
         this.loadBudgets();
-        this.snackbarService.show('Budget deleted');
+        this.snackbarService.show('Budget deleted successfully');
       },
       error => {
         this.snackbarService.show(error.message);

@@ -1,6 +1,6 @@
 .chart {
-    flex: 1 1 500px; /* Allow charts to grow and shrink with a base size */
-    max-width: 600px; /* Set a maximum width for the charts */
-    height: 350px; /* Set a fixed height for the charts */
+    flex: 1 1 500px; 
+    max-width: 600px; 
+    height: 350px; 
     margin-top : -80px;
   }

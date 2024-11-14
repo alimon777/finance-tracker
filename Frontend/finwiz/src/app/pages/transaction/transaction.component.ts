@@ -59,7 +59,7 @@ export class TransactionComponent implements OnInit {
       if (type === 'DEPOSIT') {
         categoryControl?.setValue('INCOME');
         categoryControl?.disable();
-      } else if(type === 'WITHDRAW') {
+      } else if (type === 'WITHDRAW') {
         categoryControl?.enable();
         categoryControl?.setValue('');
       }

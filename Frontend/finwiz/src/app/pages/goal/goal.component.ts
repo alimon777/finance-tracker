@@ -30,7 +30,7 @@ export class GoalComponent implements OnInit {
     private goalService: GoalService,
     private storageService: StorageService,
     private snackbarService: SnackbarService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
@@ -55,7 +55,7 @@ export class GoalComponent implements OnInit {
         this.goals.push(newGoal);
         form.resetForm();
         this.formSubmitted = false;
-        this.snackbarService.show('Goal Created Successfully');
+        this.snackbarService.show('Goal created successfully');
       },
       (error) => {
         this.snackbarService.show(error.message);
@@ -79,7 +79,7 @@ export class GoalComponent implements OnInit {
       next: () => {
         this.goals = this.goals.filter(goal => goal.id !== goalId);
         this.loadGoals();
-        this.snackbarService.show('Goal Deleted Successfully');
+        this.snackbarService.show('Goal deleted successfully');
       },
       error: (error) => {
         this.snackbarService.show(error.message);

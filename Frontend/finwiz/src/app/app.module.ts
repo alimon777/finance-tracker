@@ -43,7 +43,6 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
     PieChartComponent,
     NewsComponent,
     UpdateGoalModalComponent,
-
   ],
   imports: [
     LayoutComponent,
@@ -55,7 +54,6 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
     CommonModule,
     MatSnackBarModule,
     ReactiveFormsModule
-
   ],
   providers: [
     {

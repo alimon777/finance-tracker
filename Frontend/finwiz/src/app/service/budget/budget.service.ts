@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Budget } from 'src/app/models/budget';
 import { StorageService } from '../storage/storage.service';
-import { UserDetails } from 'src/app/models/user-details';
 
 @Injectable({
   providedIn: 'root'

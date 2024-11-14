@@ -15,7 +15,6 @@ import {
 } from './service/auth/auth-guard.service';
 
 const routes: Routes = [
-  // { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '', component:LandingComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -28,10 +27,9 @@ const routes: Routes = [
       { path: 'budget', component: BudgetComponent, canActivate: [AuthGuard]  },
       { path: 'goal', component: GoalComponent, canActivate: [AuthGuard]  },
       { path: 'ai', component: AiComponent, canActivate: [AuthGuard]  },
-      // { path: '**', component:PageNotFoundComponent  }
+      { path: '**', component:PageNotFoundComponent  }
     ]
   },
-  // Wildcard route for a 404 page redirection
 ];
 
 @NgModule({

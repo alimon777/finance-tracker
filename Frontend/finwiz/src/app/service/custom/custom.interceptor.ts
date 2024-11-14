@@ -15,15 +15,9 @@ export class CustomInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
 
-    // Check if the request URL matches a specific pattern
-    if (req.url.includes('/api/')) { // Adjust the condition as needed
+    // Add Authorization headers if the request URL matches a specific pattern
+    if (req.url.includes('/api/')) { 
       if (token) {
-        // if (this.authService.isTokenExpired()) {
-        //   // If expired, clear the token and redirect to the login page
-        //   this.authService.clearToken();
-        //   this.router.navigate(['/login']);
-        //   return throwError('Token expired. Redirecting to login...'); // Optionally, you can cancel the request here or prevent further operations
-        // }
         const clonedRequest = req.clone({
           setHeaders: {
             Authorization: `Bearer ${token}`,

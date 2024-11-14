@@ -23,7 +23,7 @@ export class AiService {
       const result = await this.model.generateContent(prompt);
       
       // Log the entire result for debugging
-      console.log("AI Response:", result);
+      // console.log("AI Response:", result);
   
       // Ensure result.response exists and has text
       if (result && result.response && typeof result.response.text === 'function') {
@@ -141,8 +141,8 @@ export class AiService {
   
     // Match each category and update the suggestedBudget object
     while ((match = categoryPattern.exec(budgetBreakdown)) !== null) {
-      const category = match[1].toLowerCase();  // Category name (e.g., 'food')
-      const amount = parseFloat(match[2]);     // Amount (e.g., 100.00)
+      const category = match[1].toLowerCase();  
+      const amount = parseFloat(match[2]);     
   
       // Dynamically update the suggestedBudget object
       if (suggestedBudget.hasOwnProperty(category)) {

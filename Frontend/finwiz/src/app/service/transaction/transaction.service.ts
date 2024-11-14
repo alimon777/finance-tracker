@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Transaction } from 'src/app/models/transaction'; // Import your Transaction model
+import { Transaction } from 'src/app/models/transaction'; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  private baseUrl = 'http://localhost:8000/api/transactions'; // Adjust to your API base URL
+  private baseUrl = 'http://localhost:8000/api/transactions'; 
 
   constructor(private http: HttpClient) {}
 

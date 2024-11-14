@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Transaction } from 'src/app/models/transaction';
-import { TransactionService } from 'src/app/service/transaction/transaction.service';
 import { ExpenditureService } from 'src/app/service/expenditure/expenditure.service';
 import { Expenditure } from 'src/app/models/expenditure';
 import { IncomeDepositDTO } from 'src/app/models/income-deposit';
