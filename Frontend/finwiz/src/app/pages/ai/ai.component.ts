@@ -76,6 +76,7 @@ export class AiComponent implements OnInit {
     this.expenditureService.getExpenditureSummary(this.userId).subscribe(
       (data) => {
         this.expenditureSummary = data;
+        console.log(this.expenditureSummary);
       },
       (error) => {
         console.error('Error fetching expenditure summary:', error);
@@ -128,7 +129,7 @@ export class AiComponent implements OnInit {
       // Parse it into a Budget object 
       this.aiBudget = this.suggestionService.parseAiGeneratedBudgetResponse(this.budgetSuggestion, this.userId);
     } catch (error) {
-      this.errorMessage = 'An error occurred while regenerating the budget suggestion.';
+      this.errorMessage = 'An error occurred while regenerating the budget suggestion.'+error;
     } finally {
       this.loading = false;
     }
