@@ -1,12 +1,13 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Budget } from 'src/app/models/budget';
-import { Transaction } from 'src/app/models/transaction';
+import { ExpenditureSummaryDTO } from 'src/app/models/expenditure-summary';
 import { AiService } from 'src/app/service/ai/ai.service';
 import { BudgetService } from 'src/app/service/budget/budget.service';
-import { TransactionService } from 'src/app/service/transaction/transaction.service';
+import { ExpenditureService } from 'src/app/service/expenditure/expenditure.service';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { StorageService } from 'src/app/service/storage/storage.service';
+import { GoalService } from 'src/app/service/goal/goal.service';
 
 @Component({
   selector: 'app-ai',
@@ -41,12 +42,15 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class AiComponent implements OnInit {
   constructor(
     private suggestionService: AiService,
-    private transactionService: TransactionService,
     private budgetService: BudgetService,
+    private expenditureService: ExpenditureService,
+    private goalService: GoalService,
+    private storageService: StorageService,
     private router: Router,
   ) { }
 
-  transactions: Transaction[] = [];
+  goals:any[]=[];
+  expenditureSummary !:ExpenditureSummaryDTO; //monthly weekly yearly summary
   budgetSuggestion: string = '';  
   loading: boolean = false;
   errorMessage: string = '';
@@ -55,29 +59,28 @@ export class AiComponent implements OnInit {
   suggestion: string = '';
 
   ngOnInit(): void {
-    this.loadUserId();
-    this.loadTransactions();
-    this.loadBudgetSuggestion();  
+    this.userId=this.storageService.fetchUserId();
+    this.fetchExpenditureSummary();
+    this.loadBudgetSuggestion(); 
   }
 
-  loadUserId(): void {
-    const storedUserId = localStorage.getItem('userId');
-    this.userId = storedUserId ? +storedUserId : 0;
+  loadGoals(): void {
+    this.goalService.getAllGoals(this.userId).subscribe({
+      next: (data) => {
+        this.goals = data;
+      }
+    });
   }
 
-  loadTransactions(): void {
-    if (this.userId) {
-      this.transactionService.getTransactions(this.userId).subscribe({
-        next: (response: Transaction[]) => {
-          this.transactions = response;
-        },
-        error: (error: HttpErrorResponse) => {
-          console.error('Error loading transactions:', error.message);
-        },
-      });
-    } else {
-      console.warn('User ID not found in local storage.');
-    }
+  private fetchExpenditureSummary(): void {
+    this.expenditureService.getExpenditureSummary(this.userId).subscribe(
+      (data) => {
+        this.expenditureSummary = data;
+      },
+      (error) => {
+        console.error('Error fetching expenditure summary:', error);
+      }
+    );
   }
 
   loadBudgetSuggestion(): void {
@@ -92,20 +95,20 @@ export class AiComponent implements OnInit {
     this.errorMessage = '';
     this.budgetSuggestion = '';
 
-    if (this.transactions.length === 0) {
+    if (this.expenditureSummary === undefined) {
       this.loading = false;
       window.alert('No transactions found. Please add transactions to generate a budget suggestion.');
       return;
     }
 
     try {
-      await this.loadTransactions();
-      this.suggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
+      await this.fetchExpenditureSummary();
+      this.suggestion = await this.suggestionService.generateBudgetSuggestion(this.expenditureSummary,this.goals);
       this.budgetSuggestion = this.formatResponse(this.suggestion);
 
       localStorage.setItem('budgetSuggestion', this.budgetSuggestion);
     } catch (error) {
-      this.errorMessage = 'An error occurred while generating the budget suggestion.';
+      this.errorMessage = 'An error occurred while generating the budget suggestion.' +error;
     } finally {
       this.loading = false;
     }
@@ -116,7 +119,7 @@ export class AiComponent implements OnInit {
     this.errorMessage = '';
 
     try {
-      const regeneratedSuggestion = await this.suggestionService.generateBudgetSuggestion(this.transactions);
+      const regeneratedSuggestion = await this.suggestionService.generateBudgetSuggestion(this.expenditureSummary,this.goals);
       this.budgetSuggestion = this.formatResponse(regeneratedSuggestion);
 
       // Save the regenerated suggestion to localStorage
