@@ -3,13 +3,13 @@ spring:
     name: identity-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/finwiz
-    username: root
-    password: pass@word1
+    url: jdbc:postgresql://localhost:5432/finwiz  
+    username: postgres                         
+    password: postgres                        
 
   jpa:
     hibernate:
-      dialect: org.hibernate.dialect.MySQL5Dialect
+      dialect: org.hibernate.dialect.PostgreSQLDialect  s
       naming-strategy: org.hibernate.cfg.ImproveNamingStrategy
       ddl-auto: update
     show-sql: true

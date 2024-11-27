@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "goal")
+@Table(name = "goals")
 public class Goal {
 
 	    @Id

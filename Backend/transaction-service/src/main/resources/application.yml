@@ -2,18 +2,18 @@ spring:
   application:
     name: transaction-service
   datasource:
-    url: jdbc:mysql://localhost:3306/finwiz
-    username: root
-    password: pass@word1
-    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/finwiz  
+    username: postgres                        
+    password: postgres                       
+    driverClassName: org.postgresql.Driver     
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  
     hibernate:
       ddl-auto: update
     show-sql: true
   sql:
     init:
-      platform: mysql
+      platform: postgres  
 
 server:
   port: 8002
