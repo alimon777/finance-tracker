@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { HomeComponent } from './pages/home/home.component';
-import { LayoutComponent } from './pages/layout/layout.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { LandingComponent } from './pages/landing/landing.component';
-import { TransactionComponent } from './pages/transaction/transaction.component';
-import { BudgetComponent } from './pages/budget/budget.component';
-import { GoalComponent } from './pages/goal/goal.component';
-import { AiComponent } from './pages/ai/ai.component';
+import { LoginComponent } from './features/auth/login/login.component';
+import { RegisterComponent } from './features/auth/register/register.component';
+import { HomeComponent } from './features/dashboard/home/home.component';
+import { LayoutComponent}from './shared/components/layout/layout.component'
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { LandingComponent } from './shared/components/landing/landing.component';
+import { TransactionComponent } from './features/transaction-tracking/transaction/transaction.component';
+import { BudgetComponent } from './features/manage-budgets/budget/budget.component';
+import { GoalComponent } from './features/manage-goals/goal/goal.component';
+import { AiComponent } from './features/ai-suggestions/components/ai/ai.component';
 import { 
   AuthGuardService as AuthGuard 
-} from './service/auth/auth-guard.service';
+} from './core/guards/auth-guard.service';
 
 const routes: Routes = [
   { path: '', component:LandingComponent},
