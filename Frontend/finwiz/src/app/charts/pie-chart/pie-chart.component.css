@@ -1,6 +1,11 @@
 .chart {
-    flex: 1 1 500px; 
-    max-width: 600px; 
-    height: 350px; 
-    margin-top : -80px;
-  }
+  flex: 2; 
+  max-width: 700px; 
+  height: 395px; 
+  margin-top: -70px; 
+}
+
+.chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

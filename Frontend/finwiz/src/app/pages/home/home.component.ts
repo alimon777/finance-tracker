@@ -29,10 +29,7 @@ export class HomeComponent implements OnInit {
 
   lineChartData: IncomeDepositDTO[] = [];
 
-  // State to track which dropdown is expanded
-  isWeeklyExpanded = true;
-  isMonthlyExpanded = false;
-  isYearlyExpanded = false;
+  chartType: 'line' | 'pie' = 'pie'; 
 
   constructor(
     private expenditureService: ExpenditureService,
@@ -44,25 +41,13 @@ export class HomeComponent implements OnInit {
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
-  // Toggle the dropdown for the selected period
+
+  toggleChartType(type: 'line' | 'pie') {
+    this.chartType = type;
+  }
+
   toggleDropdown(period: 'weekly' | 'monthly' | 'yearly') {
-    if (period === 'weekly' ) {
-      this.isWeeklyExpanded = true;
-      this.isMonthlyExpanded=false;
-      this.isYearlyExpanded=false;
-      this.periodLabel = 'weekly'; // Update the selected period when toggling
-    } else if (period === 'monthly') {
-      this.isWeeklyExpanded = false;
-      this.isMonthlyExpanded=true;
-      this.isYearlyExpanded=false;
-      this.periodLabel = 'monthly';
-    } else if (period === 'yearly') {
-      this.isWeeklyExpanded = false;
-      this.isMonthlyExpanded=false;
-      this.isYearlyExpanded=true;
-      this.periodLabel = 'yearly';
-    }
-    // Update expenditure summary and pie chart data when the dropdown is toggled
+    this.periodLabel=period;
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
@@ -75,12 +60,10 @@ export class HomeComponent implements OnInit {
     this.pieChartData = this.expenditureSummary?.[option]; // Set the pie chart data
   }
 
-  // Fetch income deposit summary from the API
   private fetchIncomeDepositSummary(): void {
 
     this.expenditureService.getIncomeDepositSummary(this.userId, this.periodLabel).subscribe(
       (data) => {
-        // After fetching the data, set the default line chart data
         if (this.periodLabel) {
           this.lineChartData = data;
         }
@@ -90,13 +73,12 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  // Fetch expenditure summary from the API
+
   private fetchExpenditureSummary(): void {
 
     this.expenditureService.getExpenditureSummary(this.userId).subscribe(
       (data) => {
         this.expenditureSummary = data;
-        // After fetching the data, set the pie chart data
         if (this.periodLabel) {
           this.pieChartData = this.expenditureSummary?.[this.periodLabel];
         }
