@@ -1,5 +1,6 @@
 package com.finance.transaction.service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class TransactionService {
         }
 
         if (transaction.getTransactionDate() == null) {
-            transaction.setTransactionDate(new Date());
+            transaction.setTransactionDate(LocalDate.now());
         }
         transaction.setAccount(account);
 

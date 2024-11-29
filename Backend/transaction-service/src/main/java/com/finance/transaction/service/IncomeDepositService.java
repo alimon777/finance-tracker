@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,49 +21,55 @@ public class IncomeDepositService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public LocalDate convertToLocalDate(Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new java.util.Date(date.getTime()).toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+    // Helper method to calculate total deposits and withdrawals
+    private IncomeDepositDTO calculateDepositsAndWithdrawals(List<Transaction> transactions, String period) {
+        double totalDeposits = transactions.stream()
+                .filter(t -> t.getTransactionType() == TransactionType.DEPOSIT)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        double totalWithdrawals = transactions.stream()
+                .filter(t -> t.getTransactionType() == TransactionType.WITHDRAW)
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+
+        return new IncomeDepositDTO(period, totalDeposits, totalWithdrawals);
+    }
+
+    // Helper method to group transactions by date
+    private Map<LocalDate, List<Transaction>> groupTransactionsByDate(List<Transaction> transactions) {
+        return transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTransactionDate));
+    }
+
+    // Helper method to get transactions for a specific time range
+    private List<Transaction> getTransactionsForPeriod(Long userId, LocalDate startDate, LocalDate endDate) {
+        return transactionRepository.findByUserIdAndTransactionDateBetween(
+                userId,
+                Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        );
     }
 
     public List<IncomeDepositDTO> getWeeklyDepositsAndWithdrawals(Long userId) {
-        Calendar calendar = Calendar.getInstance();
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+        LocalDate today = LocalDate.now();
+        int currentYear = today.getYear();
+        int currentWeek = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 
         List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
 
         Map<LocalDate, List<Transaction>> groupedByDate = transactions.stream()
                 .filter(transaction -> {
-                    calendar.setTime(transaction.getTransactionDate());
-                    int transactionYear = calendar.get(Calendar.YEAR);
-                    int transactionWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+                    LocalDate transactionDate = transaction.getTransactionDate();
+                    int transactionYear = transactionDate.getYear();
+                    int transactionWeek = transactionDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
                     return transactionYear == currentYear && transactionWeek == currentWeek;
                 })
-                .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate())));
+                .collect(Collectors.groupingBy(Transaction::getTransactionDate));
 
         return groupedByDate.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()) // Sort by date
-                .map(entry -> {
-                    LocalDate date = entry.getKey();
-                    List<Transaction> dailyTransactions = entry.getValue();
-
-                    double totalDeposits = dailyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.DEPOSIT)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    double totalWithdrawals = dailyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.WITHDRAW)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    return new IncomeDepositDTO(date.toString(), totalDeposits, totalWithdrawals);
-                })
+                .map(entry -> calculateDepositsAndWithdrawals(entry.getValue(), entry.getKey().toString()))
                 .collect(Collectors.toList());
     }
 
@@ -70,32 +77,13 @@ public class IncomeDepositService {
         LocalDate today = LocalDate.now();
         LocalDate monthStart = today.with(TemporalAdjusters.firstDayOfMonth());
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
-                userId, Date.from(monthStart.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant())
-        );
+        List<Transaction> transactions = getTransactionsForPeriod(userId, monthStart, today);
 
-        Map<LocalDate, List<Transaction>> groupedByDate = transactions.stream()
-                .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate())));
+        Map<LocalDate, List<Transaction>> groupedByDate = groupTransactionsByDate(transactions);
 
         return groupedByDate.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()) // Sort by date
-                .map(entry -> {
-                    LocalDate date = entry.getKey();
-                    List<Transaction> dailyTransactions = entry.getValue();
-
-                    double totalDeposits = dailyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.DEPOSIT)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    double totalWithdrawals = dailyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.WITHDRAW)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    return new IncomeDepositDTO(date.toString(), totalDeposits, totalWithdrawals);
-                })
+                .map(entry -> calculateDepositsAndWithdrawals(entry.getValue(), entry.getKey().toString()))
                 .collect(Collectors.toList());
     }
 
@@ -103,33 +91,15 @@ public class IncomeDepositService {
         LocalDate today = LocalDate.now();
         LocalDate yearStart = today.with(TemporalAdjusters.firstDayOfYear());
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
-                userId, Date.from(yearStart.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant())
-        );
+        List<Transaction> transactions = getTransactionsForPeriod(userId, yearStart, today);
 
         Map<String, List<Transaction>> groupedByMonth = transactions.stream()
-                .collect(Collectors.groupingBy(t -> convertToLocalDate(t.getTransactionDate()).getMonth().toString()));
+                .collect(Collectors.groupingBy(t -> t.getTransactionDate().getMonth().toString()));
 
         return groupedByMonth.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey((month1, month2) ->
                         Month.valueOf(month1).compareTo(Month.valueOf(month2)))) // Sort by month order
-                .map(entry -> {
-                    String month = entry.getKey();
-                    List<Transaction> monthlyTransactions = entry.getValue();
-
-                    double totalDeposits = monthlyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.DEPOSIT)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    double totalWithdrawals = monthlyTransactions.stream()
-                            .filter(t -> t.getTransactionType() == TransactionType.WITHDRAW)
-                            .mapToDouble(Transaction::getAmount)
-                            .sum();
-
-                    return new IncomeDepositDTO(month, totalDeposits, totalWithdrawals);
-                })
+                .map(entry -> calculateDepositsAndWithdrawals(entry.getValue(), entry.getKey()))
                 .collect(Collectors.toList());
     }
 }
