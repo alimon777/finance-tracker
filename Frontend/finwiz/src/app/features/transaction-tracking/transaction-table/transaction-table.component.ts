@@ -29,10 +29,12 @@ export class TransactionTableComponent implements OnInit,OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transactions']) {
-      this.applyFilters();
-      // this.isFilterApplied = false;
-      // this.filteredTransactions = this.transactions;
-      // this.initFilterForm();
+      if(this.isFilterApplied)
+         this.applyFilters();
+      else {
+      this.filteredTransactions = this.transactions;
+      this.initFilterForm();
+      }
     }
   }
 
