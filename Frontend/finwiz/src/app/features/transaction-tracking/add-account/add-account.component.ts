@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
@@ -18,6 +18,7 @@ export class AddAccountComponent implements OnInit{
   accountForm!: FormGroup;
   isVisible:boolean = true;
   userId:number=0;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +31,9 @@ export class AddAccountComponent implements OnInit{
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
+    this.accountForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
 
   private initializeForms(): void {
@@ -51,14 +55,14 @@ export class AddAccountComponent implements OnInit{
       this.accountService.addAccount(newAccount).subscribe({
         next: (response) => {
           if (response.data) {
-            this.snackbarService.show("Successfully added account");
             this.accountForm.reset();
             this.accountAdded.emit();
             this.onCancel();
+            this.snackbarService.show("Successfully added account");
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.snackbarService.show(error.message);
+          this.errorMessage = error.message;
         }
       });
     } else {

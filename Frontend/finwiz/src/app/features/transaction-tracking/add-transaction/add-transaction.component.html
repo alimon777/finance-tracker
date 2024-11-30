@@ -116,6 +116,10 @@
             <span *ngIf="transDescription?.errors?.['minlength']">Description must be at least 3 characters</span>
           </div>
         </div>
+
+        <div *ngIf="errorMessage" class="bg-red-50 text-red-500 text-sm rounded-lg p-3">
+          {{ errorMessage }}
+        </div>
   
         <!-- Action Buttons -->
         <div class="flex space-x-4">

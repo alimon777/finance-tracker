@@ -33,6 +33,7 @@
                     placeholder="Enter account number" />
                 <div *ngIf="accountNumber?.invalid && accountNumber?.touched" class="text-red-500 text-xs mt-1">
                     <span *ngIf="accountNumber?.errors?.['required']">Account number is required</span>
+                    <span *ngIf="accountNumber?.errors?.['required']">Account number is required</span>
                     <span *ngIf="accountNumber?.errors?.['pattern']">Please enter a valid account number (9-18
                         digits)</span>
                 </div>
@@ -52,6 +53,10 @@
                     <span *ngIf="accountBalance?.errors?.['required']">Initial balance is required</span>
                     <span *ngIf="accountBalance?.errors?.['min']">Minimum balance should be ₹500</span>
                 </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="bg-red-50 text-red-500 text-sm rounded-lg p-3">
+                {{ errorMessage }}
             </div>
 
             <!-- Action Buttons -->

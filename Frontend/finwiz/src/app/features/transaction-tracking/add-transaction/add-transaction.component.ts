@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
@@ -12,14 +12,15 @@ import { TransactionService } from 'src/app/shared/services/transaction/transact
   templateUrl: './add-transaction.component.html',
   styleUrls: ['./add-transaction.component.css']
 })
-export class AddTransactionComponent {
+export class AddTransactionComponent implements OnInit{
   @Input() accounts!: Account[];
   @Output() close = new EventEmitter();
   @Output() transactionAdded = new EventEmitter();
 
   transactionForm!: FormGroup;
   isVisible:boolean = true;
-  userId:number=0;
+  userId:number = 0;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +33,9 @@ export class AddTransactionComponent {
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
+    this.transactionForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
 
   private initializeForms(): void {
@@ -45,7 +49,6 @@ export class AddTransactionComponent {
       description: ['', [Validators.required, Validators.minLength(0)]]
     });
 
-    // Subscribe to transaction type changes
     this.transactionForm.get('transactionType')?.valueChanges.subscribe(type => {
       const categoryControl = this.transactionForm.get('categoryType');
       if (type === 'DEPOSIT') {
@@ -58,14 +61,12 @@ export class AddTransactionComponent {
     });
   }
 
-  // Form Error Getters for Transaction Form
   get transAmount() { return this.transactionForm.get('amount'); }
   get transAccountNumber() { return this.transactionForm.get('accountNumber'); }
   get transType() { return this.transactionForm.get('transactionType'); }
   get transDate() { return this.transactionForm.get('transactionDate'); }
   get transCategory() { return this.transactionForm.get('categoryType'); }
   get transDescription() { return this.transactionForm.get('description'); }
-
 
   onSubmitTransaction(): void {
     if (this.transactionForm.valid) {
@@ -77,13 +78,13 @@ export class AddTransactionComponent {
 
       this.transactionService.addTransaction(newTransaction).subscribe({
         next: () => {
-          this.snackbarService.show("Transaction added successfully");
           this.transactionAdded.emit();
           this.onCancel();
           this.transactionForm.reset();
+          this.snackbarService.show("Transaction added successfully");
         },
         error: (error: HttpErrorResponse) => {
-          this.snackbarService.show(error.message);
+          this.errorMessage = error.message;
         }
       });
     } else {
