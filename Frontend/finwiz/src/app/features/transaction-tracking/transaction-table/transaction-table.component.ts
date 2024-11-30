@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Account } from 'src/app/shared/models/account';
 import { Transaction } from 'src/app/shared/models/transaction';
 
 @Component({
@@ -9,21 +10,26 @@ import { Transaction } from 'src/app/shared/models/transaction';
 })
 export class TransactionTableComponent implements OnInit,OnChanges{
   @Input() transactions: Transaction[] = [];
+  @Input() accounts: Account[] = [];
+  @Output() transactionAdded = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
   ) {
   }
-  filteredTransactions: Transaction[] = this.transactions;
+
+  userId:number = 0; 
+  filteredTransactions: Transaction[] = [];
   isFilterApplied = false;
   filterForm!: FormGroup;
   isFilterFormVisible = false;
   currentSortColumn: string = 'transactionDate';
   currentSortDirection: 'asc' | 'desc' = 'desc';
+  isAddTransactionVisible:boolean = false;
 
   ngOnInit(): void {
     this.isFilterApplied = false;
-    this.filteredTransactions = this.transactions;
+    this.filteredTransactions = this.sortTransactions(this.transactions);
     this.initFilterForm();
   }
 
@@ -32,7 +38,7 @@ export class TransactionTableComponent implements OnInit,OnChanges{
       if(this.isFilterApplied)
          this.applyFilters();
       else {
-      this.filteredTransactions = this.transactions;
+      this.filteredTransactions = this.sortTransactions(this.transactions);
       this.initFilterForm();
       }
     }
@@ -131,5 +137,13 @@ export class TransactionTableComponent implements OnInit,OnChanges{
     this.initFilterForm();
     this.isFilterApplied=false;
     this.filteredTransactions = [...this.transactions];
+  }
+  
+  openAddTransactionModal(): void {
+    this.isAddTransactionVisible = true;
+  }
+
+  onAddTransactionModalClose(): void {
+    this.isAddTransactionVisible = false;
   }
 }
