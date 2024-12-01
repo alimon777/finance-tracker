@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BudgetService {
@@ -169,7 +170,13 @@ public class BudgetService {
                     emailBody.toString(),
                     "Budget Exceeded Notification"
             );
-            emailServiceClient.sendMail(emailDetails);
+            CompletableFuture.runAsync(() -> {
+                try {
+                    emailServiceClient.sendMail(emailDetails);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         return emailBody.toString();

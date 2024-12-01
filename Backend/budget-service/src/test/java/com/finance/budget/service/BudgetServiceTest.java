@@ -123,8 +123,7 @@ class BudgetServiceTest {
     void testCheckExceedance_withExceededBudget_shouldSendEmailAndReturnMessage() {
         Long budgetId = 1L;
     	Long userId = 1L;
-    	Date transactionDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Transaction transaction = new Transaction(1L, 300.0, userId, "Food Purchase", "ACC123", transactionDate, TransactionType.WITHDRAW, CategoryType.FOOD);
+        Transaction transaction = new Transaction(1L, 300.0, userId, "Food Purchase", "ACC123", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
         
         Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
         
@@ -143,8 +142,7 @@ class BudgetServiceTest {
     void testCheckExceedance_withNonExceededBudget_shouldNotSendEmail() {
     	Long budgetId = 1L;
         Long userId = 1L;
-        Date transactionDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Transaction transaction = new Transaction(1L, 50.0, userId, "Food Purchase", "ACC123", transactionDate, TransactionType.WITHDRAW, CategoryType.FOOD);
+        Transaction transaction = new Transaction(1L, 50.0, userId, "Food Purchase", "ACC123", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
         
         Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
         

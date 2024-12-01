@@ -89,8 +89,7 @@ public class BudgetControllerTest {
     @Test
     public void testCheckExceedance() throws Exception {
 
-    	Date transactionDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-    	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", transactionDate, TransactionType.WITHDRAW, CategoryType.FOOD);
+    	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
         Budget budget = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("Budget exceeded in Food category");
@@ -104,8 +103,7 @@ public class BudgetControllerTest {
 
     @Test
     public void testCheckNonExceedance() throws Exception {
-    	Date transactionDate = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-    	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", transactionDate, TransactionType.WITHDRAW, CategoryType.FOOD);
+    	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
         Budget budget = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("No exceedance in the budget.");

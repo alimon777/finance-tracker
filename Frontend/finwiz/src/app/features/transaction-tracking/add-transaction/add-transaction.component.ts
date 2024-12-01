@@ -12,15 +12,16 @@ import { TransactionService } from 'src/app/shared/services/transaction/transact
   templateUrl: './add-transaction.component.html',
   styleUrls: ['./add-transaction.component.css']
 })
-export class AddTransactionComponent implements OnInit{
+export class AddTransactionComponent implements OnInit {
   @Input() accounts!: Account[];
   @Output() close = new EventEmitter();
   @Output() transactionAdded = new EventEmitter();
 
   transactionForm!: FormGroup;
-  isVisible:boolean = true;
-  userId:number = 0;
+  isVisible: boolean = true;
+  userId: number = 0;
   errorMessage: string = '';
+  currentDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
