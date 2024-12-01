@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +18,17 @@ public class Transaction {
     private Long userId;
     private String description;
     private String accountNumber;
-    private Date transactionDate;
+    private LocalDate transactionDate;
     private TransactionType transactionType;
     private CategoryType categoryType;
+    
+    @Override
+    public String toString() {
+        return "a " + transactionType.toString().toLowerCase() + 
+               " of amount " + amount +
+               " from account number '" + accountNumber + 
+               "' for the purpose of '" + description + 
+               "' in the " + categoryType.toString().toLowerCase() + 
+               " category on "+ transactionDate.format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy"));
+    }
 }
