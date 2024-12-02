@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { Budget } from 'src/app/shared/models/budget';
 import { BudgetService } from 'src/app/shared/services/budget/budget.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { BudgetService } from 'src/app/shared/services/budget/budget.service';
 })
 export class AddBudgetComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
-  @Output() budgetAdded = new EventEmitter<void>();
+  @Output() budgetAdded = new EventEmitter<Budget>();
 
   budgetForm!: FormGroup;
   isVisible: boolean = true;
@@ -21,16 +22,11 @@ export class AddBudgetComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private budgetService: BudgetService,
-    private storageService: StorageService
   ) {
     this.initializeForm();
   }
 
   ngOnInit(): void {
-    this.userId = this.storageService.fetchUserId();
-
-    // Clear error message when form values change
     this.budgetForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -45,29 +41,25 @@ export class AddBudgetComponent implements OnInit {
         Validators.required
       ]],
       food: [null, [
-        Validators.required, 
+        Validators.required,
         Validators.min(0)
       ]],
       housing: [null, [
-        Validators.required, 
+        Validators.required,
         Validators.min(0)
       ]],
       transportation: [null, [
-        Validators.required, 
+        Validators.required,
         Validators.min(0)
       ]],
       entertainment: [null, [
-        Validators.required, 
+        Validators.required,
         Validators.min(0)
       ]]
     }, { validators: this.dateRangeValidator });
-
-    // Reset end date when start date changes
     this.budgetForm.get('budgetStartDate')?.valueChanges.subscribe(() => {
       this.budgetForm.get('budgetEndDate')?.reset();
     });
-
-    // Calculate total on form value changes
     this.budgetForm.valueChanges.subscribe(() => {
       this.updateTotal();
     });
@@ -78,15 +70,14 @@ export class AddBudgetComponent implements OnInit {
     const startDate = form.get('budgetStartDate')?.value;
     const endDate = form.get('budgetEndDate')?.value;
 
-    return startDate && endDate && new Date(endDate) >= new Date(startDate) 
-      ? null 
+    return startDate && endDate && new Date(endDate) >= new Date(startDate)
+      ? null
       : { dateRange: true };
   }
 
   // Save budget method
   onSubmitBudget(): void {
     if (this.budgetForm.invalid) {
-      // Mark all fields as touched to trigger validation display
       Object.keys(this.budgetForm.controls).forEach(key => {
         const control = this.budgetForm.get(key);
         control?.markAsTouched();
@@ -96,29 +87,21 @@ export class AddBudgetComponent implements OnInit {
 
     const budgetData = {
       ...this.budgetForm.value,
-      userId: this.userId,
       aiGenerated: false,
       total: this.total
     };
 
-    this.budgetService.createBudget(budgetData).subscribe(
-      () => {
-        this.budgetAdded.emit();
-        this.onCancel();
-      },
-      error => {
-        this.errorMessage = error.message || 'An error occurred while saving the budget.';
-      }
-    );
+    this.budgetAdded.emit(budgetData);
+    this.onCancel();
   }
 
   // Calculate total budget dynamically
   updateTotal(): void {
     const formValue = this.budgetForm.value;
     this.total = (
-      (formValue.food || 0) + 
-      (formValue.housing || 0) + 
-      (formValue.transportation || 0) + 
+      (formValue.food || 0) +
+      (formValue.housing || 0) +
+      (formValue.transportation || 0) +
       (formValue.entertainment || 0)
     );
   }

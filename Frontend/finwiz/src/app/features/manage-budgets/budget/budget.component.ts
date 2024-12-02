@@ -12,7 +12,7 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
 export class BudgetComponent implements OnInit {
   budgets: Budget[] = [];
   userId: number = 0;
-  isAddBudgetVisible:boolean = false;
+  isAddBudgetVisible: boolean = false;
 
   constructor(
     private budgetService: BudgetService,
@@ -28,6 +28,21 @@ export class BudgetComponent implements OnInit {
       console.error('User ID not found in local storage');
     }
   }
+
+  saveBudget(budgetData: Budget) {
+    console.log(budgetData);
+    budgetData.userId = this.userId;
+    this.budgetService.createBudget(budgetData).subscribe({
+      next: (createdBudget) => {
+        this.budgets.push(createdBudget);
+        this.snackbarService.show("Budget Added Successfully");
+      },
+      error: (error) => {
+        this.snackbarService.show(error.message);
+      }
+    });
+  }
+
 
   loadBudgets(): void {
     this.budgetService.getBudgetsByUserId(this.userId).subscribe(
@@ -58,10 +73,5 @@ export class BudgetComponent implements OnInit {
 
   onAddBudgetModalClose(): void {
     this.isAddBudgetVisible = false;
-  }
-
-  onNewBudgetAdded(): void {
-    this.snackbarService.show("Budget added successfully");
-    this.loadBudgets();
   }
 }
