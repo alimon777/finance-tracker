@@ -1,0 +1,132 @@
+<div *ngIf="isAiBudgetGenerated">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 pb-2 pt-2">AI Suggestions</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="flex flex-col justify-between">
+            <img class="rounded-t-lg" src="../../../../assets/Gemini-2.png" alt="Gemini Image"
+                class="h-auto bg-white rounded-lg p-5" />
+            <div class="text-center">
+                <button (click)="generateSuggestion()"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Generate AI Suggestions
+                </button>
+            </div>
+        </div>
+        <div class="bg-gradient-to-br from-indigo-50 to-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 border-gray-200">
+                What to Expect
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-600 flex-shrink-0"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Personalized budget recommendations
+                </li>
+                <li class="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-600 flex-shrink-0"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Insights based on your financial history
+                </li>
+                <li class="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-indigo-600 flex-shrink-0"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Smart savings strategies based on your financial goals
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div *ngIf="!isAiBudgetGenerated">
+    <h2 class="text-xl font-bold text-gray-800 mb-4  pt-2">AI Suggestions</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg">
+            <h3 class="font-semibold text-gray-800 mb-2 pb-2 ">Budget Details</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Start Date</span>
+                    <span class="font-medium text-gray-800">01 Jan 2024</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">End Date</span>
+                    <span class="font-medium text-gray-800">31 Dec 2024</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                        <span class="block text-sm text-gray-600 mb-1">Housing</span>
+                        <span class="block text-lg font-bold text-blue-700">₹15,000</span>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                        <span class="block text-sm text-gray-600 mb-1">Food</span>
+                        <span class="block text-lg font-bold text-blue-700">₹10,000</span>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                        <span class="block text-sm text-gray-600 mb-1">Transportation</span>
+                        <span class="block text-lg font-bold text-blue-700">₹5,000</span>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                        <span class="block text-sm text-gray-600 mb-1">Entertainment</span>
+                        <span class="block text-lg font-bold text-blue-700">₹3,000</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-2">
+                    <span class="text-gray-600 font-medium">Total Budget</span>
+                    <span class="font-bold text-blue-600">₹33,000</span>
+                </div>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                <div class="flex flex-row items-center mb-3 ">
+                    <svg class="inline-block w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                    <h3 class="font-semibold text-gray-800">AI Insights</h3>
+                </div>
+                <p class="text-gray-600 leading-relaxed text-sm">
+                    Based on your financial data, our AI recommends optimizing your budget by reducing entertainment
+                    expenses and allocating more towards savings and investments. Consider exploring cost-effective
+                    alternatives and setting up automatic savings.
+                </p>
+            </div>
+            <div class="flex space-x-4">
+                <button 
+                    (click)="saveBudget()"
+                    class="flex-1 group relative overflow-hidden bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center"
+                >
+                    <span class="relative z-10 flex items-center text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                        Add
+                    </span>
+                    <span class="absolute inset-0 bg-green-700 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                </button>
+                
+                <button 
+                    (click)="refreshSuggestion()"
+                    class="flex-1 group relative overflow-hidden bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center"
+                >
+                    <span class="relative z-10 flex items-center text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                        Regenerate
+                    </span>
+                    <span class="absolute inset-0 bg-indigo-700 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
