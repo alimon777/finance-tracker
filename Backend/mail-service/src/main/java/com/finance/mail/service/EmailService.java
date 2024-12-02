@@ -20,7 +20,7 @@ public class EmailService {
 
  @Value("${spring.mail.username}") private String sender;
 
- public String sendSimpleMail(EmailDetails details)
+ public String sendMailtoUser(EmailDetails details)
  {
      try {
          SimpleMailMessage mailMessage
@@ -28,7 +28,6 @@ public class EmailService {
 
          mailMessage.setFrom(sender);
          UserResponse user = identityServiceClient.fetchUserDetails(details.getUserId()).getBody();
-         
          
          mailMessage.setTo(user.getEmail());
          mailMessage.setText("Dear "+user.getUsername()+",\n\n"+details.getMsgBody());

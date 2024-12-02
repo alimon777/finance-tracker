@@ -9,7 +9,7 @@ import com.finance.mail.dto.UserResponse;
 @FeignClient(name = "IDENTITY-SERVICE")
 public interface IdentityServiceClient {
 	
-	@GetMapping("/userDetails/{userId}")
+	@GetMapping("/auth/userDetails/{userId}")
     ResponseEntity<UserResponse> fetchUserDetails(@PathVariable Long userId);
 }
 

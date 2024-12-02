@@ -22,7 +22,7 @@ public class EmailController {
  public ResponseEntity<String> sendMail(@RequestBody EmailDetails details)
  {
 	 try {
-         String status = emailService.sendSimpleMail(details);
+         String status = emailService.sendMailtoUser(details);
          return ResponseEntity.ok(status);
      } catch (MailSendingException e) {
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
