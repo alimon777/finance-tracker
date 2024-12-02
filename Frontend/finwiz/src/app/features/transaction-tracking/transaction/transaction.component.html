@@ -22,15 +22,15 @@
             <div class="space-y-3 md:space-y-4 overflow-y-auto custom-scrollbar">
               <!-- Account Card Design -->
               <div *ngFor="let account of accounts" 
-                   class="relative bg-gradient-to-br from-blue-100/50 to-blue-200/30 rounded-xl overflow-hidden transition-all duration-300 
-                          border border-blue-100/50 hover:border-blue-200/70 hover:shadow-md">
+                   class="relative bg-gradient-to-br from-indigo-100/50 to-indigo-200/30 rounded-xl overflow-hidden transition-all duration-300 
+                          border border-indigo-100/50 hover:border-indigo-200/70 hover:shadow-md">
                 <!-- Account Details -->
                 <div class="p-3 md:p-5 flex justify-between items-center">
                   <div>
                     <div class="flex items-center space-x-2 md:space-x-3">
-                      <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                      <div class="w-8 h-8 md:w-10 md:h-10 bg-indigo-500/20 rounded-full flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" 
-                             class="h-5 w-5 md:h-6 md:w-6 text-blue-700" 
+                             class="h-5 w-5 md:h-6 md:w-6 text-indigo-700" 
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -38,16 +38,16 @@
                       </div>
                       
                       <div>
-                        <h3 class="text-base md:text-lg font-semibold text-blue-900">
+                        <h3 class="text-base md:text-lg font-semibold text-indigo-900">
                           {{ account.bankName }}
                         </h3>
-                        <p class="text-xs text-blue-700/70">
+                        <p class="text-xs text-indigo-700/70">
                           {{ account.accountNumber }}
                         </p>
                       </div>
                     </div>
                     
-                    <div class="mt-2 md:mt-4 text-lg md:text-xl font-bold text-blue-900 tracking-tight">
+                    <div class="mt-2 md:mt-4 text-lg md:text-xl font-bold text-indigo-900 tracking-tight">
                       {{ account.accountBalance | currency:'INR' }}
                     </div>
                   </div>
@@ -55,7 +55,7 @@
                   <!-- Delete Button -->
                   <button 
                     (click)="onDeleteAccount(account.id)"
-                    class="group text-blue-500 hover:text-red-500 transition-all duration-300 p-1 md:p-2 rounded-full hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200">
+                    class="group text-indigo-500 hover:text-red-500 transition-all duration-300 p-1 md:p-2 rounded-full hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          class="h-5 w-5 md:h-6 md:w-6 transition-transform group-hover:scale-110" 
                          viewBox="0 0 20 20" 
@@ -70,10 +70,10 @@
           
               <!-- Empty State -->
               <div *ngIf="accounts.length === 0" 
-                   class="text-center py-3 md:py-5 bg-blue-50/50 border-2 border-dashed border-blue-200 rounded-xl">
+                   class="text-center py-3 md:py-5 bg-indigo-50/50 border border-dashed border-indigo-200 rounded-xl">
                 <div class="opacity-60">
                   <svg xmlns="http://www.w3.org/2000/svg" 
-                       class="h-12 w-12 md:h-16 md:w-16 mx-auto mb-2 md:mb-4 text-blue-500" 
+                       class="h-12 w-12 md:h-16 md:w-16 mx-auto mb-2 md:mb-4 text-indigo-500" 
                        fill="none" viewBox="0 0 24 24" 
                        stroke="currentColor">
                     <path stroke-linecap="round" 
@@ -81,7 +81,7 @@
                           stroke-width="2" 
                           d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
-                  <p class="text-sm md:text-base text-blue-900/70">
+                  <p class="text-sm md:text-base text-indigo-900/70">
                     No accounts added yet.<br>
                     Start by adding your first account
                   </p>
@@ -93,7 +93,7 @@
             <div class="mt-3 md:mt-4 shrink-0">
               <button 
                 (click)="openAddAccountModal()"
-                class="w-full bg-blue-600 text-white py-2 md:py-3 rounded-xl hover:bg-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 md:space-x-3 shadow-md hover:shadow-xl">
+                class="w-full bg-indigo-600 text-white py-2 md:py-3 rounded-xl hover:bg-indigo-700 transition-all duration-300 flex items-center justify-center space-x-2 md:space-x-3 shadow-md hover:shadow-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      class="h-5 w-5 md:h-6 md:w-6" 
                      viewBox="0 0 20 20" 

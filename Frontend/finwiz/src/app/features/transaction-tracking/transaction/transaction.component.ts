@@ -1,5 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
 import { AccountService } from 'src/app/shared/services/account/account.service';
 import { TransactionService } from 'src/app/shared/services/transaction/transaction.service';
 import { Account } from 'src/app/shared/models/account';
@@ -93,11 +92,13 @@ export class TransactionComponent implements OnInit {
   }
 
   onNewAccountAdded(): void {
+    this.snackbarService.show("Account added successfully");
     this.loadAccounts();
     this.loadTransactions();
   }
 
   onNewTransactionAdded(): void {
+    this.snackbarService.show("Account added successfully");
     this.loadAccounts();
     this.loadTransactions();
   }
