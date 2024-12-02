@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-	List<Transaction> findByUserIdAndTransactionDateBetween(Long userId, Date startDate, Date endDate);
+	List<Transaction> findByUserIdAndTransactionDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
 	List<Transaction> findAllByUserId(Long userId);
 }

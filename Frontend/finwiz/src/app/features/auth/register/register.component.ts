@@ -23,6 +23,10 @@ export class RegisterComponent {
     }, { validator: this.passwordMatchValidator });
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/home']);
+  }
+
   passwordMatchValidator(group: FormGroup) {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;

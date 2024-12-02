@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/shared/services/account/account.service';
 import { TransactionService } from 'src/app/shared/services/transaction/transaction.service';
@@ -14,128 +14,23 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit {
-  accountForm!: FormGroup;
-  transactionForm!: FormGroup;
   accounts: Account[] = [];
   transactions: Transaction[] = [];
   userId: number = 0;
+  isAddAccountVisible:boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private accountService: AccountService,
     private transactionService: TransactionService,
     private storageService: StorageService,
     private snackbarService: SnackbarService
   ) {
-    this.initializeForms();
   }
 
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
     this.loadAccounts();
     this.loadTransactions();
-  }
-
-  private initializeForms(): void {
-    // Initialize Account Form
-    this.accountForm = this.fb.group({
-      bankName: ['', [Validators.required, Validators.minLength(2)]],
-      accountNumber: ['', [Validators.required, Validators.pattern('^[0-9]{9,18}$')]],
-      accountBalance: [null, [Validators.required, Validators.min(500)]]
-    });
-
-    // Initialize Transaction Form
-    this.transactionForm = this.fb.group({
-      accountNumber: ['', Validators.required],
-      amount: [null, [Validators.required, Validators.min(1)]],
-      transactionType: ['', Validators.required],
-      categoryType: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(0)]]
-    });
-
-    // Subscribe to transaction type changes
-    this.transactionForm.get('transactionType')?.valueChanges.subscribe(type => {
-      const categoryControl = this.transactionForm.get('categoryType');
-      if (type === 'DEPOSIT') {
-        categoryControl?.setValue('INCOME');
-        categoryControl?.disable();
-      } else if (type === 'WITHDRAW') {
-        categoryControl?.enable();
-        categoryControl?.setValue('');
-      }
-    });
-  }
-
-  // Form Error Getters for Account Form
-  get bankName() { return this.accountForm.get('bankName'); }
-  get accountNumber() { return this.accountForm.get('accountNumber'); }
-  get accountBalance() { return this.accountForm.get('accountBalance'); }
-
-  // Form Error Getters for Transaction Form
-  get transAmount() { return this.transactionForm.get('amount'); }
-  get transAccountNumber() { return this.transactionForm.get('accountNumber'); }
-  get transType() { return this.transactionForm.get('transactionType'); }
-  get transCategory() { return this.transactionForm.get('categoryType'); }
-  get transDescription() { return this.transactionForm.get('description'); }
-
-  onSubmitAccount(): void {
-    if (this.accountForm.valid) {
-      const newAccount: Account = {
-        ...this.accountForm.value,
-        userId: this.userId,
-        bankName: this.accountForm.value.bankName.toUpperCase()
-      };
-
-      this.accountService.addAccount(newAccount).subscribe({
-        next: (response) => {
-          if (response.data) {
-            this.accounts.push(response.data);
-            this.snackbarService.show("Successfully added account");
-            this.loadTransactions();
-            this.accountForm.reset();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          this.snackbarService.show(error.message);
-        }
-      });
-    } else {
-      this.markFormGroupTouched(this.accountForm);
-    }
-  }
-
-  onSubmitTransaction(): void {
-    if (this.transactionForm.valid) {
-      const newTransaction: Transaction = {
-        ...this.transactionForm.getRawValue(),
-        id: 0,
-        userId: this.userId,
-        transactionDate: new Date()
-      };
-
-      this.transactionService.addTransaction(newTransaction).subscribe({
-        next: () => {
-          this.snackbarService.show("Transaction added successfully");
-          this.loadTransactions();
-          this.loadAccounts();
-          this.transactionForm.reset();
-        },
-        error: (error: HttpErrorResponse) => {
-          this.snackbarService.show(error.message);
-        }
-      });
-    } else {
-      this.markFormGroupTouched(this.transactionForm);
-    }
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
   }
 
   // Existing methods remain the same
@@ -159,6 +54,7 @@ export class TransactionComponent implements OnInit {
     this.transactionService.getTransactions(this.userId).subscribe({
       next: (response: Transaction[]) => {
         this.transactions = response;
+        // this.filteredTransactions = this.sortTransactionsByDate(this.transactions);
       },
       error: (error: HttpErrorResponse) => {
         this.snackbarService.show(error.message);
@@ -178,5 +74,31 @@ export class TransactionComponent implements OnInit {
         this.snackbarService.show(error.message);
       }
     });
+  }
+
+  sortTransactionsByDate(transactions: Transaction[]): Transaction[] {
+    return transactions.sort((a, b) => {
+      const dateA = new Date(a.transactionDate);
+      const dateB = new Date(b.transactionDate);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
+
+  openAddAccountModal(): void {
+    this.isAddAccountVisible = true;
+  }
+
+  onAddAccountModalClose(): void {
+    this.isAddAccountVisible = false;
+  }
+
+  onNewAccountAdded(): void {
+    this.loadAccounts();
+    this.loadTransactions();
+  }
+
+  onNewTransactionAdded(): void {
+    this.loadAccounts();
+    this.loadTransactions();
   }
 }

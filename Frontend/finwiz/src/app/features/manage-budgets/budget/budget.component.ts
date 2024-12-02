@@ -16,8 +16,8 @@ export class BudgetComponent implements OnInit {
   budgetForm!: FormGroup;
   userId: number = 0;
   userDetails: UserDetails = { username: "", email: "" };
-  currentDate: string = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
-  total: number = 0; 
+  currentDate: string = new Date().toISOString().split('T')[0];
+  total: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +47,9 @@ export class BudgetComponent implements OnInit {
       entertainment: [null, [Validators.required, Validators.min(0)]]
     });
 
+    this.budgetForm.get('budgetStartDate')?.valueChanges.subscribe(() => {
+      this.budgetForm.get('budgetEndDate')?.reset();
+    });
     // Subscribe to form value changes to calculate total dynamically
     this.budgetForm.valueChanges.subscribe(() => {
       this.updateTotal();
@@ -74,7 +77,7 @@ export class BudgetComponent implements OnInit {
   // Save budget after form validation
   saveBudget(): void {
     if (this.budgetForm.invalid) {
-      return; 
+      return;
     }
 
     const budgetData = this.budgetForm.value;

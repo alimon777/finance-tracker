@@ -28,34 +28,38 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
   pieChart!: Chart<'pie', number[], string>;
 
   ngAfterViewInit(): void {
-    if (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal>0) {
+    // Ensure chart is created only when the ViewChild is available and data is valid
+    if (this.pieChartRef?.nativeElement && (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal > 0)) {
       this.createPieChart();
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['pieChartData'] && (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal>0)) {
-      this.createPieChart(); // Re-create the pie chart when transactions input changes
+    if (changes['pieChartData'] && (this.pieChartData.deposit.INCOME > 0 || this.pieChartData.withdrawTotal > 0)) {
+      // Avoid creating the chart if the reference is not available yet
+      if (this.pieChartRef?.nativeElement) {
+        this.createPieChart(); // Re-create the pie chart when transactions input changes
+      }
     }
   }
 
   createPieChart() {
-    // Check if there's an existing chart and destroy it before creating a new one
+    // Destroy the existing chart if it exists
     if (this.pieChart) {
       this.pieChart.destroy();
     }
-  
 
+    // Prepare data for the pie chart
     const categories = ['INCOME', 'FOOD', 'HOUSING', 'ENTERTAINMENT', 'TRANSPORTATION'];
-  
-
     let categoryCounts: number[] = [0, 0, 0, 0, 0];
+
+    // Assign values to categoryCounts based on the pieChartData
     categoryCounts[0] = this.pieChartData.deposit.INCOME;
     categoryCounts[1] = this.pieChartData.withdraw.FOOD;
     categoryCounts[2] = this.pieChartData.withdraw.HOUSING;
     categoryCounts[3] = this.pieChartData.withdraw.ENTERTAINMENT;
     categoryCounts[4] = this.pieChartData.withdraw.TRANSPORTATION;
-  
+
     // Prepare the chart data
     const pieChartData: ChartConfiguration<'pie', number[], string>['data'] = {
       labels: categories,
@@ -64,32 +68,34 @@ export class PieChartComponent implements AfterViewInit, OnChanges {
         backgroundColor: ['#4CAF50', '#FFC107', '#F44336', '#9C27B0', '#2196F3']
       }]
     };
-  
+
     const pieChartOptions: ChartConfiguration<'pie', number[], string>['options'] = {
       responsive: true,
       layout: {
         padding: {
-          left: 40, 
+          left: 40,
         }
       },
       plugins: {
         legend: {
-          position: 'right', 
+          position: 'right',
           labels: {
-            boxWidth: 20, 
-            padding: 15 
+            boxWidth: 20,
+            padding: 15
           }
         }
       }
     };
-  
-    // Create the pie chart
-    this.pieChart = new Chart(this.pieChartRef.nativeElement, {
-      type: 'pie',
-      data: pieChartData,
-      options: pieChartOptions,
-    });
+
+    // Create the pie chart using the reference
+    if (this.pieChartRef?.nativeElement) {
+      this.pieChart = new Chart(this.pieChartRef.nativeElement, {
+        type: 'pie',
+        data: pieChartData,
+        options: pieChartOptions,
+      });
+    } else {
+      console.error('Chart reference is not available');
+    }
   }
-  
-  
 }

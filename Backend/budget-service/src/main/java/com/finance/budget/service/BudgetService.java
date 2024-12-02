@@ -13,9 +13,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BudgetService {
@@ -72,17 +74,15 @@ public class BudgetService {
     
     public String checkExceedance(Transaction transaction) {
     	List<Budget> budgetList = budgetRepository.findBudgetsByDateRangeAndNonNegativeTotalForUser(
-                transaction.getTransactionDate().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate(), transaction.getUserId());
+                transaction.getTransactionDate(), transaction.getUserId());
     	
     	if(budgetList.isEmpty()) {
-    		throw new BudgetCalculationException("No budgets found for user " + transaction.getUserId());
+    		return "No budget exceeded due to this transaction";
     	}
         StringBuilder emailBody = new StringBuilder("Dear " + budgetList.get(0).getUsername() + ",\n\n");
-        emailBody.append("The following transaction on ")
-                 .append(transaction.getTransactionDate())
-                 .append(" caused your budget to exceed in specific categories:\n\n");
+        emailBody.append("We noticed that ")
+                 .append(transaction.toString())
+                 .append(" has caused your budget to exceed. \n\n");
 
         List<Budget> exceededBudgetList = new ArrayList<>();
         
@@ -124,14 +124,17 @@ public class BudgetService {
                 // Check if total budget exceeded
                 budget.setTotal(budget.getTotal() - transaction.getAmount());
                 if (budget.getTotal() < 0) totalExceeded = true;
-
+                		
                 if (categoryExceeded || totalExceeded) {
+                	
                     exceededBudgetList.add(budget);
-//                    budgetRepository.save(budget);
-
-                    if (categoryExceeded) {
-                        emailBody.append("Category: ").append(transaction.getCategoryType())
-                                 .append(" exceeded by ₹");
+                	if (totalExceeded) {
+                        emailBody.append("The total budget amount was overspent by ₹")
+                                 .append(Math.abs(budget.getTotal()));
+                    }
+                	else if (categoryExceeded) {
+                        emailBody.append("The budget allocated for ").append(transaction.getCategoryType().toString().toLowerCase())
+                                 .append(" category was exceeded by ₹");
                         switch (transaction.getCategoryType()) {
                         	case FOOD:
                                  emailBody.append(Math.abs(budget.getFood()));
@@ -147,21 +150,15 @@ public class BudgetService {
                         		 break;
                         	default:
                         		 break;
-                        }
-                        emailBody.append("\n\n")
-                        		 .append("Transaction date: ")
-                                 .append(transaction.getTransactionDate())
-                                 .append("\n\n");
+                        } 
                     }
-                    if (totalExceeded) {
-                        emailBody.append("Total budget exceeded by ₹")
-                                 .append(Math.abs(budget.getTotal()))
-                                 .append(" for the period ")
-                                 .append(budget.getBudgetStartDate())
-                                 .append(" to ")
-                                 .append(budget.getBudgetEndDate())
-                                 .append("\n");
-                    }
+                	emailBody.append(" in the budget No ")
+        			.append(budget.getId())
+        			.append(" ( ") 
+        			.append(budget.getBudgetStartDate().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")))
+        			.append(" - ")
+        			.append(budget.getBudgetEndDate().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")))
+                    .append(" ).\n");
                 }budgetRepository.save(budget);
             }
         }
@@ -173,7 +170,13 @@ public class BudgetService {
                     emailBody.toString(),
                     "Budget Exceeded Notification"
             );
-            emailServiceClient.sendMail(emailDetails);
+            CompletableFuture.runAsync(() -> {
+                try {
+                    emailServiceClient.sendMail(emailDetails);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         return emailBody.toString();

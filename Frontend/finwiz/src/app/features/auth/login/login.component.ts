@@ -13,9 +13,13 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private storageService : StorageService,
+    private storageService: StorageService,
     private router: Router
-  ) {}
+  ) { }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
 
   onSubmit() {
     this.authService.login(this.credentials).subscribe(

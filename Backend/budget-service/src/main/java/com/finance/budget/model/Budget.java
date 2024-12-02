@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -21,7 +23,9 @@ public class Budget {
     private Long userId;
     private String username;
     private String email;
-    private LocalDate budgetStartDate;  
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate budgetStartDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate budgetEndDate;    
     private Double food;  
     private Double housing;  

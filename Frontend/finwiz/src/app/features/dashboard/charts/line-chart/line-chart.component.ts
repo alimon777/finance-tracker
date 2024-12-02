@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { IncomeDepositDTO } from 'src/app/shared/models/income-deposit';
 
@@ -9,7 +9,7 @@ Chart.register(...registerables);
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements AfterViewInit {
+export class LineChartComponent implements AfterViewInit, OnChanges {
   @ViewChild('lineChart') lineChartRef!: ElementRef;
 
   @Input() lineChartData: IncomeDepositDTO[] = [];
@@ -17,12 +17,18 @@ export class LineChartComponent implements AfterViewInit {
   lineChart!: Chart<'line', number[], string>;
 
   ngAfterViewInit(): void {
-    this.createLineChart();
+    // Only create the chart if the reference is available
+    if (this.lineChartRef?.nativeElement) {
+      this.createLineChart();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['lineChartData'] && this.lineChartData.length > 0) {
-      this.createLineChart(); // Recreate chart if lineChartData input changes
+      // Avoid re-creating the chart if the reference isn't available yet
+      if (this.lineChartRef?.nativeElement) {
+        this.createLineChart(); // Recreate chart if lineChartData input changes
+      }
     }
   }
 
@@ -34,10 +40,9 @@ export class LineChartComponent implements AfterViewInit {
 
     // Prepare the data
     const labels = this.lineChartData.map(t => t.periodLabel);
-
     const depositAmounts = this.lineChartData.map(t => t.totalDepositsAmount);
-
     const withdrawAmounts = this.lineChartData.map(t => t.totalWithdrawalsAmount);
+
     const lineChartData: ChartConfiguration<'line', number[], string>['data'] = {
       labels: labels,
       datasets: [
@@ -68,11 +73,14 @@ export class LineChartComponent implements AfterViewInit {
     };
 
     // Create the new chart
-    this.lineChart = new Chart(this.lineChartRef.nativeElement, {
-      type: 'line',
-      data: lineChartData,
-      options: lineChartOptions,
-    });
+    if (this.lineChartRef?.nativeElement) {
+      this.lineChart = new Chart(this.lineChartRef.nativeElement, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions,
+      });
+    } else {
+      console.error('Chart reference is not available');
+    }
   }
-
 }

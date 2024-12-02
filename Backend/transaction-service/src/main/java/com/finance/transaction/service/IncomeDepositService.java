@@ -46,8 +46,8 @@ public class IncomeDepositService {
     private List<Transaction> getTransactionsForPeriod(Long userId, LocalDate startDate, LocalDate endDate) {
         return transactionRepository.findByUserIdAndTransactionDateBetween(
                 userId,
-                Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                startDate,
+                endDate
         );
     }
 
