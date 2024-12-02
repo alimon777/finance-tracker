@@ -44,7 +44,7 @@ class BudgetServiceTest {
 
     @Test
     void testCreateBudget_withValidBudget_shouldReturnSavedBudget() {
-        Budget budget = new Budget(1L, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
+        Budget budget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
 
         when(budgetRepository.save(budget)).thenReturn(budget);
 
@@ -57,7 +57,7 @@ class BudgetServiceTest {
 
     @Test
     void testCreateBudget_withNullBudgetField_shouldThrowInvalidBudgetException() {
-        Budget budget = new Budget(null, null, null, null,LocalDate.now(), LocalDate.now().plusDays(30), null, null, null, null, null, false);
+        Budget budget = new Budget(null,null,LocalDate.now(), LocalDate.now().plusDays(30), null, null, null, null, null, false);
 
         assertThrows(InvalidBudgetException.class, () -> budgetService.createBudget(budget));
     }
@@ -65,7 +65,7 @@ class BudgetServiceTest {
     @Test
     void testGetBudgetsByUserId_withValidUserId_shouldReturnBudgetList() {
         Long userId = 1L;
-        List<Budget> budgets = Arrays.asList(new Budget(1L, userId, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false));
+        List<Budget> budgets = Arrays.asList(new Budget(1L, userId, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false));
 
         when(budgetRepository.findByUserId(userId)).thenReturn(budgets);
 
@@ -78,7 +78,7 @@ class BudgetServiceTest {
     @Test
     void testGetBudgetById_withValidId_shouldReturnBudget() {
         Long budgetId = 1L;
-        Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
+        Budget budget = new Budget(budgetId, 1L, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
 
         when(budgetRepository.findById(budgetId)).thenReturn(Optional.of(budget));
 
@@ -100,7 +100,7 @@ class BudgetServiceTest {
     @Test
     void testDeleteBudget_withValidId_shouldDeleteBudget() {
         Long budgetId = 1L;
-        Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
+        Budget budget = new Budget(budgetId, 1L, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
 
         when(budgetRepository.findById(budgetId)).thenReturn(Optional.of(budget));
         doNothing().when(budgetRepository).deleteById(budgetId);
@@ -125,7 +125,7 @@ class BudgetServiceTest {
     	Long userId = 1L;
         Transaction transaction = new Transaction(1L, 300.0, userId, "Food Purchase", "ACC123", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
         
-        Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
+        Budget budget = new Budget(budgetId, 1L, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
         
         when(budgetRepository.findBudgetsByDateRangeAndNonNegativeTotalForUser(LocalDate.now(), userId)).thenReturn(Collections.singletonList(budget));
 
@@ -144,7 +144,7 @@ class BudgetServiceTest {
         Long userId = 1L;
         Transaction transaction = new Transaction(1L, 50.0, userId, "Food Purchase", "ACC123", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
         
-        Budget budget = new Budget(budgetId, 1L, "username", "user@example.com", LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
+        Budget budget = new Budget(budgetId, 1L, LocalDate.now(), LocalDate.now().plusDays(30), 100.0, 200.0, 150.0, 100.0, 550.0, false);
         
         when(budgetRepository.findBudgetsByDateRangeAndNonNegativeTotalForUser(LocalDate.now(), userId)).thenReturn(Collections.singletonList(budget));
 

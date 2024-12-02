@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailDetails {
-	
-    private Long userId;
-    private String msgBody;
-    private String subject;
-    
+public class UserResponse {
+    private Long userId; 
+    private String username;  
+    private String token;
+    private String email;
 }
-

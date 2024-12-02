@@ -53,11 +53,16 @@ public class AuthController {
     public ResponseEntity<UserResponse> login(@RequestBody AuthRequest authRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authenticate.isAuthenticated()) {
-            UserResponse userResponse = service.getLoginnedUserDetails(authRequest.getUsername());
+            UserResponse userResponse = service.getUserDetailsByUsername(authRequest.getUsername());
             userResponse.setToken(service.generateToken(authRequest.getUsername()));
             return ResponseEntity.ok(userResponse);
         } else {
             throw new AuthenticationFailedException("Invalid credentials");
         }
+    }
+    
+    @GetMapping("/userDetails/{userId}")
+    public UserResponse fetchUserDetails(@PathVariable Long userId) {
+        return service.getUserDetailsByUserId(userId);
     }
 }

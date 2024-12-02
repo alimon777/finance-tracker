@@ -14,8 +14,6 @@ export class AiService {
   private aiBudget: Budget = {
     id:0,
     userId:0,
-    username: "",
-    email:"",
     budgetStartDate: new Date(),
     budgetEndDate: new Date(),
     food:0,

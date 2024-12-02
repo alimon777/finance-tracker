@@ -79,7 +79,7 @@ public class BudgetService {
     	if(budgetList.isEmpty()) {
     		return "No budget exceeded due to this transaction";
     	}
-        StringBuilder emailBody = new StringBuilder("Dear " + budgetList.get(0).getUsername() + ",\n\n");
+        StringBuilder emailBody = new StringBuilder("");
         emailBody.append("We noticed that ")
                  .append(transaction.toString())
                  .append(" has caused your budget to exceed. \n\n");
@@ -166,7 +166,7 @@ public class BudgetService {
         // Send email if budget exceeded
         if (!exceededBudgetList.isEmpty()) {
             EmailDetails emailDetails = new EmailDetails(
-                    exceededBudgetList.get(0).getEmail(),
+                    budgetList.get(0).getUserId(),
                     emailBody.toString(),
                     "Budget Exceeded Notification"
             );

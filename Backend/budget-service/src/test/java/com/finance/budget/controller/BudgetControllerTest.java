@@ -48,8 +48,8 @@ public class BudgetControllerTest {
     @Test
     public void testCreateBudget() throws Exception {
 
-        Budget budget = new Budget(null, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
-        Budget savedBudget = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 2000.0, false);
+        Budget budget = new Budget(null, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
+        Budget savedBudget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 2000.0, false);
 
         when(budgetService.createBudget(any(Budget.class))).thenReturn(savedBudget);
 
@@ -65,8 +65,8 @@ public class BudgetControllerTest {
     @Test
     public void testGetBudgetsByUserId() throws Exception {
 
-        Budget budget1 = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 2000.0, false);
-        Budget budget2 = new Budget(2L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 600.0, 1100.0, 350.0, 210.0, 2260.0, false);
+        Budget budget1 = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 2000.0, false);
+        Budget budget2 = new Budget(2L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 600.0, 1100.0, 350.0, 210.0, 2260.0, false);
         
         when(budgetService.getBudgetsByUserId(1L)).thenReturn(Arrays.asList(budget1, budget2));
 
@@ -91,7 +91,7 @@ public class BudgetControllerTest {
 
     	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
-        Budget budget = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
+        Budget budget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("Budget exceeded in Food category");
 
         mockMvc.perform(post("/api/budgets/check-exceedance")
@@ -105,7 +105,7 @@ public class BudgetControllerTest {
     public void testCheckNonExceedance() throws Exception {
     	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
-        Budget budget = new Budget(1L, 1L, "john.doe", "john@example.com", LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
+        Budget budget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("No exceedance in the budget.");
 
         mockMvc.perform(post("/api/budgets/check-exceedance")

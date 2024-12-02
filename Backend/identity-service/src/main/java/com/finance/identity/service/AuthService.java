@@ -34,12 +34,22 @@ public class AuthService {
         jwtService.validateToken(token);
     }
 
-    public UserResponse getLoginnedUserDetails(String username) {
-    	User user = repository.findByUsername(username).get();
-    	UserResponse userDetails = new UserResponse();
-    	userDetails.setUserId(user.getId());
-    	userDetails.setUsername(user.getUsername());
-    	userDetails.setEmail(user.getEmail());
-    	return userDetails;
+    public UserResponse getUserDetailsByUsername(String username) {
+        User user = repository.findByUsername(username).get();
+        return mapToUserResponse(user);
     }
+
+    public UserResponse getUserDetailsByUserId(Long userId) {
+        User user = repository.findById(userId).get();
+        return mapToUserResponse(user);
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+        UserResponse userDetails = new UserResponse();
+        userDetails.setUserId(user.getId());
+        userDetails.setUsername(user.getUsername());
+        userDetails.setEmail(user.getEmail());
+        return userDetails;
+    }
+
 }

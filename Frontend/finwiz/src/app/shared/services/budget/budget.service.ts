@@ -15,9 +15,6 @@ export class BudgetService {
   
 
   createBudget(budget: Budget): Observable<Budget> {
-    const userDetails = this.storageService.fetchUserDetails();
-    budget.username = userDetails.username;
-    budget.email = userDetails.email;
     return this.http.post<Budget>(this.apiUrl, budget).pipe(
       catchError(this.handleError)
     );

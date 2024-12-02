@@ -1,7 +1,7 @@
 package com.finance.mail.controller;
 
+import com.finance.mail.dto.EmailDetails;
 import com.finance.mail.exceptions.MailSendingException;
-import com.finance.mail.model.EmailDetails;
 import com.finance.mail.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,6 @@
 export interface Budget {
     id: number;
     userId: number;
-    username: string;
-    email:string;
     budgetStartDate: Date;
     budgetEndDate: Date;
     food: number;
