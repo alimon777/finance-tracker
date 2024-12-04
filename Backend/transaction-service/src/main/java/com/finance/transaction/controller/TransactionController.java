@@ -46,8 +46,8 @@ public class TransactionController {
     }
 
     @GetMapping("/summary/{userId}")
-    public ExpenditureSummaryDTO getExpenditureSummary(@PathVariable Long userId) {
-        return expenditureService.getExpenditureSummary(userId);
+    public ResponseEntity<ExpenditureSummaryDTO> getExpenditureSummary(@PathVariable Long userId) {
+        return ResponseEntity.ok(expenditureService.getExpenditureSummary(userId));
     }
 
 
