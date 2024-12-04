@@ -1,4 +1,4 @@
-<div *ngIf="isAiBudgetGenerated">
+<div *ngIf="!isAiBudgetGenerated">
     <h2 class="text-xl font-bold text-gray-800 mb-4 pb-2 pt-2">AI Suggestions</h2>
     <div class="grid md:grid-cols-2 gap-6">
         <div class="flex flex-col justify-between">
@@ -47,7 +47,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="!isAiBudgetGenerated">
+<div *ngIf="isAiBudgetGenerated">
     <h2 class="text-xl font-bold text-gray-800 mb-4  pt-2">AI Suggestions</h2>
     <div class="grid md:grid-cols-2 gap-6">
         <div class="bg-white rounded-lg border border-gray-200 p-6">
@@ -99,7 +99,7 @@
                     <h3 class="font-semibold text-gray-800">AI Insights</h3>
                 </div>
                 <p class="text-gray-600 leading-relaxed text-sm">
-                    {{aiSuggestion}}
+                    {{suggestionText}}
                 </p>
             </div>
             <div class="flex space-x-4">

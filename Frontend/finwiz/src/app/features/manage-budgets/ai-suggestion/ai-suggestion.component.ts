@@ -1,36 +1,83 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Budget } from 'src/app/shared/models/budget';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AiSuggestion, Budget } from 'src/app/shared/models/budget';
+import { AiSuggestionService } from './ai-suggestion.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-ai-suggestion',
   templateUrl: './ai-suggestion.component.html',
   styleUrls: ['./ai-suggestion.component.css']
 })
-export class AiSuggestionComponent {
+export class AiSuggestionComponent implements OnInit {
   @Output() budgetAdded = new EventEmitter<Budget>();
-
+  suggestionText: string = '';
   budget: Budget = {
     id: 0,
     userId: 0,
-    budgetStartDate: new Date(2024, 11, 1),
-    budgetEndDate: new Date(2025, 0, 1),
-    food: 10000,
-    housing: 15000,
-    transportation: 5000,
-    entertainment: 3000,
+    budgetStartDate: new Date(),
+    budgetEndDate: new Date(),
+    food: 0,
+    housing: 0,
+    transportation: 0,
+    entertainment: 0,
     aiGenerated: true,
-    total: 33000,
+    total: 0,
+  }
+  userId: number = 0;
+  isAiBudgetGenerated: boolean = false;
+
+  // private suggestionCount: number = 0;
+  // private lastResetTime: number = 0;
+  // private SUGGESTION_LIMIT: number = 3;
+  // private RATE_LIMIT_DURATION: number = 60000;
+
+  constructor(
+    private aiSuggestionService: AiSuggestionService,
+    private storageService: StorageService,
+    private snackbarService: SnackbarService,
+  ) { }
+  ngOnInit(): void {
+    this.userId = this.storageService.fetchUserId();
   }
 
-  isAiBudgetGenerated: boolean = false;
-  aiSuggestion: string = "Based on your financial data, our AI recommends optimizing your budget by reducing entertainment expenses and allocating more towards savings and investments. Consider exploring cost-effective alternatives and setting up automatic savings.";
-
   refreshSuggestion(): void {
+    // const currentTime = Date.now();
+
+    // // Reset count if more than a minute has passed
+    // if (currentTime - this.lastResetTime > this.RATE_LIMIT_DURATION) {
+    //   this.suggestionCount = 0;
+    //   this.lastResetTime = currentTime;
+    // }
+
+    // // Check if suggestion limit is exceeded
+    // if (this.suggestionCount >= this.SUGGESTION_LIMIT) {
+    //   const waitTime = Math.ceil((this.RATE_LIMIT_DURATION - (currentTime - this.lastResetTime)) / 1000);
+    //   this.snackbarService.show(`Please wait ${waitTime} seconds before generating another suggestion`);
+    //   return;
+    // }
+
     this.isAiBudgetGenerated = true;
+    this.generateSuggestion();
+    // this.suggestionCount++;
   }
 
   generateSuggestion(): void {
-    this.isAiBudgetGenerated = false;
+    this.isAiBudgetGenerated = true;
+    this.aiSuggestionService.getAiSuggestion(this.userId).subscribe({
+      next: (data: AiSuggestion) => {
+        this.suggestionText = data.textContent;
+        this.budget = data.budget;
+        this.budget.total = this.calculateTotal(this.budget);
+      },
+      error: (error) => {
+        this.snackbarService.show('Error fetching suggestion', error);
+      }
+    });
+  }
+
+  calculateTotal(budget: Budget): number {
+    return budget.food + budget.housing + budget.entertainment + budget.transportation;
   }
 
   onSubmitBudget() {

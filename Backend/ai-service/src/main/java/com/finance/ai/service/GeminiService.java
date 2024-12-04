@@ -1,5 +1,7 @@
 package com.finance.ai.service;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,7 +75,17 @@ public class GeminiService {
             });
         }
         
-        promptBuilder.append("\nProvide a detailed budget suggestion and strategy to help the user manage their finances and achieve their goals.");
+        // Updated prompt with specific formatting instructions
+        promptBuilder.append("\nPlease provide a detailed budget suggestion in the following EXACT format and remember  the fooloowing poinst while generation 1. start date should be greater than today but less than end date 2. remember to change figures in each response 3. The figures and date range should be relative:\n\n");
+        promptBuilder.append("BUDGET_SUGGESTION_START\n");
+        promptBuilder.append("Start Date: [YYYY-MM-DD]\n");
+        promptBuilder.append("End Date: [YYYY-MM-DD]\n");
+        promptBuilder.append("Food: [FOOD_AMOUNT]\n");
+        promptBuilder.append("Housing: [HOUSING_AMOUNT]\n");
+        promptBuilder.append("Transportation: [TRANSPORTATION_AMOUNT]\n");
+        promptBuilder.append("Entertainment: [ENTERTAINMENT_AMOUNT]\n");
+        promptBuilder.append("BUDGET_SUGGESTION_END\n\n");
+        promptBuilder.append("Additional Insights: [PROVIDE_BRIEF_FINANCIAL_ADVICE_AND_STRATEGY_UNDER_100_WORDS_IN_SINGLE_PARAGRAPH]\n");
         
         return promptBuilder.toString();
     }
@@ -82,35 +94,51 @@ public class GeminiService {
         Budget aiBudget = new Budget();
         aiBudget.setAiGenerated(true);
         
-        // Parse the response and populate budget categories
-        String[] categories = {"food", "housing", "transportation", "entertainment"};
-        double total = 0;
-        
-        for (String category : categories) {
-            // Simple parsing logic - you might want to enhance this with more robust parsing
-            double amount = extractAmountForCategory(response, category);
-            switch (category) {
-                case "food":
-                    aiBudget.setFood(amount);
-                    break;
-                case "housing":
-                    aiBudget.setHousing(amount);
-                    break;
-                case "transportation":
-                    aiBudget.setTransportation(amount);
-                    break;
-                case "entertainment":
-                    aiBudget.setEntertainment(amount);
-                    break;
-            }
-            total += amount;
+        // More robust parsing based on the specific format
+        try {
+            String budgetSection = response.split("BUDGET_SUGGESTION_START")[1].split("BUDGET_SUGGESTION_END")[0];
+            
+            // Extract start and end dates
+            LocalDate startDate = extractDate(budgetSection, "Start Date:");
+            LocalDate endDate = extractDate(budgetSection, "End Date:");
+            // Set dates to the budget object (assuming Budget class has these fields)
+            aiBudget.setBudgetStartDate(startDate);
+            aiBudget.setBudgetEndDate(endDate);
+            
+            // Extract total budget
+            double total = extractAmount(budgetSection, "Total Budget:");
+            aiBudget.setTotal(total);
+            
+            // Extract specific category budgets
+            aiBudget.setFood(extractAmount(budgetSection, "Food:"));
+            aiBudget.setHousing(extractAmount(budgetSection, "Housing:"));
+            aiBudget.setTransportation(extractAmount(budgetSection, "Transportation:"));
+            aiBudget.setEntertainment(extractAmount(budgetSection, "Entertainment:"));
+            
+            // Extract additional insights
+            String insights = response.split("Additional Insights:")[1].trim();
+            
+            return new AiSuggestion(insights, aiBudget);
+        } catch (Exception e) {
+            // Fallback to previous parsing method or handle error
+            return new AiSuggestion("Unable to parse AI response", new Budget());
         }
-        
-        aiBudget.setTotal(total);
-        
-        // Create AI suggestion with text content and budget
-        return new AiSuggestion(response, aiBudget);
     }
+    
+    // Helper method to extract amount from a specific line
+    private double extractAmount(String text, String prefix) {
+        try {
+            String amountLine = Arrays.stream(text.split("\n"))
+                .filter(line -> line.startsWith(prefix))
+                .findFirst()
+                .orElse(prefix + " 0");
+            
+            return Double.parseDouble(amountLine.replace(prefix, "").trim().replace("$", ""));
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+    
     
     // Helper method to format withdrawal categories
     private String formatCategories(java.util.Map<String, Double> categories) {
@@ -120,25 +148,16 @@ public class GeminiService {
             .map(entry -> entry.getKey() + ": $" + String.format("%.2f", entry.getValue()))
             .collect(Collectors.joining(", "));
     }
-    
-    // Helper method to extract budget amount for a category (very basic implementation)
-    private double extractAmountForCategory(String response, String category) {
-        // This is a very simplistic parsing method
-        // In a real-world scenario, you'd want more sophisticated NLP or regex parsing
+    private LocalDate extractDate(String text, String prefix) {
         try {
-            String[] words = response.toLowerCase().split("\\s+");
-            for (int i = 0; i < words.length; i++) {
-                if (words[i].contains(category)) {
-                    // Look for a number after the category
-                    if (i + 1 < words.length) {
-                        String potentialAmount = words[i + 1].replaceAll("[^0-9.]", "");
-                        return Double.parseDouble(potentialAmount);
-                    }
-                }
-            }
+            String dateLine = Arrays.stream(text.split("\n"))
+                .filter(line -> line.startsWith(prefix))
+                .findFirst()
+                .orElse(prefix + " " + LocalDate.now());
+            String dateString = dateLine.replace(prefix, "").trim();
+            return LocalDate.parse(dateString);
         } catch (Exception e) {
-            // Log error or handle parsing failure
+            return LocalDate.now(); // Fallback to current date if parsing fails
         }
-        return 0.0; // Default to 0 if no amount found
     }
 }

@@ -29,10 +29,7 @@ public class GoalController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Goal>> getAllGoals(@PathVariable Long userId) {
         try {
-            List<Goal> goals = goalService.getAllGoalsForUser(userId);
-            if (goals.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(goals);
-            }       
+            List<Goal> goals = goalService.getAllGoalsForUser(userId);       
             return ResponseEntity.ok(goals);
         } catch (Exception e) {
             logger.error("An unexpected error occurred while fetching goals for user " + userId, e);

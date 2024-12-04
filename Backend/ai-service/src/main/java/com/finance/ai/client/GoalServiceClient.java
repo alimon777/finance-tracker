@@ -11,6 +11,6 @@ import com.finance.ai.dto.Goal;
 
 @FeignClient(name = "GOAL-SERVICE")
 public interface GoalServiceClient {
-	 @GetMapping("/user/{userId}")
+	 @GetMapping("api/goals/user/{userId}")
 	 ResponseEntity<List<Goal>> getAllGoals(@PathVariable Long userId) ;
 }

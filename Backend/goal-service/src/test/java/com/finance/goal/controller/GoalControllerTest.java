@@ -76,7 +76,7 @@ public class GoalControllerTest {
         when(goalService.getAllGoalsForUser(userId)).thenReturn(List.of());
 
         mockMvc.perform(get("/api/goals/user/{userId}", userId))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
     }
 

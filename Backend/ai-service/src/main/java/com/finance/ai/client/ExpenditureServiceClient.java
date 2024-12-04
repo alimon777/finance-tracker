@@ -9,6 +9,6 @@ import com.finance.ai.dto.ExpenditureSummaryDTO;
 
 @FeignClient(name = "TRANSACTION-SERVICE")
 public interface ExpenditureServiceClient {
-	@GetMapping("/summary/{userId}")
+	@GetMapping("/api/transactions/summary/{userId}")
     ResponseEntity<ExpenditureSummaryDTO> getExpenditureSummary(@PathVariable Long userId);
 }

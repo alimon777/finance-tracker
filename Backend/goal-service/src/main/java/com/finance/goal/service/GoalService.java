@@ -83,10 +83,6 @@ public class GoalService {
     
     public List<Goal> getAllGoalsForUser(Long userId) {
         List<Goal> goals = goalRepository.findByUserId(userId);
-        if (goals == null || goals.isEmpty()) {
-            logger.error("No goals found for user with id: {}", userId);
-            throw new GoalNotFoundException("No goals found for user with id: " + userId);
-        }
         return goals;
     }
 
