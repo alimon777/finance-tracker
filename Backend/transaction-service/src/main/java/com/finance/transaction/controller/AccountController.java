@@ -2,7 +2,6 @@ package com.finance.transaction.controller;
 
 import com.finance.transaction.model.Account;
 import com.finance.transaction.dto.CustomResponse;
-import com.finance.transaction.exceptions.ResourceNotFoundException;
 import com.finance.transaction.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +18,8 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("{userId}")
-    public ResponseEntity<CustomResponse<List<Account>>> getAccountsByUserId(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<CustomResponse<List<Account>>> getAccountsByUserId(@RequestParam Long userId) {
         CustomResponse<List<Account>> response = accountService.getAccountsByUserId(userId);
         if (response.getData() == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

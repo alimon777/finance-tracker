@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GoalService } from './goal.service';
 import { GoalComponent } from './goal/goal.component';
 import { UpdateGoalModalComponent } from './update-goal-modal/update-goal-modal.component';
 
@@ -13,6 +14,10 @@ import { UpdateGoalModalComponent } from './update-goal-modal/update-goal-modal.
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    GoalService
   ]
 })
+
 export class ManageGoalsModule { }

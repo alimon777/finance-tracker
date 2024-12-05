@@ -1,33 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Budget } from 'src/app/shared/models/budget';
-import { StorageService } from 'src/app/core/services/storage/storage.service'
 import { environment } from 'src/environments/environment';
+import { Budget } from 'src/app/features/manage-budgets/budget.model';
+import { AiSuggestion } from 'src/app/features/manage-budgets/budget.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
+
 export class BudgetService {
-  private apiUrl = environment.apiBaseUrl+'/api/budgets'; 
 
-  constructor(private http: HttpClient, private storageService:StorageService) {}
-  
+  constructor(private http: HttpClient) { }
+
+  private aiApiUrl = environment.apiBaseUrl + '/api/gemini/suggestion';
+  private budgetApiUrl = environment.apiBaseUrl + '/api/budgets';
+
+  getAiSuggestion(): Observable<AiSuggestion> {
+    return this.http.get<AiSuggestion>(this.aiApiUrl);
+  }
 
   createBudget(budget: Budget): Observable<Budget> {
-    return this.http.post<Budget>(this.apiUrl, budget).pipe(
+    return this.http.post<Budget>(this.budgetApiUrl, budget).pipe(
       catchError(this.handleError)
     );
   }
 
-  getBudgetsByUserId(userId: number): Observable<Budget[]> {
-    return this.http.get<Budget[]>(`${this.apiUrl}/${userId}`).pipe(
+  getBudgetsByUserId(): Observable<Budget[]> {
+    return this.http.get<Budget[]>(this.budgetApiUrl).pipe(
       catchError(this.handleError)
     );
   }
 
-  deleteBudget(userId: number, id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${userId}/${id}`).pipe(
+  deleteBudget(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.budgetApiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

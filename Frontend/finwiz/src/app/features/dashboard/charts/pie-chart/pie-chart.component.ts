@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
-import { Expenditure } from 'src/app/shared/models/expenditure';
+import { Expenditure } from 'src/app/features/dashboard/expenditure.model';
 
 Chart.register(...registerables);
 
@@ -10,8 +10,8 @@ Chart.register(...registerables);
   styleUrls: ['./pie-chart.component.css']
 })
 export class PieChartComponent implements AfterViewInit, OnChanges {
-  @ViewChild('pieChart') pieChartRef!: ElementRef;
 
+  @ViewChild('pieChart') pieChartRef!: ElementRef;
   @Input() pieChartData: Expenditure = {
     deposit: {
       INCOME: 0.0

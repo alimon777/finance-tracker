@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AiSuggestion, Budget } from 'src/app/shared/models/budget';
-import { AiSuggestionService } from './ai-suggestion.service';
+import { AiSuggestion, Budget } from 'src/app/features/manage-budgets/budget.model';
+import { BudgetService } from './../budget.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
@@ -10,7 +10,9 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
   styleUrls: ['./ai-suggestion.component.css']
 })
 export class AiSuggestionComponent implements OnInit {
+
   @Output() budgetAdded = new EventEmitter<Budget>();
+
   suggestionText: string = '';
   budget: Budget = {
     id: 0,
@@ -33,10 +35,11 @@ export class AiSuggestionComponent implements OnInit {
   // private RATE_LIMIT_DURATION: number = 60000;
 
   constructor(
-    private aiSuggestionService: AiSuggestionService,
+    private budgetService: BudgetService,
     private storageService: StorageService,
     private snackbarService: SnackbarService,
   ) { }
+
   ngOnInit(): void {
     this.userId = this.storageService.fetchUserId();
   }
@@ -64,8 +67,9 @@ export class AiSuggestionComponent implements OnInit {
 
   generateSuggestion(): void {
     this.isAiBudgetGenerated = true;
-    this.aiSuggestionService.getAiSuggestion(this.userId).subscribe({
+    this.budgetService.getAiSuggestion().subscribe({
       next: (data: AiSuggestion) => {
+        // this.storageService.storeAiSuggestion(data);
         this.suggestionText = data.textContent;
         this.budget = data.budget;
         this.budget.total = this.calculateTotal(this.budget);

@@ -1,31 +1,31 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Account } from 'src/app/shared/models/account';
-import { Transaction } from 'src/app/shared/models/transaction';
+import { Account } from 'src/app/features/transaction-tracking/models/account.model';
+import { Transaction } from 'src/app/features/transaction-tracking/models/transaction.model';
 
 @Component({
   selector: 'app-transaction-table',
   templateUrl: './transaction-table.component.html',
   styleUrls: ['./transaction-table.component.css']
 })
-export class TransactionTableComponent implements OnInit,OnChanges{
+
+export class TransactionTableComponent implements OnInit, OnChanges {
+
   @Input() transactions: Transaction[] = [];
   @Input() accounts: Account[] = [];
   @Output() transactionAdded = new EventEmitter();
 
-  constructor(
-    private fb: FormBuilder,
-  ) {
-  }
-
-  userId:number = 0; 
   filteredTransactions: Transaction[] = [];
   isFilterApplied = false;
   filterForm!: FormGroup;
   isFilterFormVisible = false;
   currentSortColumn: string = 'transactionDate';
   currentSortDirection: 'asc' | 'desc' = 'desc';
-  isAddTransactionVisible:boolean = false;
+  isAddTransactionVisible: boolean = false;
+
+  constructor(
+    private fb: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
     this.isFilterApplied = false;
@@ -35,11 +35,11 @@ export class TransactionTableComponent implements OnInit,OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['transactions']) {
-      if(this.isFilterApplied)
-         this.applyFilters();
+      if (this.isFilterApplied)
+        this.applyFilters();
       else {
-      this.filteredTransactions = this.sortTransactions(this.transactions);
-      this.initFilterForm();
+        this.filteredTransactions = this.sortTransactions(this.transactions);
+        this.initFilterForm();
       }
     }
   }
@@ -98,8 +98,8 @@ export class TransactionTableComponent implements OnInit,OnChanges{
   sortTransactions(transactions: Transaction[]): Transaction[] {
     return transactions.sort((a, b) => {
       let comparison = 0;
-      
-      switch(this.currentSortColumn) {
+
+      switch (this.currentSortColumn) {
         case 'transactionDate':
           comparison = new Date(a.transactionDate).getTime() - new Date(b.transactionDate).getTime();
           break;
@@ -118,7 +118,6 @@ export class TransactionTableComponent implements OnInit,OnChanges{
     });
   }
 
-  // Sort column click handler
   onSortColumn(column: string) {
     // If same column is clicked, toggle sort direction
     if (this.currentSortColumn === column) {
@@ -135,10 +134,10 @@ export class TransactionTableComponent implements OnInit,OnChanges{
   // Reset filters
   resetFilters() {
     this.initFilterForm();
-    this.isFilterApplied=false;
+    this.isFilterApplied = false;
     this.filteredTransactions = [...this.transactions];
   }
-  
+
   openAddTransactionModal(): void {
     this.isAddTransactionVisible = true;
   }

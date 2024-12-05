@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BudgetComponent } from './budget/budget.component';
 import { AddBudgetComponent } from './add-budget/add-budget.component';
 import { AiSuggestionComponent } from './ai-suggestion/ai-suggestion.component';
-
+import { BudgetService } from './budget.service';
 
 @NgModule({
   declarations: [
@@ -15,6 +15,10 @@ import { AiSuggestionComponent } from './ai-suggestion/ai-suggestion.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    BudgetService,
   ]
 })
+
 export class ManageBudgetsModule { }

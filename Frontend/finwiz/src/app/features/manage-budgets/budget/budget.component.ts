@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BudgetService } from 'src/app/shared/services/budget/budget.service';
-import { Budget } from 'src/app/shared/models/budget';
+import { BudgetService } from './../budget.service';
+import { Budget } from 'src/app/features/manage-budgets/budget.model';
 import { StorageService } from 'src/app/core/services/storage/storage.service'
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
@@ -9,7 +9,9 @@ import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.css']
 })
+
 export class BudgetComponent implements OnInit {
+
   budgets: Budget[] = [];
   userId: number = 0;
   isAddBudgetVisible: boolean = false;
@@ -29,8 +31,6 @@ export class BudgetComponent implements OnInit {
     }
   }
 
-
-
   saveBudget(budgetData: Budget) {
     console.log(budgetData);
     budgetData.userId = this.userId;
@@ -47,7 +47,7 @@ export class BudgetComponent implements OnInit {
 
 
   loadBudgets(): void {
-    this.budgetService.getBudgetsByUserId(this.userId).subscribe(
+    this.budgetService.getBudgetsByUserId().subscribe(
       data => {
         this.budgets = data;
       },
@@ -58,7 +58,7 @@ export class BudgetComponent implements OnInit {
   }
 
   deleteBudget(id: number): void {
-    this.budgetService.deleteBudget(this.userId, id).subscribe(
+    this.budgetService.deleteBudget(id).subscribe(
       () => {
         this.loadBudgets();
         this.snackbarService.show('Budget deleted successfully');

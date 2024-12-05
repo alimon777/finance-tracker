@@ -3,7 +3,6 @@ package com.finance.budget.service;
 import com.finance.budget.client.EmailServiceClient;
 import com.finance.budget.dto.EmailDetails;
 import com.finance.budget.dto.Transaction;
-import com.finance.budget.exceptions.BudgetCalculationException;
 import com.finance.budget.exceptions.InvalidBudgetException;
 import com.finance.budget.exceptions.ResourceNotFoundException;
 import com.finance.budget.model.Budget;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;

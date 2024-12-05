@@ -16,10 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
@@ -91,7 +88,6 @@ public class BudgetControllerTest {
 
     	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
-        Budget budget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("Budget exceeded in Food category");
 
         mockMvc.perform(post("/api/budgets/check-exceedance")
@@ -105,7 +101,6 @@ public class BudgetControllerTest {
     public void testCheckNonExceedance() throws Exception {
     	Transaction transaction = new Transaction(1L, 200.0, 1L, "Food purchase", "ACCNO1", LocalDate.now(), TransactionType.WITHDRAW, CategoryType.FOOD);
 
-        Budget budget = new Budget(1L, 1L, LocalDate.now(), LocalDate.now().plusMonths(1), 500.0, 1000.0, 300.0, 200.0, 0.0, false);
         when(budgetService.checkExceedance(transaction)).thenReturn("No exceedance in the budget.");
 
         mockMvc.perform(post("/api/budgets/check-exceedance")

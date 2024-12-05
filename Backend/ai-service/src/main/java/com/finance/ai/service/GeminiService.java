@@ -33,59 +33,43 @@ public class GeminiService {
     }
 
     public String generatePrompt(Long userId) {
-        // Fetch expenditure summary
         ExpenditureSummaryDTO expenditureSummary = expenditureServiceClient.getExpenditureSummary(userId).getBody();
-        
-        // Fetch user goals
         List<Goal> goals = goalServiceClient.getAllGoals(userId).getBody();
-        
-        // Build a comprehensive prompt for budget and goal analysis
         StringBuilder promptBuilder = new StringBuilder();
         
-        // Add expenditure information
         if (expenditureSummary != null) {
             promptBuilder.append("Expenditure Summary:\n");
-            
-            // Weekly expenditure details
             if (expenditureSummary.getWeekly() != null) {
                 promptBuilder.append("Weekly Withdrawals: ").append(expenditureSummary.getWeekly().getWithdrawTotal()).append("\n");
                 promptBuilder.append("Weekly Withdrawal Categories: ").append(formatCategories(expenditureSummary.getWeekly().getWithdraw())).append("\n");
             }
-            
-            // Monthly expenditure details
             if (expenditureSummary.getMonthly() != null) {
                 promptBuilder.append("Monthly Withdrawals: ").append(expenditureSummary.getMonthly().getWithdrawTotal()).append("\n");
                 promptBuilder.append("Monthly Withdrawal Categories: ").append(formatCategories(expenditureSummary.getMonthly().getWithdraw())).append("\n");
             }
-            
-            // Yearly expenditure details
             if (expenditureSummary.getYearly() != null) {
                 promptBuilder.append("Yearly Withdrawals: ").append(expenditureSummary.getYearly().getWithdrawTotal()).append("\n");
                 promptBuilder.append("Yearly Withdrawal Categories: ").append(formatCategories(expenditureSummary.getYearly().getWithdraw())).append("\n");
             }
         }
-        
-        // Add goals information
         if (goals != null && !goals.isEmpty()) {
             promptBuilder.append("\nUser Goals:\n");
             goals.forEach(goal -> {
                 promptBuilder.append("- ").append(goal.getGoalName())
-                             .append(": ").append(goal.getValue())
+                             .append(": INR ").append(goal.getValue())
                              .append(" (Duration: ").append(goal.getDurationInMonths()).append(" months)\n");
             });
         }
-        
-        // Updated prompt with specific formatting instructions
-        promptBuilder.append("\nPlease provide a detailed budget suggestion in the following EXACT format and remember  the fooloowing poinst while generation 1. start date should be greater than today but less than end date 2. remember to change figures in each response 3. The figures and date range should be relative:\n\n");
+        promptBuilder.append("\nPlease provide a detailed budget suggestion in the following EXACT format and remember the following points while generation 1. remember to change figures(are in rupees) and dates in each response 2. start date should be greater than today but less than end date 3. The figures and date range should be relative:\n\n");
         promptBuilder.append("BUDGET_SUGGESTION_START\n");
         promptBuilder.append("Start Date: [YYYY-MM-DD]\n");
         promptBuilder.append("End Date: [YYYY-MM-DD]\n");
-        promptBuilder.append("Food: [FOOD_AMOUNT]\n");
-        promptBuilder.append("Housing: [HOUSING_AMOUNT]\n");
-        promptBuilder.append("Transportation: [TRANSPORTATION_AMOUNT]\n");
-        promptBuilder.append("Entertainment: [ENTERTAINMENT_AMOUNT]\n");
+        promptBuilder.append("Food: [FOOD_AMOUNT_IN_INR]\n");
+        promptBuilder.append("Housing: [HOUSING_AMOUNT_IN_INR]\n");
+        promptBuilder.append("Transportation: [TRANSPORTATION_AMOUNT_IN_INR]\n");
+        promptBuilder.append("Entertainment: [ENTERTAINMENT_AMOUNT_IN_INR]\n");
         promptBuilder.append("BUDGET_SUGGESTION_END\n\n");
-        promptBuilder.append("Additional Insights: [PROVIDE_BRIEF_FINANCIAL_ADVICE_AND_STRATEGY_UNDER_100_WORDS_IN_SINGLE_PARAGRAPH]\n");
+        promptBuilder.append("Additional Insights: [PROVIDE_BRIEF_FINANCIAL_ADVICE_AND_STRATEGY_UNDER_100_WORDS_IN_SINGLE_PARAGRAPH_IN_INDIAN_RUPEES]\n");
         
         return promptBuilder.toString();
     }
@@ -93,8 +77,6 @@ public class GeminiService {
     public AiSuggestion processResponse(String response) {
         Budget aiBudget = new Budget();
         aiBudget.setAiGenerated(true);
-        
-        // More robust parsing based on the specific format
         try {
             String budgetSection = response.split("BUDGET_SUGGESTION_START")[1].split("BUDGET_SUGGESTION_END")[0];
             
@@ -104,10 +86,6 @@ public class GeminiService {
             // Set dates to the budget object (assuming Budget class has these fields)
             aiBudget.setBudgetStartDate(startDate);
             aiBudget.setBudgetEndDate(endDate);
-            
-            // Extract total budget
-            double total = extractAmount(budgetSection, "Total Budget:");
-            aiBudget.setTotal(total);
             
             // Extract specific category budgets
             aiBudget.setFood(extractAmount(budgetSection, "Food:"));

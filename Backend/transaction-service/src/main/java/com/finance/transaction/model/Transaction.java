@@ -1,16 +1,13 @@
 package com.finance.transaction.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,6 +45,6 @@ public class Transaction {
     private CategoryType categoryType;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     private Account account;
 }

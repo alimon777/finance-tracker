@@ -1,8 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { Budget } from 'src/app/shared/models/budget';
-import { BudgetService } from 'src/app/shared/services/budget/budget.service';
+import { Budget } from 'src/app/features/manage-budgets/budget.model';
 
 @Component({
   selector: 'app-add-budget',
@@ -10,6 +8,7 @@ import { BudgetService } from 'src/app/shared/services/budget/budget.service';
   styleUrls: ['./add-budget.component.css']
 })
 export class AddBudgetComponent implements OnInit {
+
   @Output() close = new EventEmitter<void>();
   @Output() budgetAdded = new EventEmitter<Budget>();
 
