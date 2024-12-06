@@ -27,12 +27,8 @@ export class AiSuggestionComponent implements OnInit {
     total: 0,
   }
   userId: number = 0;
+  isBudgetAdded: boolean = true;
   isAiBudgetGenerated: boolean = false;
-
-  // private suggestionCount: number = 0;
-  // private lastResetTime: number = 0;
-  // private SUGGESTION_LIMIT: number = 3;
-  // private RATE_LIMIT_DURATION: number = 60000;
 
   constructor(
     private budgetService: BudgetService,
@@ -45,31 +41,15 @@ export class AiSuggestionComponent implements OnInit {
   }
 
   refreshSuggestion(): void {
-    // const currentTime = Date.now();
-
-    // // Reset count if more than a minute has passed
-    // if (currentTime - this.lastResetTime > this.RATE_LIMIT_DURATION) {
-    //   this.suggestionCount = 0;
-    //   this.lastResetTime = currentTime;
-    // }
-
-    // // Check if suggestion limit is exceeded
-    // if (this.suggestionCount >= this.SUGGESTION_LIMIT) {
-    //   const waitTime = Math.ceil((this.RATE_LIMIT_DURATION - (currentTime - this.lastResetTime)) / 1000);
-    //   this.snackbarService.show(`Please wait ${waitTime} seconds before generating another suggestion`);
-    //   return;
-    // }
-
     this.isAiBudgetGenerated = true;
     this.generateSuggestion();
-    // this.suggestionCount++;
   }
 
   generateSuggestion(): void {
     this.isAiBudgetGenerated = true;
+    this.isBudgetAdded = false;
     this.budgetService.getAiSuggestion().subscribe({
       next: (data: AiSuggestion) => {
-        // this.storageService.storeAiSuggestion(data);
         this.suggestionText = data.textContent;
         this.budget = data.budget;
         this.budget.total = this.calculateTotal(this.budget);
@@ -85,6 +65,7 @@ export class AiSuggestionComponent implements OnInit {
   }
 
   onSubmitBudget() {
+    this.isBudgetAdded = true;
     this.budgetAdded.emit(this.budget);
   }
 }
