@@ -1,7 +1,10 @@
 package com.finance.transaction.exceptions;
 
 public class AccountCreationException extends RuntimeException {
-    public AccountCreationException(String message) {
+    
+	private static final long serialVersionUID = 1L;
+
+	public AccountCreationException(String message) {
         super(message);
     }
 }

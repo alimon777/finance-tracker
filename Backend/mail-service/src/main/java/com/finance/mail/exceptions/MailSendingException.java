@@ -2,7 +2,9 @@ package com.finance.mail.exceptions;
 
 public class MailSendingException extends RuntimeException {
 
-    public MailSendingException(String message) {
+	private static final long serialVersionUID = 1L;
+
+	public MailSendingException(String message) {
         super(message);
     }
     

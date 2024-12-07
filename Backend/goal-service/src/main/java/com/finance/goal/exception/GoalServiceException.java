@@ -2,7 +2,9 @@ package com.finance.goal.exception;
 
 public class GoalServiceException extends RuntimeException {
 
-    public GoalServiceException(String message) {
+	private static final long serialVersionUID = 1L;
+
+	public GoalServiceException(String message) {
         super(message);
     }
 
