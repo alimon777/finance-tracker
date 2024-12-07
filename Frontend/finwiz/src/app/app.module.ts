@@ -18,6 +18,7 @@ import { ManageBudgetsModule } from './features/manage-budgets/manage-budgets.mo
 import { TransactionTrackingModule } from './features/transaction-tracking/transaction-tracking.module';
 import { AuthModule } from './features/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
+import { NewsModule } from './features/news/news.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { SharedModule } from './shared/shared.module';
     ManageGoalsModule,
     ManageBudgetsModule,
     TransactionTrackingModule,
+    NewsModule,
     SharedModule,
     BrowserModule,
     AppRoutingModule,

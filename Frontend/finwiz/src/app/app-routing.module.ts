@@ -12,6 +12,7 @@ import { GoalComponent } from './features/manage-goals/goal/goal.component';
 import {
   AuthGuardService as AuthGuard
 } from './core/guards/auth-guard.service';
+import { NewsComponent } from './features/news/news/news.component';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
       { path: 'budget', component: BudgetComponent, canActivate: [AuthGuard] },
       { path: 'goal', component: GoalComponent, canActivate: [AuthGuard] },
+      { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
       { path: '**', component: PageNotFoundComponent }
     ]
   },

@@ -23,7 +23,7 @@ export class GoalService {
   }
 
   deleteGoal(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${id}`)
+    return this.http.delete<void>(`${this.apiUrl}/${id}`)
       .pipe(catchError(error => this.handleError(error, 'Failed to delete goal. Please try again later.')));
   }
 
