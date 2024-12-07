@@ -1,9 +1,9 @@
 package com.finance.goal.service;
+
 import com.finance.goal.exception.GoalNotFoundException;
 import com.finance.goal.exception.GoalServiceException;
 import com.finance.goal.model.Goal;
 import com.finance.goal.repository.GoalRepository;
-import com.finance.goal.service.GoalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

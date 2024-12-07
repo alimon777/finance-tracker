@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Goal } from 'src/app/shared/models/goal';
-import { GoalService } from 'src/app/shared/services/goal/goal.service';
+import { Goal } from 'src/app/features/manage-goals/goal.model';
+import { GoalService } from './../goal.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class UpdateGoalModalComponent {
 
   isVisible = true;
 
-  constructor(private goalService: GoalService, private snackbarService: SnackbarService) {}
+  constructor(private goalService: GoalService, private snackbarService: SnackbarService) { }
 
   onSubmit(): void {
     this.goalService.updateGoal(this.goal).subscribe(
@@ -24,7 +24,7 @@ export class UpdateGoalModalComponent {
         this.close.emit(updatedGoal);
       },
       (error) => {
-        this.snackbarService.show(error.message); 
+        this.snackbarService.show(error.message);
         this.close.emit(null);
       }
     );

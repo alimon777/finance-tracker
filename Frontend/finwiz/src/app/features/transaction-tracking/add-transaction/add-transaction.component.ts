@@ -1,18 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
-import { Account } from 'src/app/shared/models/account';
-import { Transaction } from 'src/app/shared/models/transaction';
-import { TransactionService } from 'src/app/shared/services/transaction/transaction.service';
+import { TransactionService } from './../transaction.service';
+import { Account } from 'src/app/features/transaction-tracking/models/account.model';
+import { Transaction } from 'src/app/features/transaction-tracking/models/transaction.model';
 
 @Component({
   selector: 'app-add-transaction',
   templateUrl: './add-transaction.component.html',
   styleUrls: ['./add-transaction.component.css']
 })
+
 export class AddTransactionComponent implements OnInit {
+
   @Input() accounts!: Account[];
   @Output() close = new EventEmitter();
   @Output() transactionAdded = new EventEmitter();
@@ -27,9 +28,8 @@ export class AddTransactionComponent implements OnInit {
     private fb: FormBuilder,
     private transactionService: TransactionService,
     private storageService: StorageService,
-    private snackbarService: SnackbarService
   ) {
-    this.initializeForms();
+    this.initializeForm();
   }
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class AddTransactionComponent implements OnInit {
     });
   }
 
-  private initializeForms(): void {
+  private initializeForm(): void {
     // Initialize Transaction Form
     this.transactionForm = this.fb.group({
       accountNumber: ['', Validators.required],
@@ -82,7 +82,6 @@ export class AddTransactionComponent implements OnInit {
           this.transactionAdded.emit();
           this.onCancel();
           this.transactionForm.reset();
-          this.snackbarService.show("Transaction added successfully");
         },
         error: (error: HttpErrorResponse) => {
           this.errorMessage = error.message;

@@ -1,0 +1,61 @@
+<div class="bg-indigo-700 flex flex-col items-center p-3">
+    <h1 class="text-2xl font-bold text-white">Financial News</h1>
+    <p class="text-indigo-100 mt-1">See the latest financial news</p>
+</div>
+        
+<!-- News Container -->
+<div class="news-container w-full flex justify-center relative mt-10">
+    <!-- Carousel Container -->
+    <div class="carousel-container relative h-[380px] w-[800px]">
+        <!-- Modern Left Scroll Button -->
+        <button class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 
+                     w-10 h-10 rounded-full bg-white shadow-lg 
+                     flex items-center justify-center
+                     transition-all duration-200 hover:bg-gray-50
+                     focus:outline-none focus:ring-2 focus:ring-blue-500
+                     group" 
+                (click)="scrollLeft()">
+            <span class="material-icons text-gray-600 group-hover:text-gray-800 
+                      transition-colors duration-200">
+                chevron_left
+            </span>
+        </button>
+        
+        <!-- Display only one article at a time -->
+        <div class="carousel-item h-full">
+            <a *ngIf="currentArticle" [href]="currentArticle.url" target="_blank" 
+               class="news-card-link block h-full">
+                <div class="news-card bg-white rounded-xl overflow-hidden shadow-lg h-full pb-2">
+                    <div class="image-container relative overflow-hidden h-[240px]">
+                        <img [src]="currentArticle.urlToImage" 
+                             alt="Article Image" 
+                             class="article-image w-full h-full object-cover" />
+                        <div class="image-overlay absolute inset-0 bg-black/10"></div>
+                    </div>
+                    <div class="news-content p-4 ">
+                        <h3 class="news-title text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                            {{ currentArticle.title }}
+                        </h3>
+                        <p class="news-description text-gray-600 text-sm line-clamp-3 ">
+                            {{ currentArticle.description }}
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Modern Right Scroll Button -->
+        <button class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 
+                     w-10 h-10 rounded-full bg-white shadow-lg 
+                     flex items-center justify-center
+                     transition-all duration-200 hover:bg-gray-50
+                     focus:outline-none focus:ring-2 focus:ring-blue-500
+                     group" 
+                (click)="scrollRight()">
+            <span class="material-icons text-gray-600 group-hover:text-gray-800 
+                      transition-colors duration-200">
+                chevron_right
+            </span>
+        </button>
+    </div>
+</div>

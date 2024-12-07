@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
-import { IncomeDepositDTO } from 'src/app/shared/models/income-deposit';
+import { IncomeDepositDTO } from 'src/app/features/dashboard/income-deposit.model';
 
 Chart.register(...registerables);
 
@@ -10,8 +10,8 @@ Chart.register(...registerables);
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements AfterViewInit, OnChanges {
-  @ViewChild('lineChart') lineChartRef!: ElementRef;
 
+  @ViewChild('lineChart') lineChartRef!: ElementRef;
   @Input() lineChartData: IncomeDepositDTO[] = [];
 
   lineChart!: Chart<'line', number[], string>;

@@ -35,6 +35,12 @@ spring:
             - Path=/api/mails/**
           filters:
             - AuthenticationFilter
+        - id: ai-service
+          uri: lb://AI-SERVICE
+          predicates:
+            - Path=/api/gemini/**
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:

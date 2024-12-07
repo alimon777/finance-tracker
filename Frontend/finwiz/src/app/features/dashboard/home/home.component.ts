@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Transaction } from 'src/app/shared/models/transaction';
-import { ExpenditureService } from 'src/app/shared/services/expenditure/expenditure.service';
-import { Expenditure } from 'src/app/shared/models/expenditure';
-import { IncomeDepositDTO } from 'src/app/shared/models/income-deposit';
-import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { Transaction } from 'src/app/features/transaction-tracking/models/transaction.model';
+import { DashboardService } from '../dashboard.service';
+import { Expenditure } from 'src/app/features/dashboard/expenditure.model';
+import { IncomeDepositDTO } from 'src/app/features/dashboard/income-deposit.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  userId: number = 0;
+
   transactions: Transaction[] = [];
-  periodLabel: string = 'weekly'; // Default option set here
+  periodLabel: string = 'weekly';
   expenditureSummary: any;
+  lineChartData: IncomeDepositDTO[] = [];
+  chartType: 'line' | 'pie' = 'pie';
   pieChartData: Expenditure = {
     deposit: {
       INCOME: 0.0
@@ -27,17 +28,11 @@ export class HomeComponent implements OnInit {
     withdrawTotal: 0.0
   };
 
-  lineChartData: IncomeDepositDTO[] = [];
-
-  chartType: 'line' | 'pie' = 'pie'; 
-
   constructor(
-    private expenditureService: ExpenditureService,
-    private storageService: StorageService
-  ) {}
+    private dashboardService: DashboardService,
+  ) { }
 
   ngOnInit(): void {
-    this.userId = this.storageService.fetchUserId();
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
@@ -47,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   toggleDropdown(period: 'weekly' | 'monthly' | 'yearly') {
-    this.periodLabel=period;
+    this.periodLabel = period;
     this.fetchExpenditureSummary();
     this.fetchIncomeDepositSummary();
   }
@@ -62,7 +57,7 @@ export class HomeComponent implements OnInit {
 
   private fetchIncomeDepositSummary(): void {
 
-    this.expenditureService.getIncomeDepositSummary(this.userId, this.periodLabel).subscribe(
+    this.dashboardService.getIncomeDepositSummary(this.periodLabel).subscribe(
       (data) => {
         if (this.periodLabel) {
           this.lineChartData = data;
@@ -76,7 +71,7 @@ export class HomeComponent implements OnInit {
 
   private fetchExpenditureSummary(): void {
 
-    this.expenditureService.getExpenditureSummary(this.userId).subscribe(
+    this.dashboardService.getExpenditureSummary().subscribe(
       (data) => {
         this.expenditureSummary = data;
         if (this.periodLabel) {

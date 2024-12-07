@@ -46,7 +46,7 @@ public class GoalControllerTest {
         Goal goal = new Goal(1L, 1L, "Buy Car", 10000.0, "Save money for a car",LocalDate.now(), 12);
         when(goalService.createGoal(any(Goal.class))).thenReturn(goal);
 
-        mockMvc.perform(post("/api/goals/create")
+        mockMvc.perform(post("/api/goals")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(goal)))
                 .andExpect(status().isOk())
@@ -64,10 +64,13 @@ public class GoalControllerTest {
         List<Goal> goals = Arrays.asList(goal1, goal2);
         when(goalService.getAllGoalsForUser(userId)).thenReturn(goals);
 
-        mockMvc.perform(get("/api/goals/user/{userId}", userId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].goalName").value("Buy Car"))
-                .andExpect(jsonPath("$[1].goalName").value("Buy House"));
+        mockMvc.perform(get("/api/goals")
+                .param("userId", "102")
+                .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].goalName").value("Buy Car"))
+        .andExpect(jsonPath("$[1].goalName").value("Buy House"));
+
     }
 
     @Test
@@ -75,8 +78,10 @@ public class GoalControllerTest {
         Long userId = 1L;
         when(goalService.getAllGoalsForUser(userId)).thenReturn(List.of());
 
-        mockMvc.perform(get("/api/goals/user/{userId}", userId))
-                .andExpect(status().isNotFound())
+        mockMvc.perform(get("/api/goals")
+        		.param("userId", "1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
     }
 
@@ -85,7 +90,7 @@ public class GoalControllerTest {
         Long goalId = 1L;
         doNothing().when(goalService).deleteGoal(goalId);
 
-        mockMvc.perform(delete("/api/goals/delete/{id}", goalId))
+        mockMvc.perform(delete("/api/goals/{id}", goalId))
                 .andExpect(status().isNoContent());
     }
 
@@ -98,7 +103,7 @@ public class GoalControllerTest {
         when(goalService.getGoalById(goalId)).thenReturn(existingGoal);
         when(goalService.saveGoal(any(Goal.class))).thenReturn(updatedGoal);
 
-        mockMvc.perform(put("/api/goals/update/{id}", goalId)
+        mockMvc.perform(put("/api/goals/{id}", goalId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedGoal)))
                 .andExpect(status().isOk())

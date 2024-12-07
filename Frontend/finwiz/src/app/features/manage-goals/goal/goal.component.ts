@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { GoalService } from 'src/app/shared/services/goal/goal.service';
-import { Goal } from 'src/app/shared/models/goal';
 import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/core/services/storage/storage.service'
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { GoalService } from './../goal.service';
+import { Goal } from 'src/app/features/manage-goals/goal.model';
 
 @Component({
   selector: 'app-goal',
   templateUrl: './goal.component.html',
   styleUrls: ['./goal.component.css']
 })
+
 export class GoalComponent implements OnInit {
+
   userId: number = 0;
   goals: any[] = [];
   formSubmitted = false;
@@ -64,7 +66,7 @@ export class GoalComponent implements OnInit {
   }
 
   loadGoals(): void {
-    this.goalService.getAllGoals(this.userId).subscribe({
+    this.goalService.getAllGoals().subscribe({
       next: (data: Goal[]) => {
         this.goals = data;
       },

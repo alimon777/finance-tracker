@@ -16,9 +16,9 @@ import { DashboardModule } from './features/dashboard/dashboard.module';
 import { ManageGoalsModule } from './features/manage-goals/manage-goals.module';
 import { ManageBudgetsModule } from './features/manage-budgets/manage-budgets.module';
 import { TransactionTrackingModule } from './features/transaction-tracking/transaction-tracking.module';
-import { AiSuggestionsModule } from './features/ai-suggestions/ai-suggestions.module';
 import { AuthModule } from './features/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
+import { NewsModule } from './features/news/news.module';
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import { SharedModule } from './shared/shared.module';
     ManageGoalsModule,
     ManageBudgetsModule,
     TransactionTrackingModule,
-    AiSuggestionsModule,
+    NewsModule,
     SharedModule,
     BrowserModule,
     AppRoutingModule,

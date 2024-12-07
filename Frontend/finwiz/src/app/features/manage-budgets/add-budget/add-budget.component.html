@@ -1,0 +1,126 @@
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-container bg-white rounded-xl shadow-sm border border-gray-100 p-6 w-[600px] max-w-full">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold text-gray-800">New Budget</h3>
+      <button (click)="onCancel()" class="text-gray-500 hover:text-gray-700" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form [formGroup]="budgetForm" (ngSubmit)="onSubmitBudget()" class="space-y-4">
+      <!-- Date Range -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">Start Date</label>
+          <input type="date" formControlName="budgetStartDate"
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            [attr.min]="currentDate"
+            [ngClass]="{'border-red-500': budgetStartDate?.invalid && budgetStartDate?.touched}" />
+          <div *ngIf="budgetStartDate?.invalid && budgetStartDate?.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="budgetStartDate?.errors?.['required']">Start date is required</span>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">End Date</label>
+          <input type="date" formControlName="budgetEndDate"
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            [attr.min]="budgetForm.get('budgetStartDate')?.value || currentDate"
+            [ngClass]="{'border-red-500': budgetEndDate?.invalid && budgetEndDate?.touched}" />
+          <div *ngIf="budgetEndDate?.invalid && budgetEndDate?.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="budgetEndDate?.errors?.['required']">End date is required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Categories -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">Food Budget</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500">₹</span>
+            <input type="number" formControlName="food"
+              class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              [ngClass]="{'border-red-500': food?.invalid && food?.touched}" placeholder="Enter food budget" />
+            <div *ngIf="food?.invalid && food?.touched" class="text-red-500 text-xs mt-1">
+              <span *ngIf="food?.errors?.['required']">Food budget is required</span>
+              <span *ngIf="food?.errors?.['min']">Budget must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">Housing Budget</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500">₹</span>
+            <input type="number" formControlName="housing"
+              class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              [ngClass]="{'border-red-500': housing?.invalid && housing?.touched}" placeholder="Enter housing budget" />
+            <div *ngIf="housing?.invalid && housing?.touched" class="text-red-500 text-xs mt-1">
+              <span *ngIf="housing?.errors?.['required']">Housing budget is required</span>
+              <span *ngIf="housing?.errors?.['min']">Budget must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">Transportation Budget</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500">₹</span>
+            <input type="number" formControlName="transportation"
+              class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              [ngClass]="{'border-red-500': transportation?.invalid && transportation?.touched}"
+              placeholder="Enter transportation budget" />
+            <div *ngIf="transportation?.invalid && transportation?.touched" class="text-red-500 text-xs mt-1">
+              <span *ngIf="transportation?.errors?.['required']">Transportation budget is required</span>
+              <span *ngIf="transportation?.errors?.['min']">Budget must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-gray-700">Entertainment Budget</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500">₹</span>
+            <input type="number" formControlName="entertainment"
+              class="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              [ngClass]="{'border-red-500': entertainment?.invalid && entertainment?.touched}"
+              placeholder="Enter entertainment budget" />
+            <div *ngIf="entertainment?.invalid && entertainment?.touched" class="text-red-500 text-xs mt-1">
+              <span *ngIf="entertainment?.errors?.['required']">Entertainment budget is required</span>
+              <span *ngIf="entertainment?.errors?.['min']">Budget must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Budget Display -->
+      <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+        <div class="flex justify-between items-center">
+          <span class="text-base font-semibold text-gray-700">Total Budget:</span>
+          <span [ngClass]="{'text-red-600': total < 0, 'text-green-600': total >= 0}" class="text-lg font-bold">
+            {{ total < 0 ? '-₹' + (-total).toFixed(2) : '₹' + total.toFixed(2) }} </span>
+        </div>
+      </div>
+
+      <!-- Error Message (if any) -->
+      <div *ngIf="errorMessage" class="bg-red-50 text-red-500 text-sm rounded-lg p-3">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-4">
+        <button type="button" (click)="onCancel()"
+          class="mt-3 flex-1 bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-150 ease-in-out">
+          Cancel
+        </button>
+        <button type="submit"
+          class="mt-3 flex-1 bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
+          [disabled]="budgetForm.invalid" [ngClass]="{'opacity-50 cursor-not-allowed': budgetForm.invalid}">
+          Add Budget
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

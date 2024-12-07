@@ -4,7 +4,6 @@ import com.finance.transaction.model.Account;
 import com.finance.transaction.dto.CustomResponse;
 import com.finance.transaction.exceptions.DuplicateAccountNumberException;
 import com.finance.transaction.exceptions.ResourceNotFoundException;
-import com.finance.transaction.model.Transaction;
 import com.finance.transaction.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

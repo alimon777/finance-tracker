@@ -21,18 +21,15 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Goal> createGoal(@RequestBody Goal goal) {
         return ResponseEntity.ok(goalService.createGoal(goal));
     }
     
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Goal>> getAllGoals(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<Goal>> getAllGoals(@RequestParam Long userId) {
         try {
-            List<Goal> goals = goalService.getAllGoalsForUser(userId);
-            if (goals.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(goals);
-            }       
+            List<Goal> goals = goalService.getAllGoalsForUser(userId);       
             return ResponseEntity.ok(goals);
         } catch (Exception e) {
             logger.error("An unexpected error occurred while fetching goals for user " + userId, e);
@@ -40,13 +37,13 @@ public class GoalController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGoal(@PathVariable Long id) {
         goalService.deleteGoal(id);
         return ResponseEntity.noContent().build();
     }
     
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Goal> updateGoal(@PathVariable Long id, @RequestBody Goal updatedGoal) {
         Goal existingGoal = goalService.getGoalById(id);
         if (existingGoal == null) {

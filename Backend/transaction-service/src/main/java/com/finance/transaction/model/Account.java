@@ -1,6 +1,6 @@
 package com.finance.transaction.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +25,6 @@ public class Account {
     private Double accountBalance;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Transaction> transactions; 
 }

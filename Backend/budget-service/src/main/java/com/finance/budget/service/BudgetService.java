@@ -3,7 +3,6 @@ package com.finance.budget.service;
 import com.finance.budget.client.EmailServiceClient;
 import com.finance.budget.dto.EmailDetails;
 import com.finance.budget.dto.Transaction;
-import com.finance.budget.exceptions.BudgetCalculationException;
 import com.finance.budget.exceptions.InvalidBudgetException;
 import com.finance.budget.exceptions.ResourceNotFoundException;
 import com.finance.budget.model.Budget;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class BudgetService {
     	if(budgetList.isEmpty()) {
     		return "No budget exceeded due to this transaction";
     	}
-        StringBuilder emailBody = new StringBuilder("Dear " + budgetList.get(0).getUsername() + ",\n\n");
+        StringBuilder emailBody = new StringBuilder("");
         emailBody.append("We noticed that ")
                  .append(transaction.toString())
                  .append(" has caused your budget to exceed. \n\n");
@@ -166,7 +164,7 @@ public class BudgetService {
         // Send email if budget exceeded
         if (!exceededBudgetList.isEmpty()) {
             EmailDetails emailDetails = new EmailDetails(
-                    exceededBudgetList.get(0).getEmail(),
+                    budgetList.get(0).getUserId(),
                     emailBody.toString(),
                     "Budget Exceeded Notification"
             );

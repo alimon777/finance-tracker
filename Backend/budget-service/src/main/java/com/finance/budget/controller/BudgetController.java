@@ -19,23 +19,20 @@ public class BudgetController {
     @Autowired
     private BudgetService budgetService;
 
-    // Create a new budget
     @PostMapping
     public ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
         Budget createdBudget = budgetService.createBudget(budget);
         return new ResponseEntity<>(createdBudget, HttpStatus.CREATED);
     }
 
-    // Get all budgets for a specific user
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Budget>> getBudgetsByUserId(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<List<Budget>> getBudgetsByUserId(@RequestParam Long userId) {
         List<Budget> budgets = budgetService.getBudgetsByUserId(userId);
         return ResponseEntity.ok(budgets);
     }
     
-    // Delete budget
-    @DeleteMapping("/{userId}/{id}")
-    public ResponseEntity<Void> deleteBudget(@PathVariable Long userId, @PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBudget(@PathVariable Long id) {
         budgetService.deleteBudget(id);
         return ResponseEntity.noContent().build();
     }

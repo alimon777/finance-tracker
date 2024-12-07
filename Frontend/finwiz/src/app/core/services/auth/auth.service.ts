@@ -9,15 +9,16 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
-  private apiUrl = environment.apiBaseUrl+'/auth'; 
+  private apiUrl = environment.apiBaseUrl + '/auth';
 
   constructor(
     private http: HttpClient,
     public jwtHelper: JwtHelperService,
     private storageService: StorageService,
     private router: Router
-  ) {}
+  ) { }
 
   public isAuthenticated(): boolean {
     const token = this.storageService.getToken();
@@ -28,17 +29,17 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     console.log(credentials);
     return this.http.post(`${this.apiUrl}/login`, credentials)
-    .pipe(
-      catchError(this.handleError)
-    );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   // Register method to create a new user
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user)
-    .pipe(
-      catchError(this.handleError)
-    );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getToken(): string | null {
@@ -50,11 +51,11 @@ export class AuthService {
     if (!token) {
       return true;
     }
-    
+
     const tokenPayload = this.decodeToken(token);
     const expirationTime = tokenPayload.exp * 1000; // JWT expiration is in seconds, convert to milliseconds
     const currentTime = Date.now();
-    console.log(expirationTime , currentTime);
+    console.log(expirationTime, currentTime);
     return currentTime >= expirationTime;
   }
 
@@ -69,9 +70,9 @@ export class AuthService {
   // Clear token and log the user out
   clearToken(): void {
     this.storageService.clearStorage();
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
- 
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
 

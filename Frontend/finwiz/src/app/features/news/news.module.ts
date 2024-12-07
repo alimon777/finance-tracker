@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewsComponent } from './components/news/news.component';
+import { NewsComponent } from './news/news.component';
+import { NewsService } from './news.service';
 
 
 @NgModule({
@@ -9,6 +10,9 @@ import { NewsComponent } from './components/news/news.component';
   ],
   imports: [
     CommonModule
+  ],
+  providers: [
+    NewsService
   ]
 })
 export class NewsModule { }

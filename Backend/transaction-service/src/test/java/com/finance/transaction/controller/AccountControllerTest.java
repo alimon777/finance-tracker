@@ -1,7 +1,6 @@
 package com.finance.transaction.controller;
 
 import com.finance.transaction.dto.CustomResponse;
-import com.finance.transaction.exceptions.ResourceNotFoundException;
 import com.finance.transaction.model.Account;
 import com.finance.transaction.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,8 @@ class AccountControllerTest {
         CustomResponse<List<Account>> response = new CustomResponse<>("Success", List.of(sampleAccount));
         when(accountService.getAccountsByUserId(1L)).thenReturn(response);
 
-        mockMvc.perform(get("/api/transactions/accounts/1")
+        mockMvc.perform(get("/api/transactions/accounts")
+        		.param("userId", "1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].id").value(sampleAccount.getId()))
@@ -54,7 +54,8 @@ class AccountControllerTest {
         CustomResponse<List<Account>> response = new CustomResponse<>("No accounts found", null);
         when(accountService.getAccountsByUserId(1L)).thenReturn(response);
 
-        mockMvc.perform(get("/api/transactions/accounts/1")
+        mockMvc.perform(get("/api/transactions/accounts")
+        		.param("userId", "1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
