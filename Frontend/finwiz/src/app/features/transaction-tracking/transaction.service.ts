@@ -46,12 +46,21 @@ export class TransactionService {
   }
 
   addTransaction(transaction: Transaction): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, transaction).pipe(
+    return this.http.post(this.apiUrl, transaction).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'An unknown error occurred while adding the account.';
+        let errorMessage = 'An unknown error occurred while adding the transaction.';
         if (error.status === 400) {
           errorMessage = 'Insufficient Balance!';
         }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  addMultipleTransactions(transactions: Transaction[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/multiple`, transactions).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An unknown error occurred while adding the transactions.';
         return throwError(() => new Error(errorMessage));
       })
     );

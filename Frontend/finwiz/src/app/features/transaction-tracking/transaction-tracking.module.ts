@@ -6,6 +6,7 @@ import { TransactionTableComponent } from './transaction-table/transaction-table
 import { AddAccountComponent } from './add-account/add-account.component';
 import { AddTransactionComponent } from './add-transaction/add-transaction.component';
 import { TransactionService } from './transaction.service';
+import { UploadTransactionsComponent } from './upload-transactions/upload-transactions.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TransactionService } from './transaction.service';
     TransactionTableComponent,
     AddAccountComponent,
     AddTransactionComponent,
+    UploadTransactionsComponent,
   ],
   imports: [
     CommonModule,

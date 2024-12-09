@@ -1,62 +1,81 @@
 <!-- Filter Section Header -->
 <div class="flex justify-between items-center">
-    <h3 class="pl-2 text-xl font-bold text-gray-800 mt-[-20px]">Transactions</h3>
+    <div class=" text-gray-800 mt-[-20px] flex flex-row">
+        <h3 class="pl-2 text-xl font-bold text-gray-800">Transactions </h3>
+        <a class="pl-2 text-sm mt-1">({{filteredTransactions.length}})</a>
+    </div>
     <div class="flex items-center space-x-4">
         <!-- Reset Filters Button -->
-        <button *ngIf="isFilterApplied" 
-                (click)="resetFilters()" 
-                class="group flex flex-col items-center justify-center text-gray-600 hover:text-blue-600 transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50" 
-                aria-label="Reset Filters">
-          <svg xmlns="http://www.w3.org/2000/svg" 
-               class="h-6 w-6  group-hover:rotate-180 transition-transform duration-300" 
-               fill="none" viewBox="0 0 24 24" 
-               stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Reset
-          </span>
+        <button *ngIf="isFilterApplied" (click)="resetFilters()"
+            class="group flex flex-col items-center justify-center text-gray-600 hover:text-blue-600 transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50"
+            aria-label="Reset Filters">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6  group-hover:rotate-180 transition-transform duration-300" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Reset
+            </span>
         </button>
-      
+
         <!-- Toggle Filters Button -->
-        <button 
-                (click)="toggleFilterForm()" 
-                class="group flex flex-col items-center justify-center transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50"
-                [ngClass]="{
+        <button (click)="toggleFilterForm()"
+            class="group flex flex-col items-center justify-center transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50"
+            [ngClass]="{
                   'text-blue-600': isFilterApplied || isFilterFormVisible,
                   'text-gray-600': !isFilterApplied && !isFilterFormVisible
-                }"
-                aria-label="Toggle Filters">
-          <svg xmlns="http://www.w3.org/2000/svg" 
-               class="h-6 w-6  group-hover:rotate-6 transition-transform duration-300" 
-               fill="none" viewBox="0 0 24 24" 
-               stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Filters
-          </span>
+                }" aria-label="Toggle Filters">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6  group-hover:rotate-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Filters
+            </span>
         </button>
-      
+
         <!-- Add Transaction Button -->
-        <button *ngIf="accounts.length != 0" 
-                (click)="openAddTransactionModal()" 
-                class="group flex flex-col items-center justify-center text-gray-600 hover:text-blue-600 transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50" 
-                aria-label="Add New Transaction">
-          <svg xmlns="http://www.w3.org/2000/svg" 
-               class="h-6 w-6  group-hover:scale-110 transition-transform duration-300" 
-               fill="none" viewBox="0 0 24 24" 
-               stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-          </svg>
-          <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Add
-          </span>
+        <button *ngIf="accounts.length != 0" (click)="openAddTransactionModal()"
+            class="group flex flex-col items-center justify-center text-gray-600 hover:text-blue-600 transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50"
+            aria-label="Add New Transaction">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16" />
+            </svg>
+            <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Add
+            </span>
         </button>
-      </div>
+
+        <button *ngIf="accounts.length != 0" (click)="openUploadTransactionsModal()"
+            class="group flex flex-col items-center justify-center text-gray-600 hover:text-blue-600 transition duration-300 ease-in-out py-1 px-2 rounded-lg hover:bg-blue-50"
+            aria-label="Add New Transaction">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <!-- file icon paths -->
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0013.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6M9 17h6M9 9h2"
+                    fill="#48BB78" stroke="#48BB78" />
+
+                <!-- New plus sign at bottom right -->
+                <circle cx="19" cy="19" r="4" fill="#48BB78" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 19h4M19 17v4"
+                    stroke="white" />
+            </svg>
+            <span class="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                CSV
+            </span>
+        </button>
+
+    </div>
 </div>
 
 <!-- Sliding Filter Section -->
@@ -204,5 +223,10 @@
     </div>
 </div>
 
-<app-add-transaction *ngIf="isAddTransactionVisible" [accounts]="accounts" (close)="onAddTransactionModalClose()" (transactionAdded)="transactionAdded.emit()">
+<app-add-transaction *ngIf="isAddTransactionVisible" [accounts]="accounts" (close)="onAddTransactionModalClose()"
+    (transactionAdded)="transactionAdded.emit()">
 </app-add-transaction>
+
+<app-upload-transactions *ngIf="isUploadModalVisible" [accounts]="accounts" (close)="onUploadTransactionsModalClose()"
+    (transactionAdded)="transactionAdded.emit()">
+</app-upload-transactions>

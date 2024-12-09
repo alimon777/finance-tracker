@@ -1,0 +1,118 @@
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-container bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+    [ngClass]="{'max-w-[500px]': transactions.length === 0}"
+    >
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold text-gray-800">Upload a CSV file</h3>
+      <button (click)="onCancel()" class="text-gray-500 hover:text-gray-700" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form [formGroup]="transactionForm" class="space-y-4">
+
+      <!-- File Input -->
+      <div class="space-y-1">
+        <label class="block text-sm font-medium text-gray-700">Select CSV File</label>
+        <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+      </div>
+
+
+      <!-- Transaction Table -->
+      <ng-container *ngIf="transactions.length > 0">
+        <div class="max-h-[300px] overflow-y-auto">
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description
+                  </th>
+                  <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Category
+                  </th>
+                  <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let transaction of transactions" class="border-b border-gray-200 hover:bg-gray-50">
+                  <td class="px-4 py-2 text-sm text-gray-700">
+                    {{ transaction.transactionDate | date:'fullDate' }}
+                  </td>
+                  <td class="px-4 py-2 whitespace-nowrap text-sm">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="{
+                        'bg-green-100 text-green-800': transaction.transactionType === 'DEPOSIT',
+                        'bg-red-100 text-red-800': transaction.transactionType === 'WITHDRAW'
+                      }">
+                      {{ transaction.transactionType }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-2 text-sm text-gray-700">
+                    {{ transaction.description }}
+                  </td>
+                  <td class="px-4 py-2 text-sm text-gray-700">
+                    {{ transaction.categoryType }}
+                  </td>
+                  <td class="px-4 py-2 whitespace-nowrap text-sm text-right" [ngClass]="{
+                      'text-green-600': transaction.transactionType === 'DEPOSIT',
+                      'text-red-600': transaction.transactionType === 'WITHDRAW'
+                    }">
+                    {{ transaction.amount | currency:'INR' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+      <div class="flex lg:flex-row gap-4">
+        <!-- Account Selection -->
+        <div class="space-y-2 w-full">
+          <label class="block text-sm font-medium text-gray-700">Account</label>
+          <select formControlName="accountNumber"
+            class="w-full min-h-[43px] px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            [ngClass]="{'border-red-500': transAccountNumber?.invalid && transAccountNumber?.touched}">
+            <option value="">Select Account</option>
+            <option *ngFor="let account of accounts" [value]="account.accountNumber">
+              {{ account.bankName }} - {{ account.accountNumber }}
+            </option>
+          </select>
+          <div *ngIf="transAccountNumber?.invalid && transAccountNumber?.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="transAccountNumber?.errors?.['required']">
+              Please select an account
+            </span>
+          </div>
+        </div>
+        <div *ngIf="transactions.length>0" class="bg-gray-50 p-3 rounded-lg mt-6 w-full">
+          <div class="flex justify-between items-center">
+            <span class="text-base font-semibold text-gray-700">Total Transactions here :</span>
+            <span class="text-lg font-bold text-indigo-600">{{ transactions.length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="bg-red-50 text-red-500 text-sm rounded-lg p-3">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex space-x-4">
+        <button type="button" (click)="onCancel()"
+          class="flex-1 bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-150 ease-in-out">
+          Cancel
+        </button>
+        <button type="button" (click)="onSubmit()" [disabled]="transactions.length === 0"
+          class="flex-1 bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
+          [ngClass]="{'opacity-50 cursor-not-allowed': transactions.length === 0}">
+          Submit Transactions
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

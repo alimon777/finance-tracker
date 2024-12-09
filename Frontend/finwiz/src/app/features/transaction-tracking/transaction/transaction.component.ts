@@ -51,7 +51,7 @@ export class TransactionComponent implements OnInit {
         this.transactions = response;
       },
       error: (error: HttpErrorResponse) => {
-        this.snackbarService.show(error.message);
+        // this.snackbarService.show(error.message);
       }
     });
   }
@@ -85,7 +85,7 @@ export class TransactionComponent implements OnInit {
   }
 
   onNewTransactionAdded(): void {
-    this.snackbarService.show("Account added successfully");
+    this.snackbarService.show("Transaction added successfully");
     this.loadAccounts();
     this.loadTransactions();
   }

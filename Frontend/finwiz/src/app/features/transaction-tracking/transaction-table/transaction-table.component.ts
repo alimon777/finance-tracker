@@ -22,6 +22,7 @@ export class TransactionTableComponent implements OnInit, OnChanges {
   currentSortColumn: string = 'transactionDate';
   currentSortDirection: 'asc' | 'desc' = 'desc';
   isAddTransactionVisible: boolean = false;
+  isUploadModalVisible: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -144,5 +145,13 @@ export class TransactionTableComponent implements OnInit, OnChanges {
 
   onAddTransactionModalClose(): void {
     this.isAddTransactionVisible = false;
+  }
+
+  openUploadTransactionsModal() {
+    this.isUploadModalVisible = true;
+  }
+
+  onUploadTransactionsModalClose(): void {
+    this.isUploadModalVisible = false;
   }
 }
