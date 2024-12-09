@@ -69,10 +69,10 @@ public class AccountService {
          transactionService.addDummyTransaction(new Transaction(null, 40.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), LocalDate.parse("2024-12-03"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
          transactionService.addDummyTransaction(new Transaction(null, 25.0, account.getUserId(), "Bus fare", account.getAccountNumber(), LocalDate.parse("2024-12-03"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
          transactionService.addDummyTransaction(new Transaction(null, 200.0, account.getUserId(), "Rent payment", account.getAccountNumber(), LocalDate.parse("2024-12-04"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
-         transactionService.addDummyTransaction(new Transaction(null, 50.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), LocalDate.parse("2024-12-05"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
-         transactionService.addDummyTransaction(new Transaction(null, 20.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), LocalDate.parse("2024-12-05"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
-         transactionService.addDummyTransaction(new Transaction(null, 30.0, account.getUserId(), "Bus fare", account.getAccountNumber(), LocalDate.parse("2024-12-06"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
-         transactionService.addDummyTransaction(new Transaction(null, 100.0, account.getUserId(), "Rent payment", account.getAccountNumber(), LocalDate.parse("2024-12-07"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
+         transactionService.addDummyTransaction(new Transaction(null, 50.0, account.getUserId(), "Salary deposit", account.getAccountNumber(), LocalDate.parse("2024-12-10"), TransactionType.DEPOSIT, CategoryType.INCOME, account));
+         transactionService.addDummyTransaction(new Transaction(null, 20.0, account.getUserId(), "Grocery shopping", account.getAccountNumber(), LocalDate.parse("2024-12-09"), TransactionType.WITHDRAW, CategoryType.FOOD, account));
+         transactionService.addDummyTransaction(new Transaction(null, 30.0, account.getUserId(), "Bus fare", account.getAccountNumber(), LocalDate.parse("2024-12-10"), TransactionType.WITHDRAW, CategoryType.TRANSPORTATION, account));
+         transactionService.addDummyTransaction(new Transaction(null, 100.0, account.getUserId(), "Rent payment", account.getAccountNumber(), LocalDate.parse("2024-12-09"), TransactionType.WITHDRAW, CategoryType.HOUSING, account));
 
     }
 

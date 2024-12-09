@@ -49,7 +49,8 @@ public class TransactionService {
         }
         return response;
     }
-
+    
+    
     private CustomResponse<Transaction> processTransaction(Transaction transaction) {
         Account account = accountRepository.findByAccountNumber(transaction.getAccountNumber());
         if (account == null) {
@@ -75,5 +76,32 @@ public class TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         return new CustomResponse<>("Transaction successful", savedTransaction);
+    }
+    
+    public CustomResponse<String> addMultipleTransactions (Transaction[] transactions){
+    	Account account = accountRepository.findByAccountNumber(transactions[0].getAccountNumber());
+        if (account == null) {
+            return new CustomResponse<>("No account found for the transaction: " + transactions[0].getAccountNumber(), null);
+        }
+        for (Transaction transaction:transactions) {
+        	if (transaction.getTransactionType() == TransactionType.WITHDRAW) {
+                if (account.getAccountBalance() < transaction.getAmount()) {
+                    account.setAccountBalance(0d);
+                }
+                else if(account.getAccountBalance()!=0) {
+                	account.setAccountBalance(account.getAccountBalance() - transaction.getAmount());
+                }
+            } else {
+                account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
+            }
+
+            if (transaction.getTransactionDate() == null) {
+                transaction.setTransactionDate(LocalDate.now());
+            }
+            transaction.setAccount(account);
+            transactionRepository.save(transaction);
+        }
+        accountRepository.saveAndFlush(account);
+        return new CustomResponse<>(transactions.length +" transactions were addded",null);
     }
 }

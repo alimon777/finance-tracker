@@ -33,6 +33,12 @@ public class TransactionController {
     	CustomResponse<Transaction> response = transactionService.addTransaction(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+    
+    @PostMapping(value = "/multiple",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CustomResponse<String>> addMultipleTransactions(@RequestBody Transaction[] transactions) {
+    	CustomResponse<String> response = transactionService.addMultipleTransactions(transactions);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactionsByUserId(@RequestParam Long userId) {
